@@ -1,0 +1,2 @@
+C:\C++Project_MasiTanghuru\MasitTanghuru\x64\Debug\MasitTanghuru.exe
+C:\MasitTanghuru\x64\Debug\MasitTanghuru.exe
