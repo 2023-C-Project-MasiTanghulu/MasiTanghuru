@@ -141,9 +141,31 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="image\Back_btn.png" />
+    <Image Include="image\Bad_frame.png" />
+    <Image Include="image\Blackgrape.png" />
+    <Image Include="image\Blackgrape_box.png" />
+    <Image Include="image\Boxlid.png" />
+    <Image Include="image\Game_frame.png" />
+    <Image Include="image\Happy_frame.png" />
+    <Image Include="image\Levelup_frame.png" />
     <Image Include="image\main.png" />
+    <Image Include="image\Main_frame.png" />
+    <Image Include="image\Mandarin.png" />
+    <Image Include="image\Mandarin_box.png" />
+    <Image Include="image\Pineapple.png" />
+    <Image Include="image\Pineapple_box.png" />
     <Image Include="image\Rule_btn.png" />
+    <Image Include="image\Rule_frame.png" />
+    <Image Include="image\Sale_btn.png" />
+    <Image Include="image\Shinemuscat.png" />
+    <Image Include="image\Shinemuscat_box.png" />
     <Image Include="image\Start_btn.png" />
+    <Image Include="image\Stick.png" />
+    <Image Include="image\Stickbox.png" />
+    <Image Include="image\Strawberry.png" />
+    <Image Include="image\Strawberry_box.png" />
+    <Image Include="image\Sugarpot.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

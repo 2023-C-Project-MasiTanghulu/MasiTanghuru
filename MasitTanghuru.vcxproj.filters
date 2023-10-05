@@ -44,5 +44,71 @@
     <Image Include="image\Rule_btn.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="image\Back_btn.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Bad_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Blackgrape.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Blackgrape_box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Boxlid.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Game_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Happy_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Levelup_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Main_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Mandarin.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Mandarin_box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Pineapple.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Pineapple_box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Rule_frame.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Sale_btn.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Shinemuscat.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Shinemuscat_box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Stick.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Stickbox.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Strawberry.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Strawberry_box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Sugarpot.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>
