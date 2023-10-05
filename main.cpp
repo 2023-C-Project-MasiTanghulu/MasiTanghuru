@@ -4,7 +4,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1500, 800), "메인");
 
     sf::Texture texture;
-    if (!texture.loadFromFile("image/main.png")) {
+    if (!texture.loadFromFile("image/Main_frame.png")) {
         return -1; // 이미지를 불러올 수 없으면 종료
     }
 
@@ -16,7 +16,7 @@ int main() {
     }
 
     sf::Sprite button1(buttonTexture1);
-    button1.setPosition(500, 200);
+    button1.setPosition(900, 500);
 
     sf::Texture buttonTexture2;
     if (!buttonTexture2.loadFromFile("image/Rule_btn.png")) {
@@ -24,7 +24,7 @@ int main() {
     }
 
     sf::Sprite button2(buttonTexture2);
-    button2.setPosition(300, 100);
+    button2.setPosition(900, 650);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -49,11 +49,9 @@ int main() {
         }
 
         window.clear();
-
         window.draw(sprite);
         window.draw(button1);
         window.draw(button2);
-
         window.display();
     }
 
