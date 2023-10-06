@@ -1,21 +1,2 @@
-﻿  game_rule.cpp
-C:\Users\seyeon\Documents\MasiTanghuru\game_rule.cpp(30,80): warning C4244: '인수': 'T'에서 'T'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\seyeon\Documents\MasiTanghuru\game_rule.cpp(30,68): warning C4244: '인수': 'T'에서 'T'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-main.obj : error LNK2005: main이(가) game_rule.obj에 이미 정의되어 있습니다.
-C:\Users\seyeon\Documents\MasiTanghuru\x64\Debug\MasitTanghuru.exe : fatal error LNK1169: 여러 번 정의된 기호가 있습니다.
+﻿  game.cpp
+  MasitTanghuru.vcxproj -> C:\MasiTanghuru\x64\Debug\MasitTanghuru.exe
