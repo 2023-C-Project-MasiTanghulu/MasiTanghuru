@@ -1,4 +1,13 @@
 #include <SFML/Graphics.hpp>
+<<<<<<< HEAD
+#include "game.h"
+
+using namespace sf;
+
+ void Game() {
+	RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
+	
+=======
 #include <iostream>
 
 
@@ -19,6 +28,7 @@ public:
 int main() {
     RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
 
+>>>>>>> fa3bffa14590cf0e007ca8006d249822f03881c4
     Texture frame;  //게임 화면
     frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
     Sprite frameSprite(frame);  //게임 화면 이미지 할당
@@ -164,9 +174,17 @@ int main() {
         window.draw(mandarinBox);  //귤 박스 draw
         window.draw(pineappleBox);  //파인애플 박스 draw
         window.draw(stickBox);  //꼬치 박스 draw
+<<<<<<< HEAD
+        window.draw(fruit);  //과일 draw
+		window.display();
+       
+	}
+   
+=======
         for (const Fruit& fruit : fruits) { //과일 draw
             window.draw(fruit.sprite);
         }
         window.display();
     }
+>>>>>>> fa3bffa14590cf0e007ca8006d249822f03881c4
 }
