@@ -1,4 +1,0 @@
-C:\C++Project_MasiTanghuru\MasitTanghuru\x64\Debug\MasitTanghuru.exe
-C:\MasitTanghuru\x64\Debug\MasitTanghuru.exe
-C:\Users\seyeon\Documents\MasiTanghuru\x64\Debug\MasitTanghuru.exe
-C:\MasiTanghuru\x64\Debug\MasitTanghuru.exe

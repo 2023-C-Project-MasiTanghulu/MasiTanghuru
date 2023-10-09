@@ -1,8 +1,5 @@
-#include <SFML/Graphics.hpp>
-#include "game.h"
 #include <iostream>
-
-using namespace sf;
+#include "game.h"
 
 //과일 클래스
 class Fruit { 
@@ -17,8 +14,8 @@ public:
     }
 };
 
-void game() {
-    RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
+void Game::run(RenderWindow& window) {
+    window.create(VideoMode(1500, 800), "탕후루 만들기");
 
     Texture frame;  //게임 화면
     frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
