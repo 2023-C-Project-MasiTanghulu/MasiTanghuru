@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include "game.h"
 
 using namespace sf;
 
-int main() {
+ void Game() {
 	RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
 	
     Texture frame;  //게임 화면
@@ -140,5 +141,7 @@ int main() {
         window.draw(stickBox);  //꼬치 박스 draw
         window.draw(fruit);  //과일 draw
 		window.display();
+       
 	}
+   
 }
