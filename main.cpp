@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
-using namespace sf;
+#include "game.h"
 
 int main() {
     RenderWindow window(sf::VideoMode(1500, 800), "메인");
+    Game game;  //게임 객체 생성
 
     Texture textureMain;
     if (!textureMain.loadFromFile("image/Main_frame.png")) {
@@ -39,7 +39,7 @@ int main() {
 
                     if (button1.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         printf("게임시작 버튼");// 버튼 1을 눌렀을 때 실행할 코드 추가
-                        void Game();
+                        game.run(window);  //게임화면 실행
                 
                     }
 

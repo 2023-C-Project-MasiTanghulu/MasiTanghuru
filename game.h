@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-void Game();
+class Game {
+public:
+    void run(sf::RenderWindow& window);
+};
 
 #endif
