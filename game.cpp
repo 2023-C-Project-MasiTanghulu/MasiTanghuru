@@ -1,15 +1,6 @@
 #include <SFML/Graphics.hpp>
-<<<<<<< HEAD
 #include "game.h"
-
-using namespace sf;
-
- void Game() {
-	RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
-	
-=======
 #include <iostream>
-
 
 using namespace sf;
 
@@ -19,16 +10,16 @@ public:
     Sprite sprite;  // 과일 이미지
     bool grabbed;   // 과일을 잡았는가
     bool isStick = false;  //꼬치인가
+    String name;  //과일 이름
     //생성자
     Fruit(){
         grabbed = true;
     }
 };
 
-int main() {
+void game() {
     RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
 
->>>>>>> fa3bffa14590cf0e007ca8006d249822f03881c4
     Texture frame;  //게임 화면
     frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
     Sprite frameSprite(frame);  //게임 화면 이미지 할당
@@ -85,11 +76,10 @@ int main() {
 
     Texture stickTexture;  //꼬치
     stickTexture.loadFromFile("image/Stick.png");  //꼬치 이미지
-    Fruit stick;  //꼬치 객체 생성
 
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
     std::vector<Fruit> fruits;  //과일 벡터
-    
+
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -99,7 +89,7 @@ int main() {
         Vector2i mousePosition = Mouse::getPosition(window);
         //클릭했을 때
         if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-            
+
             //커서가 과일 박스 위에 있다면 그 과일을 잡음
             if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
                 Fruit blackGrape;  //블랙 사파이어 객체 생성
@@ -132,13 +122,14 @@ int main() {
                 fruits.push_back(pineapple);  //벡터에 추가
             }
             if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
+                Fruit stick;  //꼬치 객체 생성
                 stick.isStick = true;  //꼬치임
                 stick.sprite.setTexture(stickTexture);  //꼬치 이미지 할당
                 stick.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //꼬치 위치 설정
                 fruits.push_back(stick);  //벡터에 추가
             }
         }
-        
+
         // 마우스 뗐을 때
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
             Sprite stick;  //스틱
@@ -147,12 +138,12 @@ int main() {
                 if (fruit.isStick) {  //스틱인지 확인
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
                 }
-                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) ) {  //과일을 스틱 위에 안 놓았다면
+                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //과일을 스틱 위에 안 놓았다면
                     fruits.pop_back();  //객체에서 삭제
                 }
             }
         }
-        
+
         // 마우스 이동 중
         if (event.type == Event::MouseMoved) {
             //드래그하면 과일을 마우스 위치로 이동
@@ -163,7 +154,7 @@ int main() {
                 }
             }
         }
-        
+
         window.clear();
         //↓ 갈수록 레이어가 위임
         window.draw(frameSprite);  //게임화면 draw
@@ -174,17 +165,11 @@ int main() {
         window.draw(mandarinBox);  //귤 박스 draw
         window.draw(pineappleBox);  //파인애플 박스 draw
         window.draw(stickBox);  //꼬치 박스 draw
-<<<<<<< HEAD
-        window.draw(fruit);  //과일 draw
-		window.display();
-       
-	}
-   
-=======
         for (const Fruit& fruit : fruits) { //과일 draw
             window.draw(fruit.sprite);
         }
         window.display();
+
     }
->>>>>>> fa3bffa14590cf0e007ca8006d249822f03881c4
+
 }
