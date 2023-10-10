@@ -1,19 +1,20 @@
 #include <SFML/Graphics.hpp>
+#include "game_rule.h"
+#include "main.h"
 
 using namespace sf;
-
-void gamerule() {
-    RenderWindow window(VideoMode(1500, 800), "탕후루 만들기");
-
+void Game_Rule::run(RenderWindow& window) {
+    window.create(VideoMode(1500, 800), "게임방법");
+    Start start;  //시작화면 객체 생성
     Texture frame;  // 게임 화면
     if (!frame.loadFromFile("image/Rule_frame.png")) {
-        
+        // 이미지 로딩에 실패한 경우의 처리 (필요에 따라 추가)
     }
     Sprite frameSprite(frame);  // 게임 화면 이미지 할당
 
     Texture buttonTexture;
     if (!buttonTexture.loadFromFile("image/Back_btn.png")) {
-        
+        // 이미지 로딩에 실패한 경우의 처리 (필요에 따라 추가)
     }
     Sprite backButton(buttonTexture);
     backButton.setPosition(1100, 650);
@@ -29,7 +30,8 @@ void gamerule() {
                     Vector2i mousePos = Mouse::getPosition(window);
 
                     if (backButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        printf("돌아가기 버튼 클릭\n");
+                        start.run(window);
+
                     }
                 }
             }
@@ -40,6 +42,4 @@ void gamerule() {
         window.draw(backButton);
         window.display();
     }
-
-
 }
