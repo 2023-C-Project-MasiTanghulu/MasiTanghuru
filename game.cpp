@@ -143,10 +143,8 @@ void Game::run(RenderWindow& window) {
                 if (fruit.isStick) {  //스틱인지 확인
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
                 }
-                if (!cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //도마 위에 재료를 안 놓았다면
-                    fruits.pop_back();  //객체에서 삭제
-                }
-                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //과일을 스틱 위에 안 놓았다면
+                //과일을 스틱 위에 안 놓거나 도마 위에 재료를 안 놓았다면
+                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
                     fruits.pop_back();  //객체에서 삭제
                 }
             }
@@ -159,8 +157,8 @@ void Game::run(RenderWindow& window) {
             for (Fruit& fruit : fruits) {  //과일
                 if (fruit.grabbed) {
                     // 마우스 위치를 이미지의 중심으로 조정
-                    Vector2f newPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
-                    fruit.sprite.setPosition(newPosition);
+                    Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
+                    fruit.sprite.setPosition(centerPosition);
                 }
             }
         }
