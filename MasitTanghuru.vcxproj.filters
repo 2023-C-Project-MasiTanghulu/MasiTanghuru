@@ -42,6 +42,9 @@
     <ClCompile Include="happy_test.cpp">
       <Filter>리소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="levelup_test.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="image\Start_btn.png">
@@ -122,7 +125,11 @@
     <Image Include="image\Startback_btn.png">
       <Filter>리소스 파일</Filter>
     </Image>
+<<<<<<< HEAD
     <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png">
+=======
+    <Image Include="image\Nextstep_btn.png">
+>>>>>>> 600246ef8484c672c9667c928e13362f270750db
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
@@ -142,5 +149,13 @@
     <ClInclude Include="happy.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="levleup.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="font\NanumSquareL.ttf">
+      <Filter>리소스 파일</Filter>
+    </Font>
   </ItemGroup>
 </Project>
