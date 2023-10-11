@@ -94,7 +94,7 @@ void Game::run(RenderWindow& window) {
 
     //폰트 설정
     Font font;
-    if (!font.loadFromFile("font/NanumSquareL.ttf")) {
+    if (!font.loadFromFile("font/NanumGothic.ttf")) {
         // 폰트를 로드하지 못한 경우 예외처리
         cout << "폰트를 로드할 수 없습니다." << endl;
     }

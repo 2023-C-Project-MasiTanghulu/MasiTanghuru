@@ -1,161 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="bad.cpp" />
+    <ClCompile Include="bad_test.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="game_rule.cpp" />
+    <ClCompile Include="happy.cpp" />
+    <ClCompile Include="happy_test.cpp" />
+    <ClCompile Include="levelup.cpp" />
+    <ClCompile Include="levelup_test.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="start.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="game_rule.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="happy.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="bad.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="levelup.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="start.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="bad_test.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="happy_test.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="levelup_test.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
+    <ClInclude Include="bad.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="game_rule.h" />
+    <ClInclude Include="happy.h" />
+    <ClInclude Include="levleup.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="image\Start_btn.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Rule_btn.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Back_btn.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Bad_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Blackgrape.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Blackgrape_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Boxlid.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Game_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Happy_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Levelup_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Main_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Mandarin.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Pineapple.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Pineapple_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Rule_frame.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Sale_btn.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Shinemusket.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Shinemusket_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Stick.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Stick_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Strawberry.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Strawberry_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Sugarpot.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\main.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Mandarin_box.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="image\Startback_btn.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-<<<<<<< HEAD
-    <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png">
-=======
-    <Image Include="image\Nextstep_btn.png">
->>>>>>> 600246ef8484c672c9667c928e13362f270750db
-      <Filter>리소스 파일</Filter>
-    </Image>
+    <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png" />
+    <Image Include="image\Back_btn.png" />
+    <Image Include="image\Bad_frame.png" />
+    <Image Include="image\Blackgrape.png" />
+    <Image Include="image\Blackgrape_box.png" />
+    <Image Include="image\Boxlid.png" />
+    <Image Include="image\Game_frame.png" />
+    <Image Include="image\Happy_frame.png" />
+    <Image Include="image\Levelup_frame.png" />
+    <Image Include="image\main.png" />
+    <Image Include="image\Main_frame.png" />
+    <Image Include="image\Mandarin.png" />
+    <Image Include="image\Mandarin_box.png" />
+    <Image Include="image\Nextstep_btn.png" />
+    <Image Include="image\Pineapple.png" />
+    <Image Include="image\Pineapple_box.png" />
+    <Image Include="image\Rule_btn.png" />
+    <Image Include="image\Rule_frame.png" />
+    <Image Include="image\Sale_btn.png" />
+    <Image Include="image\Shinemusket.png" />
+    <Image Include="image\Shinemusket_box.png" />
+    <Image Include="image\Startback_btn.png" />
+    <Image Include="image\Start_btn.png" />
+    <Image Include="image\Stick.png" />
+    <Image Include="image\Stick_box.png" />
+    <Image Include="image\Strawberry.png" />
+    <Image Include="image\Strawberry_box.png" />
+    <Image Include="image\Sugarpot.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="game_rule.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="bad.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="happy.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="levleup.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="font\NanumSquareL.ttf">
-      <Filter>리소스 파일</Filter>
-    </Font>
+    <Font Include="font\NanumSquareL.ttf" />
+    <Font Include="font\NanumGothic.ttf" />
   </ItemGroup>
 </Project>
