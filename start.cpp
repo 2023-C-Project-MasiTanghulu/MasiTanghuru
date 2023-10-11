@@ -4,7 +4,6 @@
 #include "bad.h"
 #include "happy.h"
 
-using namespace sf;
 
 void Start::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "시작화면");

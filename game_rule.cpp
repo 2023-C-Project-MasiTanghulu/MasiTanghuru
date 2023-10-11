@@ -3,6 +3,7 @@
 #include "main.h"
 
 using namespace sf;
+
 void Game_Rule::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "게임방법");
     Start start;  //시작화면 객체 생성

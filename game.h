@@ -6,7 +6,7 @@ using namespace sf;
 
 class Game {
 public:
-    void run(sf::RenderWindow& window);
+    void run(RenderWindow& window);
 };
 
 #endif
