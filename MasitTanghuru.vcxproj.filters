@@ -92,10 +92,10 @@
     <Image Include="image\Sale_btn.png">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="image\Shinemuscat.png">
+    <Image Include="image\Shinemusket.png">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="image\Shinemuscat_box.png">
+    <Image Include="image\Shinemusket_box.png">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="image\Stick.png">
@@ -120,6 +120,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="image\Startback_btn.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

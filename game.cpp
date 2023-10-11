@@ -1,5 +1,8 @@
 #include <iostream>
 #include "game.h"
+#include <string>
+
+using namespace std;
 
 //과일 클래스
 class Fruit { 
@@ -7,9 +10,9 @@ public:
     Sprite sprite;  // 과일 이미지
     bool grabbed;   // 과일을 잡았는가
     bool isStick = false;  //꼬치인가
-    String name;  //과일 이름
+    string name;  //과일 이름
     //생성자
-    Fruit(){
+    Fruit(String fruitName) : name(fruitName){
         grabbed = true;
     }
 };
@@ -20,6 +23,11 @@ void Game::run(RenderWindow& window) {
     Texture frame;  //게임 화면
     frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
     Sprite frameSprite(frame);  //게임 화면 이미지 할당
+
+    Texture cuttingBoard;  //도마
+    cuttingBoard.loadFromFile("image/CuttingBoard.png");  //도마 이미지
+    Sprite cuttingBoardSprite(cuttingBoard);  //도마 이미지 할당
+    cuttingBoardSprite.setPosition(20,310);  //도마 위치 설정
 
     Texture speechBubble;  //말풍선
     speechBubble.loadFromFile("image/speechBubble.png");  //말풍선 이미지
@@ -42,13 +50,13 @@ void Game::run(RenderWindow& window) {
     Texture strawberryTexture;  //딸기
     strawberryTexture.loadFromFile("image/Strawberry.png");  //딸기 이미지
 
-    Texture shineMuscatBoxTexture;  //샤인머스켓 박스
-    shineMuscatBoxTexture.loadFromFile("image/Shinemuscat_box.png");  //샤인머스켓 박스 이미지
-    Sprite shineMuscatBox(shineMuscatBoxTexture);  //샤인머스켓 박스 이미지 할당
-    shineMuscatBox.setPosition(960, 440);  //샤인머스켓 박스 위치 설정
+    Texture shineMusketBoxTexture;  //샤인머스켓 박스
+    shineMusketBoxTexture.loadFromFile("image/Shinemusket_box.png");  //샤인머스켓 박스 이미지
+    Sprite shineMusketBox(shineMusketBoxTexture);  //샤인머스켓 박스 이미지 할당
+    shineMusketBox.setPosition(960, 440);  //샤인머스켓 박스 위치 설정
 
-    Texture shineMuscatTexture;  //샤인머스켓
-    shineMuscatTexture.loadFromFile("image/Shinemuscat.png");  //샤인머스켓 이미지
+    Texture shineMusketTexture;  //샤인머스켓
+    shineMusketTexture.loadFromFile("image/Shinemusket.png");  //샤인머스켓 이미지
 
     Texture mandarinBoxTexture;  //귤 박스
     mandarinBoxTexture.loadFromFile("image/Mandarin_box.png");  //귤 박스 이미지
@@ -73,9 +81,9 @@ void Game::run(RenderWindow& window) {
 
     Texture stickTexture;  //꼬치
     stickTexture.loadFromFile("image/Stick.png");  //꼬치 이미지
-
+    
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
-    std::vector<Fruit> fruits;  //과일 벡터
+    vector<Fruit> fruits;  //과일 벡터
 
     while (window.isOpen()) {
         Event event;
@@ -89,37 +97,37 @@ void Game::run(RenderWindow& window) {
 
             //커서가 과일 박스 위에 있다면 그 과일을 잡음
             if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
-                Fruit blackGrape;  //블랙 사파이어 객체 생성
+                Fruit blackGrape("blackGrape");  //블랙 사파이어 객체 생성
                 blackGrape.sprite.setTexture(blackGrapeTexture);  //블랙 사파이어 이미지 할당
                 blackGrape.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //블랙 사파이어 위치 설정
                 fruits.push_back(blackGrape);  //벡터에 추가
             }
-            if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
-                Fruit strawberry;  //딸기 객체 생성
+            else if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
+                Fruit strawberry("strawberry");  //딸기 객체 생성
                 strawberry.sprite.setTexture(strawberryTexture);  //딸기 이미지 할당
                 strawberry.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //딸기 위치 설정
                 fruits.push_back(strawberry);  //벡터에 추가
             }
-            if (shineMuscatBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
-                Fruit shineMuscat;  //샤인머스켓 객체 생성
-                shineMuscat.sprite.setTexture(shineMuscatTexture);  //샤인머스켓 이미지 할당
-                shineMuscat.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //샤인머스켓 위치 설정
-                fruits.push_back(shineMuscat);  //벡터에 추가
+            else if (shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
+                Fruit shineMusket("shineMusket");  //샤인머스켓 객체 생성
+                shineMusket.sprite.setTexture(shineMusketTexture);  //샤인머스켓 이미지 할당
+                shineMusket.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //샤인머스켓 위치 설정
+                fruits.push_back(shineMusket);  //벡터에 추가
             }
-            if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
-                Fruit mandarin;  //귤 객체 생성
+            else if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
+                Fruit mandarin("mandarin");  //귤 객체 생성
                 mandarin.sprite.setTexture(mandarinTexture);  //귤 이미지 할당
                 mandarin.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //귤 위치 설정
                 fruits.push_back(mandarin);  //벡터에 추가
             }
-            if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
-                Fruit pineapple;  //파인애플 객체 생성
+            else if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
+                Fruit pineapple("pineapple");  //파인애플 객체 생성
                 pineapple.sprite.setTexture(pineappleTexture);  //파인애플 이미지 할당
                 pineapple.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //파인애플 위치 설정
                 fruits.push_back(pineapple);  //벡터에 추가
             }
-            if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
-                Fruit stick;  //꼬치 객체 생성
+            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
+                Fruit stick("stick");  //꼬치 객체 생성
                 stick.isStick = true;  //꼬치임
                 stick.sprite.setTexture(stickTexture);  //꼬치 이미지 할당
                 stick.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //꼬치 위치 설정
@@ -134,6 +142,9 @@ void Game::run(RenderWindow& window) {
                 fruit.grabbed = false;
                 if (fruit.isStick) {  //스틱인지 확인
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
+                }
+                if (!cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //도마 위에 재료를 안 놓았다면
+                    fruits.pop_back();  //객체에서 삭제
                 }
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //과일을 스틱 위에 안 놓았다면
                     fruits.pop_back();  //객체에서 삭제
@@ -154,11 +165,12 @@ void Game::run(RenderWindow& window) {
 
         window.clear();
         //↓ 갈수록 레이어가 위임
+        window.draw(cuttingBoardSprite);  //도마 draw
         window.draw(frameSprite);  //게임화면 draw
         window.draw(speechBubbleSprite);  //말풍선 draw
         window.draw(blackGrapeBox);  //블랙 사파이어 박스 draw
         window.draw(strawberryBox);  //딸기 박스 draw
-        window.draw(shineMuscatBox);  //샤인머스켓 박스 draw
+        window.draw(shineMusketBox);  //샤인머스켓 박스 draw
         window.draw(mandarinBox);  //귤 박스 draw
         window.draw(pineappleBox);  //파인애플 박스 draw
         window.draw(stickBox);  //꼬치 박스 draw
