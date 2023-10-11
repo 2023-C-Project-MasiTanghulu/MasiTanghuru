@@ -158,7 +158,9 @@ void Game::run(RenderWindow& window) {
             Vector2i mousePosition = Mouse::getPosition(window);
             for (Fruit& fruit : fruits) {  //과일
                 if (fruit.grabbed) {
-                    fruit.sprite.setPosition(static_cast<Vector2f>(mousePosition));
+                    // 마우스 위치를 이미지의 중심으로 조정
+                    Vector2f newPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
+                    fruit.sprite.setPosition(newPosition);
                 }
             }
         }
