@@ -6,7 +6,7 @@
 
 class Bad {
 public:
-    void run(sf::RenderWindow& window);
+    void run(RenderWindow& window);
   
 };
 

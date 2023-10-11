@@ -96,7 +96,7 @@ void Game::run(RenderWindow& window) {
     Font font;
     if (!font.loadFromFile("font/NanumSquareL.ttf")) {
         // 폰트를 로드하지 못한 경우 예외처리
-        std::cout << "폰트를 로드할 수 없습니다." << std::endl;
+        cout << "폰트를 로드할 수 없습니다." << endl;
     }
 
     // 제한 시간 : 화면에 표시할 텍스트 설정
@@ -115,6 +115,7 @@ void Game::run(RenderWindow& window) {
                 window.close();
         }
         Vector2i mousePosition = Mouse::getPosition(window);
+
         //클릭했을 때
         if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 
@@ -122,38 +123,44 @@ void Game::run(RenderWindow& window) {
             if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
                 Fruit blackGrape("blackGrape");  //블랙 사파이어 객체 생성
                 blackGrape.sprite.setTexture(blackGrapeTexture);  //블랙 사파이어 이미지 할당
-                blackGrape.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //블랙 사파이어 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - blackGrape.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - blackGrape.sprite.getLocalBounds().height / 2));
+                blackGrape.sprite.setPosition(static_cast<Vector2f>(centerPosition));  //블랙 사파이어 위치 설정
                 fruits.push_back(blackGrape);  //벡터에 추가
             }
             else if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
                 Fruit strawberry("strawberry");  //딸기 객체 생성
                 strawberry.sprite.setTexture(strawberryTexture);  //딸기 이미지 할당
-                strawberry.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //딸기 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - strawberry.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - strawberry.sprite.getLocalBounds().height / 2));
+                strawberry.sprite.setPosition(centerPosition);  //딸기 위치 설정
                 fruits.push_back(strawberry);  //벡터에 추가
             }
             else if (shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
                 Fruit shineMusket("shineMusket");  //샤인머스켓 객체 생성
                 shineMusket.sprite.setTexture(shineMusketTexture);  //샤인머스켓 이미지 할당
-                shineMusket.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //샤인머스켓 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - shineMusket.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - shineMusket.sprite.getLocalBounds().height / 2));
+                shineMusket.sprite.setPosition(centerPosition);  //샤인머스켓 위치 설정
                 fruits.push_back(shineMusket);  //벡터에 추가
             }
             else if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
                 Fruit mandarin("mandarin");  //귤 객체 생성
                 mandarin.sprite.setTexture(mandarinTexture);  //귤 이미지 할당
-                mandarin.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //귤 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - mandarin.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - mandarin.sprite.getLocalBounds().height / 2));
+                mandarin.sprite.setPosition(centerPosition);  //귤 위치 설정
                 fruits.push_back(mandarin);  //벡터에 추가
             }
             else if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
                 Fruit pineapple("pineapple");  //파인애플 객체 생성
                 pineapple.sprite.setTexture(pineappleTexture);  //파인애플 이미지 할당
-                pineapple.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //파인애플 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - pineapple.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - pineapple.sprite.getLocalBounds().height / 2));
+                pineapple.sprite.setPosition(centerPosition);  //파인애플 위치 설정
                 fruits.push_back(pineapple);  //벡터에 추가
             }
             else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
                 Fruit stick("stick");  //꼬치 객체 생성
                 stick.isStick = true;  //꼬치임
                 stick.sprite.setTexture(stickTexture);  //꼬치 이미지 할당
-                stick.sprite.setPosition(static_cast<Vector2f>(mousePosition));  //꼬치 위치 설정
+                Vector2f centerPosition(static_cast<float>(mousePosition.x - stick.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - stick.sprite.getLocalBounds().height / 2));
+                stick.sprite.setPosition(centerPosition);  //꼬치 위치 설정
                 fruits.push_back(stick);  //벡터에 추가
             }
         }
@@ -190,14 +197,14 @@ void Game::run(RenderWindow& window) {
         //제한시간 : 시간 지나는 코드
         Time elapsed = clock.getElapsedTime();
         if (elapsed >= timeLimit) {
-            std::cout << "시간 초과!" << std::endl;
+            cout << "시간 초과!" << endl;
             window.close();
         }
         //제한시간 : 시간 지나는 코드 끝
 
        // 시간을 문자열로 변환하여 텍스트에 설정
         int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
-        timerText.setString( std::to_string(remainingTime));
+        timerText.setString(to_string(remainingTime));
         
 
         window.clear();

@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-using namespace sf;
 #include "levleup.h"
 #include "game.h"
 
