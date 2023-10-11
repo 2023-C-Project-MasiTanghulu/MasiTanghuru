@@ -1,5 +1,8 @@
+#include <SFML/Graphics.hpp>
 #include <iostream>
+#include <time.h>
 #include "game.h"
+using namespace sf;
 
 //과일 클래스
 class Fruit { 
@@ -17,6 +20,7 @@ public:
 void Game::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "탕후루 만들기");
 
+    //탕후루 게임
     Texture frame;  //게임 화면
     frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
     Sprite frameSprite(frame);  //게임 화면 이미지 할당
@@ -76,6 +80,26 @@ void Game::run(RenderWindow& window) {
 
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
     std::vector<Fruit> fruits;  //과일 벡터
+
+    //제한시간 : 초 설정
+    Clock clock;
+    const Time timeLimit = seconds(60); // 60초로 설정
+
+    //폰트 설정
+    Font font;
+    if (!font.loadFromFile("font/NanumSquareL.ttf")) {
+        // 폰트를 로드하지 못한 경우 예외처리
+        std::cout << "폰트를 로드할 수 없습니다." << std::endl;
+    }
+
+    // 제한 시간 : 화면에 표시할 텍스트 설정
+    Text timerText;
+    timerText.setFont(font); // 폰트 설정 (sfml은 무조건 폰트를 사용해야함. )
+    timerText.setCharacterSize(50); // 글꼴 크기 설정
+    timerText.setFillColor(Color::Black); // 글꼴 색상을 검정색으로 설정
+    timerText.setStyle(Text::Bold); // 글꼴 스타일 설정
+    timerText.setPosition(1250,35 ); // 텍스트 위치 설정
+
 
     while (window.isOpen()) {
         Event event;
@@ -151,6 +175,20 @@ void Game::run(RenderWindow& window) {
                 }
             }
         }
+        //탕후루 게임 끝
+
+        //제한시간 : 시간 지나는 코드
+        Time elapsed = clock.getElapsedTime();
+        if (elapsed >= timeLimit) {
+            std::cout << "시간 초과!" << std::endl;
+            window.close();
+        }
+        //제한시간 : 시간 지나는 코드 끝
+
+       // 시간을 문자열로 변환하여 텍스트에 설정
+        int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
+        timerText.setString( std::to_string(remainingTime));
+        
 
         window.clear();
         //↓ 갈수록 레이어가 위임
@@ -165,6 +203,7 @@ void Game::run(RenderWindow& window) {
         for (const Fruit& fruit : fruits) { //과일 draw
             window.draw(fruit.sprite);
         }
+        window.draw(timerText); // 제한 시간 표시
         window.display();
 
     }

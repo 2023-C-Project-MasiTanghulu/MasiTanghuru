@@ -1,28 +1,47 @@
 #include <SFML/Graphics.hpp>
-
+using namespace sf;
+#include "levleup.h"
+#include "game.h"
 
 using namespace sf;
 
-void levelup() {
-    RenderWindow window(sf::VideoMode(1500, 800), "탕후루 만들기");
+void Levelup::run(RenderWindow& window) {
+    window.create(VideoMode(1500, 800), "배드 엔딩");
 
-    Texture Levelup_frame;  // 게임 화면
+    Texture Levelup_frame;
     if (!Levelup_frame.loadFromFile("image/Levelup_frame.png")) {
-       
+        // 이미지 로딩에 실패한 경우의 처리 (필요에 따라 추가)
     }
-    Sprite frameSprite(Levelup_frame);  // 게임 화면 이미지 할당
+    Sprite frameSprite(Levelup_frame);
+
+    Texture buttonTexture;
+    if (!buttonTexture.loadFromFile("image/Nextstep_btn.png")) {
+        // 이미지 로딩에 실패한 경우의 처리 (필요에 따라 추가)
+    }
+    Sprite Nextstep_btn(buttonTexture);
+    Nextstep_btn.setPosition(1100, 650);
 
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
+
+            if (event.type == Event::MouseButtonPressed) {
+                if (event.mouseButton.button == Mouse::Left) {
+                    Vector2i mousePos = Mouse::getPosition(window);
+
+                    if (Nextstep_btn.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                        Game game;
+                        game.run(window);
+                    }
+                }
+            }
         }
 
         window.clear();
-        // ↓ 갈수록 레이어가 위임
-        window.draw(frameSprite);  // 게임화면 draw
+        window.draw(frameSprite);
+        window.draw(Nextstep_btn);
         window.display();
     }
-
 }

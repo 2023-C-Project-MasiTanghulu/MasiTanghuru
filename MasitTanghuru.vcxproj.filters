@@ -42,6 +42,9 @@
     <ClCompile Include="happy_test.cpp">
       <Filter>리소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="levelup_test.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="image\Start_btn.png">
@@ -122,6 +125,9 @@
     <Image Include="image\Startback_btn.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="image\Nextstep_btn.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -139,5 +145,13 @@
     <ClInclude Include="happy.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="levleup.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="font\NanumSquareL.ttf">
+      <Filter>리소스 파일</Filter>
+    </Font>
   </ItemGroup>
 </Project>
