@@ -1,10 +1,10 @@
-#include "main.h"
+Ôªø#include "main.h"
 
 using namespace sf;
 
 int main() {
     Start start;
-    RenderWindow window(VideoMode(1500, 800), "∏ﬁ¿Œ");
+    RenderWindow window(VideoMode(1500, 800), "Î©îÏù∏");
     start.run(window);
 
     return 0;

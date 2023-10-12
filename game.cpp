@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <time.h>
 #include "game.h"
@@ -6,106 +6,115 @@
 
 using namespace std;
 
-//°úÀÏ Å¬·¡½º
+//ê³¼ì¼ í´ë˜ìŠ¤
 class Fruit { 
 public:
-    Sprite sprite;  // °úÀÏ ÀÌ¹ÌÁö
-    bool grabbed;   // °úÀÏÀ» Àâ¾Ò´Â°¡
-    bool isStick = false;  //²¿Ä¡ÀÎ°¡
-    string name;  //°úÀÏ ÀÌ¸§
-    //»ı¼ºÀÚ
+    Sprite sprite;  // ê³¼ì¼ ì´ë¯¸ì§€
+    bool grabbed;   // ê³¼ì¼ì„ ì¡ì•˜ëŠ”ê°€
+    bool isStick = false;  //ê¼¬ì¹˜ì¸ê°€
+    string name;  //ê³¼ì¼ ì´ë¦„
+    //ìƒì„±ì
     Fruit(String fruitName) : name(fruitName){
         grabbed = true;
     }
 };
 
 void Game::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "ÅÁÈÄ·ç ¸¸µé±â");
+    window.create(VideoMode(1500, 800), "íƒ•í›„ë£¨ ë§Œë“¤ê¸°");
 
-    //ÅÁÈÄ·ç °ÔÀÓ
-    Texture frame;  //°ÔÀÓ È­¸é
-    frame.loadFromFile("image/Game_frame.png");  //°ÔÀÓ È­¸é ÀÌ¹ÌÁö
-    Sprite frameSprite(frame);  //°ÔÀÓ È­¸é ÀÌ¹ÌÁö ÇÒ´ç
+    //íƒ•í›„ë£¨ ê²Œì„
+    Texture frame;  //ê²Œì„ í™”ë©´
+    frame.loadFromFile("image/Game_frame.png");  //ê²Œì„ í™”ë©´ ì´ë¯¸ì§€
+    Sprite frameSprite(frame);  //ê²Œì„ í™”ë©´ ì´ë¯¸ì§€ í• ë‹¹
 
-    Texture cuttingBoard;  //µµ¸¶
-    cuttingBoard.loadFromFile("image/CuttingBoard.png");  //µµ¸¶ ÀÌ¹ÌÁö
-    Sprite cuttingBoardSprite(cuttingBoard);  //µµ¸¶ ÀÌ¹ÌÁö ÇÒ´ç
-    cuttingBoardSprite.setPosition(20,310);  //µµ¸¶ À§Ä¡ ¼³Á¤
+    Texture cuttingBoard;  //ë„ë§ˆ
+    cuttingBoard.loadFromFile("image/CuttingBoard.png");  //ë„ë§ˆ ì´ë¯¸ì§€
+    Sprite cuttingBoardSprite(cuttingBoard);  //ë„ë§ˆ ì´ë¯¸ì§€ í• ë‹¹
+    cuttingBoardSprite.setPosition(20,310);  //ë„ë§ˆ ìœ„ì¹˜ ì„¤ì •
 
-    Texture speechBubble;  //¸»Ç³¼±
-    speechBubble.loadFromFile("image/speechBubble.png");  //¸»Ç³¼± ÀÌ¹ÌÁö
-    Sprite speechBubbleSprite(speechBubble);  //¸»Ç³¼± ÀÌ¹ÌÁö ÇÒ´ç
-    speechBubbleSprite.setPosition(0, 0);  //¸»Ç³¼± À§Ä¡ ¼³Á¤
+    Texture speechBubble;  //ë§í’ì„ 
+    speechBubble.loadFromFile("image/speechBubble.png");  //ë§í’ì„  ì´ë¯¸ì§€
+    Sprite speechBubbleSprite(speechBubble);  //ë§í’ì„  ì´ë¯¸ì§€ í• ë‹¹
+    speechBubbleSprite.setPosition(0, 0);  //ë§í’ì„  ìœ„ì¹˜ ì„¤ì •
 
-    Texture blackGrapeBoxTexture;  //ºí·¢ »çÆÄÀÌ¾î ¹Ú½º
-    blackGrapeBoxTexture.loadFromFile("image/BlackGrape_box.png");  //ºí·¢ »çÆÄÀÌ¾î ¹Ú½º ÀÌ¹ÌÁö
-    Sprite blackGrapeBox(blackGrapeBoxTexture);  //ºí·¢ »çÆÄÀÌ¾î ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    blackGrapeBox.setPosition(960, 260);  //ºí·¢ »çÆÄÀÌ¾î ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture blackGrapeBoxTexture;  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ë°•ìŠ¤
+    blackGrapeBoxTexture.loadFromFile("image/BlackGrape_box.png");  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite blackGrapeBox(blackGrapeBoxTexture);  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    blackGrapeBox.setPosition(960, 260);  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture blackGrapeTexture;  //ºí·¢ »çÆÄÀÌ¾î
-    blackGrapeTexture.loadFromFile("image/BlackGrape.png");  //ºí·¢ »çÆÄÀÌ¾î ÀÌ¹ÌÁö
+    Texture blackGrapeTexture;  //ë¸”ë™ ì‚¬íŒŒì´ì–´
+    blackGrapeTexture.loadFromFile("image/BlackGrape.png");  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ì´ë¯¸ì§€
 
-    Texture strawberryBoxTexture;  //µş±â ¹Ú½º
-    strawberryBoxTexture.loadFromFile("image/Strawberry_box.png");  //µş±â ¹Ú½º ÀÌ¹ÌÁö
-    Sprite strawberryBox(strawberryBoxTexture);  //µş±â ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    strawberryBox.setPosition(1200, 260);  //µş±â ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture strawberryBoxTexture;  //ë”¸ê¸° ë°•ìŠ¤
+    strawberryBoxTexture.loadFromFile("image/Strawberry_box.png");  //ë”¸ê¸° ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite strawberryBox(strawberryBoxTexture);  //ë”¸ê¸° ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    strawberryBox.setPosition(1200, 260);  //ë”¸ê¸° ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture strawberryTexture;  //µş±â
-    strawberryTexture.loadFromFile("image/Strawberry.png");  //µş±â ÀÌ¹ÌÁö
+    Texture strawberryTexture;  //ë”¸ê¸°
+    strawberryTexture.loadFromFile("image/Strawberry.png");  //ë”¸ê¸° ì´ë¯¸ì§€
 
-    Texture shineMusketBoxTexture;  //»şÀÎ¸Ó½ºÄÏ ¹Ú½º
-    shineMusketBoxTexture.loadFromFile("image/Shinemusket_box.png");  //»şÀÎ¸Ó½ºÄÏ ¹Ú½º ÀÌ¹ÌÁö
-    Sprite shineMusketBox(shineMusketBoxTexture);  //»şÀÎ¸Ó½ºÄÏ ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    shineMusketBox.setPosition(960, 440);  //»şÀÎ¸Ó½ºÄÏ ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture shineMusketBoxTexture;  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ë°•ìŠ¤
+    shineMusketBoxTexture.loadFromFile("image/Shinemusket_box.png");  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite shineMusketBox(shineMusketBoxTexture);  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    shineMusketBox.setPosition(960, 440);  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture shineMusketTexture;  //»şÀÎ¸Ó½ºÄÏ
-    shineMusketTexture.loadFromFile("image/Shinemusket.png");  //»şÀÎ¸Ó½ºÄÏ ÀÌ¹ÌÁö
+    Texture shineMusketTexture;  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“
+    shineMusketTexture.loadFromFile("image/Shinemusket.png");  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ì´ë¯¸ì§€
 
-    Texture mandarinBoxTexture;  //±Ö ¹Ú½º
-    mandarinBoxTexture.loadFromFile("image/Mandarin_box.png");  //±Ö ¹Ú½º ÀÌ¹ÌÁö
-    Sprite mandarinBox(mandarinBoxTexture);  //±Ö ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    mandarinBox.setPosition(1200, 440);  //±Ö ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture mandarinBoxTexture;  //ê·¤ ë°•ìŠ¤
+    mandarinBoxTexture.loadFromFile("image/Mandarin_box.png");  //ê·¤ ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite mandarinBox(mandarinBoxTexture);  //ê·¤ ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    mandarinBox.setPosition(1200, 440);  //ê·¤ ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture mandarinTexture;  //±Ö
-    mandarinTexture.loadFromFile("image/Mandarin.png");  //±Ö ÀÌ¹ÌÁö
+    Texture mandarinTexture;  //ê·¤
+    mandarinTexture.loadFromFile("image/Mandarin.png");  //ê·¤ ì´ë¯¸ì§€
 
-    Texture pineappleBoxTexture;  //ÆÄÀÎ¾ÖÇÃ ¹Ú½º
-    pineappleBoxTexture.loadFromFile("image/Pineapple_box.png");  //ÆÄÀÎ¾ÖÇÃ ¹Ú½º ÀÌ¹ÌÁö
-    Sprite pineappleBox(pineappleBoxTexture);  //ÆÄÀÎ¾ÖÇÃ ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    pineappleBox.setPosition(960, 620);  //ÆÄÀÎ¾ÖÇÃ ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture pineappleBoxTexture;  //íŒŒì¸ì• í”Œ ë°•ìŠ¤
+    pineappleBoxTexture.loadFromFile("image/Pineapple_box.png");  //íŒŒì¸ì• í”Œ ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite pineappleBox(pineappleBoxTexture);  //íŒŒì¸ì• í”Œ ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    pineappleBox.setPosition(960, 620);  //íŒŒì¸ì• í”Œ ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture pineappleTexture;  //ÆÄÀÎ¾ÖÇÃ
-    pineappleTexture.loadFromFile("image/Pineapple.png");  //ÆÄÀÎ¾ÖÇÃ ÀÌ¹ÌÁö
+    Texture pineappleTexture;  //íŒŒì¸ì• í”Œ
+    pineappleTexture.loadFromFile("image/Pineapple.png");  //íŒŒì¸ì• í”Œ ì´ë¯¸ì§€
 
-    Texture stickBoxTexture;  //²¿Ä¡ ¹Ú½º
-    stickBoxTexture.loadFromFile("image/Stick_box.png");  //²¿Ä¡ ¹Ú½º ÀÌ¹ÌÁö
-    Sprite stickBox(stickBoxTexture);  //²¿Ä¡ ¹Ú½º ÀÌ¹ÌÁö ÇÒ´ç
-    stickBox.setPosition(1190, 610);  //²¿Ä¡ ¹Ú½º À§Ä¡ ¼³Á¤
+    Texture stickBoxTexture;  //ê¼¬ì¹˜ ë°•ìŠ¤
+    stickBoxTexture.loadFromFile("image/Stick_box.png");  //ê¼¬ì¹˜ ë°•ìŠ¤ ì´ë¯¸ì§€
+    Sprite stickBox(stickBoxTexture);  //ê¼¬ì¹˜ ë°•ìŠ¤ ì´ë¯¸ì§€ í• ë‹¹
+    stickBox.setPosition(1190, 610);  //ê¼¬ì¹˜ ë°•ìŠ¤ ìœ„ì¹˜ ì„¤ì •
 
-    Texture stickTexture;  //²¿Ä¡
-    stickTexture.loadFromFile("image/Stick.png");  //²¿Ä¡ ÀÌ¹ÌÁö
+    Texture stickTexture;  //ê¼¬ì¹˜
+    stickTexture.loadFromFile("image/Stick.png");  //ê¼¬ì¹˜ ì´ë¯¸ì§€
     
-    bool isFruitGrabbed = false;  //°úÀÏÀ» Áı¾ú´Â°¡ ¾ÈÁı¾ú´Â°¡
-    vector<Fruit> fruits;  //°úÀÏ º¤ÅÍ
+    bool isFruitGrabbed = false;  //ê³¼ì¼ì„ ì§‘ì—ˆëŠ”ê°€ ì•ˆì§‘ì—ˆëŠ”ê°€
+    vector<Fruit> fruits;  //ê³¼ì¼ ë²¡í„°
 
-    //Á¦ÇÑ½Ã°£ : ÃÊ ¼³Á¤
+    //ì œí•œì‹œê°„ : ì´ˆ ì„¤ì •
     Clock clock;
-    const Time timeLimit = seconds(60); // 60ÃÊ·Î ¼³Á¤
+    const Time timeLimit = seconds(60); // 60ì´ˆë¡œ ì„¤ì •
 
-    //ÆùÆ® ¼³Á¤
+    //í°íŠ¸ ì„¤ì •
     Font font;
     if (!font.loadFromFile("font/NanumGothic.ttf")) {
-        // ÆùÆ®¸¦ ·ÎµåÇÏÁö ¸øÇÑ °æ¿ì ¿¹¿ÜÃ³¸®
-        cout << "ÆùÆ®¸¦ ·ÎµåÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
+        // í°íŠ¸ë¥¼ ë¡œë“œí•˜ì§€ ëª»í•œ ê²½ìš° ì˜ˆì™¸ì²˜ë¦¬
+        cout << "í°íŠ¸ë¥¼ ë¡œë“œí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
     }
 
-    // Á¦ÇÑ ½Ã°£ : È­¸é¿¡ Ç¥½ÃÇÒ ÅØ½ºÆ® ¼³Á¤
+    // ì œí•œ ì‹œê°„ : í™”ë©´ì— í‘œì‹œí•  í…ìŠ¤íŠ¸ ì„¤ì •
     Text timerText;
-    timerText.setFont(font); // ÆùÆ® ¼³Á¤ (sfmlÀº ¹«Á¶°Ç ÆùÆ®¸¦ »ç¿ëÇØ¾ßÇÔ. )
-    timerText.setCharacterSize(50); // ±Û²Ã Å©±â ¼³Á¤
-    timerText.setFillColor(Color::Black); // ±Û²Ã »ö»óÀ» °ËÁ¤»öÀ¸·Î ¼³Á¤
-    timerText.setStyle(Text::Bold); // ±Û²Ã ½ºÅ¸ÀÏ ¼³Á¤
-    timerText.setPosition(1250,35 ); // ÅØ½ºÆ® À§Ä¡ ¼³Á¤
+    timerText.setFont(font); // í°íŠ¸ ì„¤ì • (sfmlì€ ë¬´ì¡°ê±´ í°íŠ¸ë¥¼ ì‚¬ìš©í•´ì•¼í•¨. )
+    timerText.setCharacterSize(50); // ê¸€ê¼´ í¬ê¸° ì„¤ì •
+    timerText.setFillColor(Color::Black); // ê¸€ê¼´ ìƒ‰ìƒì„ ê²€ì •ìƒ‰ìœ¼ë¡œ ì„¤ì •
+    timerText.setStyle(Text::Bold); // ê¸€ê¼´ ìŠ¤íƒ€ì¼ ì„¤ì •
+    timerText.setPosition(1250,35 ); // í…ìŠ¤íŠ¸ ìœ„ì¹˜ ì„¤ì •
+
+    //ë§í’ì„  : ì†ë‹˜ ì£¼ë¬¸
+    Text bubbleText;
+    bubbleText.setFont(font);
+    bubbleText.setCharacterSize(20);
+    bubbleText.setFillColor(Color::Black);
+    bubbleText.setStyle(Text::Bold);
+    bubbleText.setPosition(50, 50); // í…ìŠ¤íŠ¸ ìœ„ì¹˜ ì„¤ì •
+    bubbleText.setString("ë”¸ê¸° íƒ•í›„ë£¨ ì£¼ì„¸ìš”."); // ë‚´ìš© ì„¤ì •
 
 
     while (window.isOpen()) {
@@ -116,112 +125,113 @@ void Game::run(RenderWindow& window) {
         }
         Vector2i mousePosition = Mouse::getPosition(window);
 
-        //Å¬¸¯ÇßÀ» ¶§
+        //í´ë¦­í–ˆì„ ë•Œ
         if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 
-            //Ä¿¼­°¡ °úÀÏ ¹Ú½º À§¿¡ ÀÖ´Ù¸é ±× °úÀÏÀ» ÀâÀ½
-            if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ºí·¢ »çÆÄÀÌ¾î ÀâÀ½
-                Fruit blackGrape("blackGrape");  //ºí·¢ »çÆÄÀÌ¾î °´Ã¼ »ı¼º
-                blackGrape.sprite.setTexture(blackGrapeTexture);  //ºí·¢ »çÆÄÀÌ¾î ÀÌ¹ÌÁö ÇÒ´ç
+            //ì»¤ì„œê°€ ê³¼ì¼ ë°•ìŠ¤ ìœ„ì— ìˆë‹¤ë©´ ê·¸ ê³¼ì¼ì„ ì¡ìŒ
+            if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ì¡ìŒ
+                Fruit blackGrape("blackGrape");  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ê°ì²´ ìƒì„±
+                blackGrape.sprite.setTexture(blackGrapeTexture);  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - blackGrape.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - blackGrape.sprite.getLocalBounds().height / 2));
-                blackGrape.sprite.setPosition(static_cast<Vector2f>(centerPosition));  //ºí·¢ »çÆÄÀÌ¾î À§Ä¡ ¼³Á¤
-                fruits.push_back(blackGrape);  //º¤ÅÍ¿¡ Ãß°¡
+                blackGrape.sprite.setPosition(static_cast<Vector2f>(centerPosition));  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(blackGrape);  //ë²¡í„°ì— ì¶”ê°€
             }
-            else if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //µş±â ÀâÀ½
-                Fruit strawberry("strawberry");  //µş±â °´Ã¼ »ı¼º
-                strawberry.sprite.setTexture(strawberryTexture);  //µş±â ÀÌ¹ÌÁö ÇÒ´ç
+            else if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ë”¸ê¸° ì¡ìŒ
+                Fruit strawberry("strawberry");  //ë”¸ê¸° ê°ì²´ ìƒì„±
+                strawberry.sprite.setTexture(strawberryTexture);  //ë”¸ê¸° ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - strawberry.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - strawberry.sprite.getLocalBounds().height / 2));
-                strawberry.sprite.setPosition(centerPosition);  //µş±â À§Ä¡ ¼³Á¤
-                fruits.push_back(strawberry);  //º¤ÅÍ¿¡ Ãß°¡
+                strawberry.sprite.setPosition(centerPosition);  //ë”¸ê¸° ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(strawberry);  //ë²¡í„°ì— ì¶”ê°€
             }
-            else if (shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //»şÀÎ¸Ó½ºÄÏ ÀâÀ½
-                Fruit shineMusket("shineMusket");  //»şÀÎ¸Ó½ºÄÏ °´Ã¼ »ı¼º
-                shineMusket.sprite.setTexture(shineMusketTexture);  //»şÀÎ¸Ó½ºÄÏ ÀÌ¹ÌÁö ÇÒ´ç
+            else if (shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ì¡ìŒ
+                Fruit shineMusket("shineMusket");  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ê°ì²´ ìƒì„±
+                shineMusket.sprite.setTexture(shineMusketTexture);  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - shineMusket.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - shineMusket.sprite.getLocalBounds().height / 2));
-                shineMusket.sprite.setPosition(centerPosition);  //»şÀÎ¸Ó½ºÄÏ À§Ä¡ ¼³Á¤
-                fruits.push_back(shineMusket);  //º¤ÅÍ¿¡ Ãß°¡
+                shineMusket.sprite.setPosition(centerPosition);  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(shineMusket);  //ë²¡í„°ì— ì¶”ê°€
             }
-            else if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //±Ö ÀâÀ½
-                Fruit mandarin("mandarin");  //±Ö °´Ã¼ »ı¼º
-                mandarin.sprite.setTexture(mandarinTexture);  //±Ö ÀÌ¹ÌÁö ÇÒ´ç
+            else if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ê·¤ ì¡ìŒ
+                Fruit mandarin("mandarin");  //ê·¤ ê°ì²´ ìƒì„±
+                mandarin.sprite.setTexture(mandarinTexture);  //ê·¤ ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - mandarin.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - mandarin.sprite.getLocalBounds().height / 2));
-                mandarin.sprite.setPosition(centerPosition);  //±Ö À§Ä¡ ¼³Á¤
-                fruits.push_back(mandarin);  //º¤ÅÍ¿¡ Ãß°¡
+                mandarin.sprite.setPosition(centerPosition);  //ê·¤ ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(mandarin);  //ë²¡í„°ì— ì¶”ê°€
             }
-            else if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ÆÄÀÎ¾ÖÇÃ ÀâÀ½
-                Fruit pineapple("pineapple");  //ÆÄÀÎ¾ÖÇÃ °´Ã¼ »ı¼º
-                pineapple.sprite.setTexture(pineappleTexture);  //ÆÄÀÎ¾ÖÇÃ ÀÌ¹ÌÁö ÇÒ´ç
+            else if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //íŒŒì¸ì• í”Œ ì¡ìŒ
+                Fruit pineapple("pineapple");  //íŒŒì¸ì• í”Œ ê°ì²´ ìƒì„±
+                pineapple.sprite.setTexture(pineappleTexture);  //íŒŒì¸ì• í”Œ ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - pineapple.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - pineapple.sprite.getLocalBounds().height / 2));
-                pineapple.sprite.setPosition(centerPosition);  //ÆÄÀÎ¾ÖÇÃ À§Ä¡ ¼³Á¤
-                fruits.push_back(pineapple);  //º¤ÅÍ¿¡ Ãß°¡
+                pineapple.sprite.setPosition(centerPosition);  //íŒŒì¸ì• í”Œ ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(pineapple);  //ë²¡í„°ì— ì¶”ê°€
             }
-            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //²¿Ä¡ ÀâÀ½
-                Fruit stick("stick");  //²¿Ä¡ °´Ã¼ »ı¼º
-                stick.isStick = true;  //²¿Ä¡ÀÓ
-                stick.sprite.setTexture(stickTexture);  //²¿Ä¡ ÀÌ¹ÌÁö ÇÒ´ç
+            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //ê¼¬ì¹˜ ì¡ìŒ
+                Fruit stick("stick");  //ê¼¬ì¹˜ ê°ì²´ ìƒì„±
+                stick.isStick = true;  //ê¼¬ì¹˜ì„
+                stick.sprite.setTexture(stickTexture);  //ê¼¬ì¹˜ ì´ë¯¸ì§€ í• ë‹¹
                 Vector2f centerPosition(static_cast<float>(mousePosition.x - stick.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - stick.sprite.getLocalBounds().height / 2));
-                stick.sprite.setPosition(centerPosition);  //²¿Ä¡ À§Ä¡ ¼³Á¤
-                fruits.push_back(stick);  //º¤ÅÍ¿¡ Ãß°¡
+                stick.sprite.setPosition(centerPosition);  //ê¼¬ì¹˜ ìœ„ì¹˜ ì„¤ì •
+                fruits.push_back(stick);  //ë²¡í„°ì— ì¶”ê°€
             }
         }
 
-        // ¸¶¿ì½º ¶ÃÀ» ¶§
+        // ë§ˆìš°ìŠ¤ ë—ì„ ë•Œ
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-            Sprite stick;  //½ºÆ½
-            for (Fruit& fruit : fruits) {  //°úÀÏ
+            Sprite stick;  //ìŠ¤í‹±
+            for (Fruit& fruit : fruits) {  //ê³¼ì¼
                 fruit.grabbed = false;
-                if (fruit.isStick) {  //½ºÆ½ÀÎÁö È®ÀÎ
-                    stick = fruit.sprite;  //fruits º¤ÅÍ¿¡ ÀÖ´Â ½ºÆ½À» º¯¼ö¿¡ ÀúÀåÇØÁÜ
+                if (fruit.isStick) {  //ìŠ¤í‹±ì¸ì§€ í™•ì¸
+                    stick = fruit.sprite;  //fruits ë²¡í„°ì— ìˆëŠ” ìŠ¤í‹±ì„ ë³€ìˆ˜ì— ì €ì¥í•´ì¤Œ
                 }
-                //°úÀÏÀ» ½ºÆ½ À§¿¡ ¾È ³õ°Å³ª µµ¸¶ À§¿¡ Àç·á¸¦ ¾È ³õ¾Ò´Ù¸é
+                //ê³¼ì¼ì„ ìŠ¤í‹± ìœ„ì— ì•ˆ ë†“ê±°ë‚˜ ë„ë§ˆ ìœ„ì— ì¬ë£Œë¥¼ ì•ˆ ë†“ì•˜ë‹¤ë©´
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
-                    fruits.pop_back();  //°´Ã¼¿¡¼­ »èÁ¦
+                    fruits.pop_back();  //ê°ì²´ì—ì„œ ì‚­ì œ
                 }
             }
         }
 
-        // ¸¶¿ì½º ÀÌµ¿ Áß
+        // ë§ˆìš°ìŠ¤ ì´ë™ ì¤‘
         if (event.type == Event::MouseMoved) {
-            //µå·¡±×ÇÏ¸é °úÀÏÀ» ¸¶¿ì½º À§Ä¡·Î ÀÌµ¿
+            //ë“œë˜ê·¸í•˜ë©´ ê³¼ì¼ì„ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¡œ ì´ë™
             Vector2i mousePosition = Mouse::getPosition(window);
-            for (Fruit& fruit : fruits) {  //°úÀÏ
+            for (Fruit& fruit : fruits) {  //ê³¼ì¼
                 if (fruit.grabbed) {
-                    // ¸¶¿ì½º À§Ä¡¸¦ ÀÌ¹ÌÁöÀÇ Áß½ÉÀ¸·Î Á¶Á¤
+                    // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ì´ë¯¸ì§€ì˜ ì¤‘ì‹¬ìœ¼ë¡œ ì¡°ì •
                     Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
                     fruit.sprite.setPosition(centerPosition);
                 }
             }
         }
-        //ÅÁÈÄ·ç °ÔÀÓ ³¡
+        //íƒ•í›„ë£¨ ê²Œì„ ë
 
-        //Á¦ÇÑ½Ã°£ : ½Ã°£ Áö³ª´Â ÄÚµå
+        //ì œí•œì‹œê°„ : ì‹œê°„ ì§€ë‚˜ëŠ” ì½”ë“œ
         Time elapsed = clock.getElapsedTime();
         if (elapsed >= timeLimit) {
-            cout << "½Ã°£ ÃÊ°ú!" << endl;
+            cout << "ì‹œê°„ ì´ˆê³¼!" << endl;
             window.close();
         }
-        //Á¦ÇÑ½Ã°£ : ½Ã°£ Áö³ª´Â ÄÚµå ³¡
+        //ì œí•œì‹œê°„ : ì‹œê°„ ì§€ë‚˜ëŠ” ì½”ë“œ ë
 
-       // ½Ã°£À» ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ÅØ½ºÆ®¿¡ ¼³Á¤
+       // ì‹œê°„ì„ ë¬¸ìì—´ë¡œ ë³€í™˜í•˜ì—¬ í…ìŠ¤íŠ¸ì— ì„¤ì •
         int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
         timerText.setString(to_string(remainingTime));
         
 
         window.clear();
-        //¡é °¥¼ö·Ï ·¹ÀÌ¾î°¡ À§ÀÓ
-        window.draw(cuttingBoardSprite);  //µµ¸¶ draw
-        window.draw(frameSprite);  //°ÔÀÓÈ­¸é draw
-        window.draw(speechBubbleSprite);  //¸»Ç³¼± draw
-        window.draw(blackGrapeBox);  //ºí·¢ »çÆÄÀÌ¾î ¹Ú½º draw
-        window.draw(strawberryBox);  //µş±â ¹Ú½º draw
-        window.draw(shineMusketBox);  //»şÀÎ¸Ó½ºÄÏ ¹Ú½º draw
-        window.draw(mandarinBox);  //±Ö ¹Ú½º draw
-        window.draw(pineappleBox);  //ÆÄÀÎ¾ÖÇÃ ¹Ú½º draw
-        window.draw(stickBox);  //²¿Ä¡ ¹Ú½º draw
-        for (const Fruit& fruit : fruits) { //°úÀÏ draw
+        //â†“ ê°ˆìˆ˜ë¡ ë ˆì´ì–´ê°€ ìœ„ì„
+        window.draw(cuttingBoardSprite);  //ë„ë§ˆ draw
+        window.draw(frameSprite);  //ê²Œì„í™”ë©´ draw
+        window.draw(speechBubbleSprite);  //ë§í’ì„  draw
+        window.draw(blackGrapeBox);  //ë¸”ë™ ì‚¬íŒŒì´ì–´ ë°•ìŠ¤ draw
+        window.draw(strawberryBox);  //ë”¸ê¸° ë°•ìŠ¤ draw
+        window.draw(shineMusketBox);  //ìƒ¤ì¸ë¨¸ìŠ¤ì¼“ ë°•ìŠ¤ draw
+        window.draw(mandarinBox);  //ê·¤ ë°•ìŠ¤ draw
+        window.draw(pineappleBox);  //íŒŒì¸ì• í”Œ ë°•ìŠ¤ draw
+        window.draw(stickBox);  //ê¼¬ì¹˜ ë°•ìŠ¤ draw
+        for (const Fruit& fruit : fruits) { //ê³¼ì¼ draw
             window.draw(fruit.sprite);
         }
-        window.draw(timerText); // Á¦ÇÑ ½Ã°£ Ç¥½Ã
+        window.draw(timerText); // ì œí•œ ì‹œê°„ í‘œì‹œ
+        window.draw(bubbleText);//ë§í’ì„  ë§
         window.display();
 
     }

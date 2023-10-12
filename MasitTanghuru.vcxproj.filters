@@ -51,7 +51,6 @@
     <Image Include="image\Sugarpot.png" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="font\NanumSquareL.ttf" />
     <Font Include="font\NanumGothic.ttf" />
   </ItemGroup>
 </Project>
