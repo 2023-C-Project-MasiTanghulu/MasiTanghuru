@@ -146,7 +146,7 @@ void Game::run(RenderWindow& window) {
                 pineapple.sprite.setPosition(1200, 1000);  //파인애플 위치 설정
                 fruits.push_back(pineapple);  //벡터에 추가
             }
-            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
+            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition)) && fruits.empty()) {  //fruits 벡터가 비었으면 꼬치 잡음
                 Fruit stick("stick");  //꼬치 객체 생성
                 stick.isStick = true;  //꼬치임
                 stick.sprite.setTexture(stickTexture);  //꼬치 이미지 할당
