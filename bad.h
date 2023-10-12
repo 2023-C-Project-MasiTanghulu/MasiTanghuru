@@ -1,8 +1,8 @@
-#ifndef BAD_H
+ï»¿#ifndef BAD_H
 #define BAD_H
 
 #include <SFML/Graphics.hpp>
-#include "main.h" // Main Å¬·¡½º Çì´õ ÆÄÀÏ Ãß°¡
+#include "main.h" // Main í´ë˜ìŠ¤ í—¤ë” íŒŒì¼ ì¶”ê°€
 
 class Bad {
 public:

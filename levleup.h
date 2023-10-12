@@ -1,8 +1,8 @@
-#ifndef LEVELUP_H
+ï»¿#ifndef LEVELUP_H
 #define LEVELUP_H
 
 #include <SFML/Graphics.hpp>
-#include "game.h" // Main Å¬·¡½º Çì´õ ÆÄÀÏ Ãß°¡
+#include "game.h" // Main í´ë˜ìŠ¤ í—¤ë” íŒŒì¼ ì¶”ê°€
 
 class Levelup {
 public:

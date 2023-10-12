@@ -1,21 +1,20 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "game_rule.h"
 #include "main.h"
-
 using namespace sf;
 
 void Game_Rule::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "°ÔÀÓ¹æ¹ı");
-    Start start;  //½ÃÀÛÈ­¸é °´Ã¼ »ı¼º
-    Texture frame;  // °ÔÀÓ È­¸é
+    window.create(VideoMode(1500, 800), "ê²Œì„ë°©ë²•");
+    Start start;  //ì‹œì‘í™”ë©´ ê°ì²´ ìƒì„±
+    Texture frame;  // ê²Œì„ í™”ë©´
     if (!frame.loadFromFile("image/Rule_frame.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
-    Sprite frameSprite(frame);  // °ÔÀÓ È­¸é ÀÌ¹ÌÁö ÇÒ´ç
+    Sprite frameSprite(frame);  // ê²Œì„ í™”ë©´ ì´ë¯¸ì§€ í• ë‹¹
 
     Texture buttonTexture;
     if (!buttonTexture.loadFromFile("image/Back_btn.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite backButton(buttonTexture);
     backButton.setPosition(1100, 650);

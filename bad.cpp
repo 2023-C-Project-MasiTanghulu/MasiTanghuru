@@ -1,21 +1,21 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "bad.h"
 #include "main.h"
 
 using namespace sf;
 
 void Bad::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "¹èµå ¿£µù");
+    window.create(VideoMode(1500, 800), "ë°°ë“œ ì—”ë”©");
 
     Texture bad_frame;
     if (!bad_frame.loadFromFile("image/Bad_frame.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite frameSprite(bad_frame);
 
     Texture buttonTexture;
     if (!buttonTexture.loadFromFile("image/Startback_btn.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite Startback_btn(buttonTexture);
     Startback_btn.setPosition(1100, 650);

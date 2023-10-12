@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "happy.h"
 
 int main() {
-    RenderWindow window(VideoMode(1500, 800), "ÇØÇÇ¿£µù Å×½ºÆ®");
+    RenderWindow window(VideoMode(1500, 800), "í•´í”¼ì—”ë”© í…ŒìŠ¤íŠ¸");
     Happy happy;
     happy.run(window);
     return 0;
