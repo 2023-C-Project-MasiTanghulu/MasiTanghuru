@@ -30,7 +30,8 @@ void Game_Rule::run(RenderWindow& window) {
                     Vector2i mousePos = Mouse::getPosition(window);
 
                     if (backButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        start.run(window);
+                        return;
+                       
 
                     }
                 }

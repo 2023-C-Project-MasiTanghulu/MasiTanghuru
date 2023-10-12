@@ -19,6 +19,7 @@
     <ClInclude Include="happy.h" />
     <ClInclude Include="levleup.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="fruit.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png" />
@@ -49,6 +50,7 @@
     <Image Include="image\Strawberry.png" />
     <Image Include="image\Strawberry_box.png" />
     <Image Include="image\Sugarpot.png" />
+    <Image Include="..\..\Downloads\Sellbox.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="font\NanumGothic.ttf" />
