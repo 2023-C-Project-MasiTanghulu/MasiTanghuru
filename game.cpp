@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 void Game::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "탕후루 만들기");
 
@@ -157,13 +156,14 @@ void Game::run(RenderWindow& window) {
 
         // 마우스 뗐을 때
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-            Sprite stick;  //스틱
+            Sprite stick;  //꼬치
             for (Fruit& fruit : fruits) {  //과일
                 fruit.grabbed = false;
-                if (fruit.isStick) {  //스틱인지 확인
+                if (fruit.isStick) {  //꼬치면
+                    fruit.sprite.setPosition(40,550);  //꼬치 위치 자동으로 설정
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
                 }
-                //과일을 스틱 위에 안 놓거나 도마 위에 재료를 안 놓았다면
+                //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
                     fruits.pop_back();  //객체에서 삭제
                 }
