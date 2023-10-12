@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "levleup.h"
 
 int main() {
-    RenderWindow window(VideoMode(1500, 800), "·¹º§¾÷ È­¸é Å×½ºÆ®");
+    RenderWindow window(VideoMode(1500, 800), "ë ˆë²¨ì—… í™”ë©´ í…ŒìŠ¤íŠ¸");
     Levelup levelup;
     levelup.run(window);
     return 0;

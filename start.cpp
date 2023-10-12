@@ -1,4 +1,4 @@
-#include "game.h"
+ï»¿#include "game.h"
 #include"game_rule.h"
 #include "main.h"
 #include "bad.h"
@@ -6,9 +6,9 @@
 
 
 void Start::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "½ÃÀÛÈ­¸é");
-    Game game;  //°ÔÀÓ È­¸é °´Ã¼ »ı¼º
-    Game_Rule game_rule;  //°ÔÀÓ ¹æ¹ı È­¸é °´Ã¼ »ı¼º
+    window.create(VideoMode(1500, 800), "ì‹œì‘í™”ë©´");
+    Game game;  //ê²Œì„ í™”ë©´ ê°ì²´ ìƒì„±
+    Game_Rule game_rule;  //ê²Œì„ ë°©ë²• í™”ë©´ ê°ì²´ ìƒì„±
 
     Texture textureMain;
     textureMain.loadFromFile("image/Main_frame.png");
@@ -38,14 +38,14 @@ void Start::run(RenderWindow& window) {
                     Vector2i mousePos = Mouse::getPosition(window);
 
                     if (button1.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        printf("°ÔÀÓ½ÃÀÛ ¹öÆ°");
-                        game.run(window);  //°ÔÀÓÈ­¸é ½ÇÇà
+                        printf("ê²Œì„ì‹œì‘ ë²„íŠ¼");
+                        game.run(window);  //ê²Œì„í™”ë©´ ì‹¤í–‰
 
                     }
 
                     if (button2.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        printf("°ÔÀÓ¹æ¹ı ¹öÆ°");
-                        game_rule.run(window); //°ÔÀÓ¹æ¹ı È­¸é ½ÇÇà
+                        printf("ê²Œì„ë°©ë²• ë²„íŠ¼");
+                        game_rule.run(window); //ê²Œì„ë°©ë²• í™”ë©´ ì‹¤í–‰
 
                     }
                 }

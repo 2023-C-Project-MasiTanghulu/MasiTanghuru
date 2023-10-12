@@ -1,21 +1,21 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "levleup.h"
 #include "game.h"
 
 using namespace sf;
 
 void Levelup::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "¹èµå ¿£µù");
+    window.create(VideoMode(1500, 800), "ë°°ë“œ ì—”ë”©");
 
     Texture Levelup_frame;
     if (!Levelup_frame.loadFromFile("image/Levelup_frame.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite frameSprite(Levelup_frame);
 
     Texture buttonTexture;
     if (!buttonTexture.loadFromFile("image/Nextstep_btn.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite Nextstep_btn(buttonTexture);
     Nextstep_btn.setPosition(1100, 650);

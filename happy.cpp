@@ -1,19 +1,19 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "happy.h"
 #include "main.h"
 using namespace sf;
 
 void Happy::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "ÇØÇÇ ¿£µù");
+    window.create(VideoMode(1500, 800), "í•´í”¼ ì—”ë”©");
 
-    Texture Happy_frame;  // °ÔÀÓ È­¸é
+    Texture Happy_frame;  // ê²Œì„ í™”ë©´
     if (!Happy_frame.loadFromFile("image/Happy_frame.png")) {
       
     }
-    Sprite frameSprite(Happy_frame);  // °ÔÀÓ È­¸é ÀÌ¹ÌÁö ÇÒ´ç
+    Sprite frameSprite(Happy_frame);  // ê²Œì„ í™”ë©´ ì´ë¯¸ì§€ í• ë‹¹
     Texture buttonTexture;
     if (!buttonTexture.loadFromFile("image/Startback_btn.png")) {
-        // ÀÌ¹ÌÁö ·Îµù¿¡ ½ÇÆĞÇÑ °æ¿ìÀÇ Ã³¸® (ÇÊ¿ä¿¡ µû¶ó Ãß°¡)
+        // ì´ë¯¸ì§€ ë¡œë”©ì— ì‹¤íŒ¨í•œ ê²½ìš°ì˜ ì²˜ë¦¬ (í•„ìš”ì— ë”°ë¼ ì¶”ê°€)
     }
     Sprite Startback_btn(buttonTexture);
     Startback_btn.setPosition(1100, 650);

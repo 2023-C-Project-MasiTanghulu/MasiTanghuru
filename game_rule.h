@@ -1,8 +1,8 @@
-#ifndef GAME_RULE_H
+ï»¿#ifndef GAME_RULE_H
 #define GAME_RULE_H
 
 #include <SFML/Graphics.hpp>
-#include "main.h" // Main Å¬·¡½º Çì´õ ÆÄÀÏ Ãß°¡
+#include "main.h" // Main í´ë˜ìŠ¤ í—¤ë” íŒŒì¼ ì¶”ê°€
 
 class Game_Rule {
 public:

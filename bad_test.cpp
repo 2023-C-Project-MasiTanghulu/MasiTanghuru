@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include "bad.h"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(1500, 800), "¹èµå¿£µù Å×½ºÆ®");
+    sf::RenderWindow window(sf::VideoMode(1500, 800), "ë°°ë“œì—”ë”© í…ŒìŠ¤íŠ¸");
     Bad bad;
     bad.run(window);
     return 0;
