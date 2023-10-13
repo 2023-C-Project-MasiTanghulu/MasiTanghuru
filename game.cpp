@@ -72,6 +72,7 @@ void Game::run(RenderWindow& window) {
     stickTexture.loadFromFile("image/Stick.png");  //꼬치 이미지
     
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
+    bool isClicked = false;  //마우스 클릭을 했는가 안했는가
     vector<Fruit> fruits;  //과일 벡터
 
     //제한시간 : 초 설정
@@ -112,7 +113,8 @@ void Game::run(RenderWindow& window) {
         Vector2i mousePosition = Mouse::getPosition(window);
 
         //클릭했을 때
-        if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+        if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+            isClicked = true;  //클릭함
 
             //커서가 과일 박스 위에 있다면 그 과일을 잡음
             if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
@@ -153,19 +155,29 @@ void Game::run(RenderWindow& window) {
                 fruits.push_back(stick);  //벡터에 추가
             }
         }
+        int positionX = 200;  //과일 x 위치 설정
+        int positionY = 570;  //과일 y 위치 설정
 
         // 마우스 뗐을 때
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
             Sprite stick;  //꼬치
+            isClicked = false;  //클릭 안함
+
             for (Fruit& fruit : fruits) {  //과일
                 fruit.grabbed = false;
                 if (fruit.isStick) {  //꼬치면
-                    fruit.sprite.setPosition(40,550);  //꼬치 위치 자동으로 설정
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
                 }
                 //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
                     fruits.pop_back();  //객체에서 삭제
+                }
+                if(!fruit.isStick){  //꼬치가 아니라 과일이면
+                    fruit.sprite.setPosition(positionX, positionY-fruit.sprite.getGlobalBounds().height/2);  //과일 위치 자동으로 설정
+                    positionX += fruit.sprite.getGlobalBounds().width;  //가로 길이 누적
+                }
+                else {  //꼬치면
+                    fruit.sprite.setPosition(40, 570);  //꼬치 위치 자동으로 설정
                 }
             }
         }
@@ -216,5 +228,5 @@ void Game::run(RenderWindow& window) {
         window.display();
 
     }
-
+    
 }
