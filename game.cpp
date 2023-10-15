@@ -26,12 +26,12 @@ void Game::run(RenderWindow& window) {
 
     // 3초 후에 말풍선을 숨기는 함수
     auto clearSpeechBubble = [&speechBubbleSprite]() {
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        this_thread::sleep_for(chrono::seconds(3));
         speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
     };
 
     // 3초 뒤에 말풍선을 숨김
-    std::thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
+    thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
 
 
     Texture blackGrapeBoxTexture;  //블랙 사파이어 박스
@@ -121,7 +121,23 @@ void Game::run(RenderWindow& window) {
     };
 
     // 3초 뒤에 말풍선 내용 지움
-    std::thread(clearBubbleText).detach();
+    thread(clearBubbleText).detach();
+
+    Texture Sale_btn_texture;
+    Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
+    Sprite Sale_btn_sprite(Sale_btn_texture);
+    Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
+
+    bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
+
+    // 3초 뒤에 Sale 버튼을 보이도록 하는 함수
+    auto AfterSale_btn = [&]() {
+        this_thread::sleep_for(:chrono::seconds(3));
+        Sale_btnVisible = true;
+    };
+
+   thread(AfterSale_btn).detach(); // 새 스레드에서 실행
+
 
 
     // 과일 주문 목록
@@ -267,6 +283,10 @@ void Game::run(RenderWindow& window) {
         for (const Fruit& fruit : fruits) { //과일 draw
             window.draw(fruit.sprite);
         }
+        if (Sale_btnVisible) {
+            window.draw(Sale_btn_sprite);
+        }
+
         window.draw(timerText); // 제한 시간 표시
         window.draw(bubbleText);//말풍선 말
         window.display();
