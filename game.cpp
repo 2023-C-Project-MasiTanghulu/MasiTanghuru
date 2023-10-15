@@ -1,11 +1,10 @@
 #include <iostream>
 #include <time.h>
+#include <thread>
 #include "game.h"
 #include "fruit.h"
 
 using namespace std;
-using namespace sf;
-
 
 void Game::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "탕후루 만들기");
@@ -24,6 +23,16 @@ void Game::run(RenderWindow& window) {
     speechBubble.loadFromFile("image/speechBubble.png");  //말풍선 이미지
     Sprite speechBubbleSprite(speechBubble);  //말풍선 이미지 할당
     speechBubbleSprite.setPosition(0, 0);  //말풍선 위치 설정
+
+    // 3초 후에 말풍선을 숨기는 함수
+    auto clearSpeechBubble = [&speechBubbleSprite]() {
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+        speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
+    };
+
+    // 3초 뒤에 말풍선을 숨김
+    std::thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
+
 
     Texture blackGrapeBoxTexture;  //블랙 사파이어 박스
     blackGrapeBoxTexture.loadFromFile("image/BlackGrape_box.png");  //블랙 사파이어 박스 이미지
@@ -74,6 +83,7 @@ void Game::run(RenderWindow& window) {
     stickTexture.loadFromFile("image/Stick.png");  //꼬치 이미지
     
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
+    bool isClicked = false;  //마우스 클릭을 했는가 안했는가
     vector<Fruit> fruits;  //과일 벡터
 
     //제한시간 : 초 설정
@@ -95,7 +105,7 @@ void Game::run(RenderWindow& window) {
     timerText.setStyle(Text::Bold); // 글꼴 스타일 설정
     timerText.setPosition(1250,35 ); // 텍스트 위치 설정
 
-    //말풍선 : 손님 주문
+    //말풍선 말: 손님 주문
     Text bubbleText;
     bubbleText.setFont(font);
     bubbleText.setCharacterSize(50);
@@ -103,6 +113,16 @@ void Game::run(RenderWindow& window) {
     bubbleText.setStyle(Text::Bold);
     bubbleText.setPosition(100,50 ); // 텍스트 위치 설정
     bubbleText.setString(L"딸기 탕후루 주세요."); // 내용 설정
+
+    // 3초 후에 말풍선 내용을 지우는 함수
+    auto clearBubbleText = [&bubbleText]() {
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+        bubbleText.setString(L"");
+    };
+
+    // 3초 뒤에 말풍선 내용 지움
+    std::thread(clearBubbleText).detach();
+
 
     // 과일 주문 목록
     vector<wstring> orders = {
@@ -118,9 +138,7 @@ void Game::run(RenderWindow& window) {
         L"샤인머스캣, 파인애플 탕후루 주세요.",
         L"샤인머스캣, 블랙 사파이어 포도 탕후루 주세요.",
         L"샤인머스캣, 통귤 탕후루 주세요.",
-        L"파인애플, 블랙 사파이어 탕후루 주세요.",
-
-        
+        L"파인애플, 블랙 사파이어 탕후루 주세요."
     };
 
 
@@ -139,7 +157,8 @@ void Game::run(RenderWindow& window) {
         Vector2i mousePosition = Mouse::getPosition(window);
 
         //클릭했을 때
-        if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+        if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+            isClicked = true;  //클릭함
 
             //커서가 과일 박스 위에 있다면 그 과일을 잡음
             if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
@@ -172,7 +191,7 @@ void Game::run(RenderWindow& window) {
                 pineapple.sprite.setPosition(1200, 1000);  //파인애플 위치 설정
                 fruits.push_back(pineapple);  //벡터에 추가
             }
-            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //꼬치 잡음
+            else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition)) && fruits.empty()) {  //fruits 벡터가 비었으면 꼬치 잡음
                 Fruit stick("stick");  //꼬치 객체 생성
                 stick.isStick = true;  //꼬치임
                 stick.sprite.setTexture(stickTexture);  //꼬치 이미지 할당
@@ -180,18 +199,29 @@ void Game::run(RenderWindow& window) {
                 fruits.push_back(stick);  //벡터에 추가
             }
         }
+        int positionX = 200;  //과일 x 위치 설정
+        int positionY = 570;  //과일 y 위치 설정
 
         // 마우스 뗐을 때
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-            Sprite stick;  //스틱
+            Sprite stick;  //꼬치
+            isClicked = false;  //클릭 안함
+
             for (Fruit& fruit : fruits) {  //과일
                 fruit.grabbed = false;
-                if (fruit.isStick) {  //스틱인지 확인
+                if (fruit.isStick) {  //꼬치면
                     stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
                 }
-                //과일을 스틱 위에 안 놓거나 도마 위에 재료를 안 놓았다면
+                //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
                     fruits.pop_back();  //객체에서 삭제
+                }
+                if(!fruit.isStick){  //꼬치가 아니라 과일이면
+                    fruit.sprite.setPosition(positionX, positionY-fruit.sprite.getGlobalBounds().height/2);  //과일 위치 자동으로 설정
+                    positionX += fruit.sprite.getGlobalBounds().width;  //가로 길이 누적
+                }
+                else {  //꼬치면
+                    fruit.sprite.setPosition(40, 570);  //꼬치 위치 자동으로 설정
                 }
             }
         }
@@ -222,7 +252,6 @@ void Game::run(RenderWindow& window) {
         int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
         timerText.setString(to_string(remainingTime));
         
-
 
         window.clear();
         //↓ 갈수록 레이어가 위임
