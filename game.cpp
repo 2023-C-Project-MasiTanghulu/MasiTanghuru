@@ -132,7 +132,7 @@ void Game::run(RenderWindow& window) {
 
     // 3초 뒤에 Sale 버튼을 보이도록 하는 함수
     auto AfterSale_btn = [&]() {
-        this_thread::sleep_for(:chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(3));
         Sale_btnVisible = true;
     };
 
