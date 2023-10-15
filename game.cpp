@@ -71,6 +71,15 @@ void Game::run(RenderWindow& window) {
     Texture stickTexture;  //꼬치
     stickTexture.loadFromFile("image/Stick.png");  //꼬치 이미지
     
+    Texture sugarPotTexture;  //설탕물 냄비
+    sugarPotTexture.loadFromFile("image/SugarPot.png");  //설탕물 냄비 이미지
+    Sprite sugarPot(sugarPotTexture);  //설탕물 냄비 이미지 할당
+    sugarPot.setPosition(620, 345);  //설탕물 냄비 위치 설정
+
+    Texture ladleTexture;  //국자
+    ladleTexture.loadFromFile("image/Ladle.png");  //국자 이미지
+    Sprite ladle(ladleTexture);  //국자 이미지 할당
+
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
     bool isClicked = false;  //마우스 클릭을 했는가 안했는가
     vector<Fruit> fruits;  //과일 벡터
@@ -155,8 +164,9 @@ void Game::run(RenderWindow& window) {
                 fruits.push_back(stick);  //벡터에 추가
             }
         }
+
         int positionX = 200;  //과일 x 위치 설정
-        int positionY = 570;  //과일 y 위치 설정
+        int positionY = 580;  //과일 y 위치 설정
 
         // 마우스 뗐을 때
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
@@ -166,7 +176,7 @@ void Game::run(RenderWindow& window) {
             for (Fruit& fruit : fruits) {  //과일
                 fruit.grabbed = false;
                 if (fruit.isStick) {  //꼬치면
-                    stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
+                    stick = fruit.sprite;  //fruits 벡터에 있는 꼬치를 변수에 저장해줌
                 }
                 //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
                 if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
@@ -212,6 +222,7 @@ void Game::run(RenderWindow& window) {
         window.clear();
         //↓ 갈수록 레이어가 위임
         window.draw(cuttingBoardSprite);  //도마 draw
+        window.draw(sugarPot);  //설탕물 냄비 draw
         window.draw(frameSprite);  //게임화면 draw
         window.draw(speechBubbleSprite);  //말풍선 draw
         window.draw(blackGrapeBox);  //블랙 사파이어 박스 draw
