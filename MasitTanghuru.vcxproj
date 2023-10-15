@@ -177,6 +177,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\Downloads\Sellbox.png" />
     <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png" />
     <Image Include="image\Back_btn.png" />
     <Image Include="image\Bad_frame.png" />

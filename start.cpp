@@ -46,7 +46,6 @@ void Start::run(RenderWindow& window) {
                     if (button2.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         printf("게임방법 버튼");
                         game_rule.run(window); //게임방법 화면 실행
-
                     }
                 }
             }
