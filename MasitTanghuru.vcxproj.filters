@@ -49,7 +49,7 @@
     <Image Include="image\Stick_box.png" />
     <Image Include="image\Strawberry.png" />
     <Image Include="image\Strawberry_box.png" />
-    <Image Include="image\Sugarpot.png" />
+    <Image Include="image\SugarPot.png" />
     <Image Include="..\..\Downloads\Sellbox.png" />
   </ItemGroup>
   <ItemGroup>
