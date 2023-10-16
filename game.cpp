@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <thread>
+#include <random>
 #include "game.h"
 #include "fruit.h"
 
@@ -111,18 +112,18 @@ void Game::run(RenderWindow& window) {
     bubbleText.setCharacterSize(50);
     bubbleText.setFillColor(Color::Black);
     bubbleText.setStyle(Text::Bold);
-    bubbleText.setPosition(100,50 ); // 텍스트 위치 설정
-    bubbleText.setString(L"딸기 탕후루 주세요."); // 내용 설정
+    bubbleText.setPosition(50,50 ); // 텍스트 위치 설정
 
     // 3초 후에 말풍선 내용을 지우는 함수
     auto clearBubbleText = [&bubbleText]() {
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        this_thread::sleep_for(chrono::seconds(3));
         bubbleText.setString(L"");
     };
 
     // 3초 뒤에 말풍선 내용 지움
     thread(clearBubbleText).detach();
 
+    //판매하기 버튼
     Texture Sale_btn_texture;
     Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
     Sprite Sale_btn_sprite(Sale_btn_texture);
@@ -132,7 +133,7 @@ void Game::run(RenderWindow& window) {
 
     // 3초 뒤에 Sale 버튼을 보이도록 하는 함수
     auto AfterSale_btn = [&]() {
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        this_thread::sleep_for(chrono::seconds(3));
         Sale_btnVisible = true;
     };
 
@@ -142,24 +143,29 @@ void Game::run(RenderWindow& window) {
 
     // 과일 주문 목록
     vector<wstring> orders = {
-        L"딸기 탕후루 주세요.",
+       L"딸기 탕후루 주세요.",
         L"샤인머스켓 탕후루 주세요.",
         L"파인애플 탕후루 주세요.",
         L"블랙 사파이어 포도 탕후루 주세요.",
         L"통귤 탕후루 주세요.",
-        L"딸기, 샤인머스캣 탕후루 주세요.",
-        L"딸기, 파인애플 탕후루 주세요.",
-        L"딸기, 블랙 사파이어 포도 탕후루 주세요.",
-        L"딸기, 통귤 탕후루 주세요.",
-        L"샤인머스캣, 파인애플 탕후루 주세요.",
-        L"샤인머스캣, 블랙 사파이어 포도 탕후루 주세요.",
-        L"샤인머스캣, 통귤 탕후루 주세요.",
-        L"파인애플, 블랙 사파이어 탕후루 주세요."
+        L"딸기,샤인머스캣 탕후루 주세요.",
+        L"딸기,파인애플 탕후루 주세요.",
+        L"딸기,블랙 사파이어 포도 주세요.",
+        L"딸기,통귤 탕후루 주세요.",
+        L"샤인머스캣,파인애플 탕후루 주세요.",
+        L"샤인머스캣,블랙 사파이어 포도 주세요.",
+        L"샤인머스캣,통귤 탕후루 주세요.",
+        L"파인애플,블랙 사파이어 탕후루 주세요."
+        L"파인애플,통귤 탕후루 주세요."
+        L"블랙 사파이어 포도,통귤 탕후루 주세요"
     };
 
-
-    //말풍선 내용 랜덤으로 설정
-    int randomIndex = rand() % orders.size(); // 랜덤한 인덱스 생성
+    //주문 랜덤 돌리기
+    //시드 값을 현재 시간을 이용하여 생성
+     mt19937 rng(random_device{}());
+    // orders에서 랜덤한 주문을 선택
+    uniform_int_distribution<int> dist(0, orders.size() - 1);
+    int randomIndex = dist(rng); // 랜덤한 인덱스 생성
     bubbleText.setString(orders[randomIndex]);
 
 
