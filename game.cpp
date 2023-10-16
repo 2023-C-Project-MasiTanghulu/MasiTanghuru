@@ -283,6 +283,10 @@ void Game::run(RenderWindow& window) {
                     // 마우스 위치를 이미지의 중심으로 조정
                     Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
                     fruit.sprite.setPosition(centerPosition);
+
+                    if (fruit.isLadle && sugarPot.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //설탕물 냄비에 국자를 갖다 대면
+                        fruit.sprite.setTexture(sugarLadleTexture);  //설탕물 국자로 바뀜
+                    }
                 }
             }
         }
