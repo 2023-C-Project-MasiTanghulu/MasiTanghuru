@@ -256,7 +256,7 @@ void Game::run(RenderWindow& window) {
                 }
                 else {  //국자가 아니라면
                     if (fruit.isStick) {  //꼬치면
-                        stick = fruit.sprite;  //fruits 벡터에 있는 스틱을 변수에 저장해줌
+                        stick = fruit.sprite;  //fruits 벡터에 있는 꼬치를 변수에 저장해줌
                     }
                     //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
                     if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
@@ -270,12 +270,12 @@ void Game::run(RenderWindow& window) {
                         fruit.sprite.setPosition(40, 570);  //꼬치 위치 자동으로 설정
                     }
                 }
-
             }
         }
 
         // 마우스 이동 중
         if (event.type == Event::MouseMoved) {
+            Sprite ladle;
             //드래그하면 과일을 마우스 위치로 이동
             Vector2i mousePosition = Mouse::getPosition(window);
             for (Fruit& fruit : fruits) {  //과일
@@ -286,7 +286,12 @@ void Game::run(RenderWindow& window) {
 
                     if (fruit.isLadle && sugarPot.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //설탕물 냄비에 국자를 갖다 대면
                         fruit.sprite.setTexture(sugarLadleTexture);  //설탕물 국자로 바뀜
+                        ladle = fruit.sprite; //fruits 벡터에 있는 국자를 변수에 저장해줌
                     }
+                    /*if (ladle.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
+                        fruit.sugarCoating();  //설탕 코팅 이미지로 바꿈
+                        fruit.isCoating = true;  //코팅됨
+                    }*/
                 }
             }
         }
