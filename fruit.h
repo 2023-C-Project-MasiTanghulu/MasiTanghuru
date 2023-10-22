@@ -9,11 +9,9 @@ using namespace std;
 class Fruit {
 public:
     Sprite sprite;  // 과일 이미지
-    Texture coatedSprite;  //코팅된 과일 이미지
+    Texture coatedTexture;  //코팅된 과일 이미지
     bool grabbed;   // 과일을 잡았는가
-    bool isStick = false;  //꼬치인가
     bool isCoating = false;  //설탕물 코팅했는가
-    bool isLadle = false;  //국자인가
     string name;  //과일 이름
 
     //생성자
@@ -23,7 +21,7 @@ public:
 
     //설탕 코팅 이미지로 바꿔줌
     void sugarCoating() {
-        coatedSprite.loadFromFile("image/Coating_" + name + ".png");
-        sprite.setTexture(coatedSprite);
+        coatedTexture.loadFromFile("image/Coating_" + name + ".png");
+        sprite.setTexture(coatedTexture);
     }
 };
