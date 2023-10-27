@@ -106,6 +106,7 @@ void Game::run(RenderWindow& window) {
     bool isSugarLadle = false;  //설탕물 국자인가 아닌가
     bool isStickGrabbed = false;  //꼬치를 집었는가 안집었는가
     int maxSize = 0;  //꽂을 과일 갯수 정하는 변수
+    int startPosition = 650;  //과일 꽂기 시작 위치
     vector<Fruit> fruits;  //과일 벡터
 
     //제한시간 : 초 설정
@@ -165,7 +166,7 @@ void Game::run(RenderWindow& window) {
         "strawberry",
         "shinemusket", 
         "pineapple",
-        "black grape", 
+        "black grape",
         "mandarin",
         "strawberry,shinemusket",
         "strawberry,pineapple",
@@ -175,7 +176,7 @@ void Game::run(RenderWindow& window) {
         "shinemusket,black grape",
         "pineapple,black grape",
         "pineapple,mandarin",
-        "black grape,mandarin",
+        "black grape,mandarin"
     };
 
     wstring order;  //한글 주문용
@@ -187,61 +188,80 @@ void Game::run(RenderWindow& window) {
     uniform_int_distribution<int> dist(0, orders.size() - 1);
     int randomIndex = dist(rng); // 랜덤한 인덱스 생성
 
-    //주문 wstring으로 변환
+    //주문 wstring으로 변환 & 과일 시작 위치 설정 & 과일 개수 지정
     if (orders[randomIndex] == "strawberry") {
         order = L"딸기";
         maxSize = 4;
+        startPosition -= strawberryTexture.getSize().x * maxSize;
     }else if (orders[randomIndex] == "shinemusket") {
         order = L"샤인머스켓";
-        maxSize = 7;
+        maxSize = 6;
+        startPosition -= shineMusketTexture.getSize().x * maxSize;
     }
     else if (orders[randomIndex] == "pineapple") {
         order = L"파인애플";
         maxSize = 5;
+        startPosition -= pineappleTexture.getSize().x * maxSize;
     }
     else if (orders[randomIndex] == "black grape") {
         order = L"블랙 사파이어 포도";
-        maxSize = 15;
+        maxSize = 8;
+        startPosition -= blackGrapeTexture.getSize().x * maxSize;
     }
     else if (orders[randomIndex] == "mandarin") {
         order = L"통귤";
         maxSize = 4;
+        startPosition -= mandarinTexture.getSize().x * maxSize;
     }
     else if (orders[randomIndex] == "strawberry,shinemusket") {
         order = L"딸기,샤인머스켓";
         maxSize = 5;
+        startPosition -= shineMusketTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
     }
     else if (orders[randomIndex] == "strawberry,pineapple") {
         order = L"딸기,파인애플";
         maxSize = 5;
+        startPosition -= pineappleTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
     }
     else if (orders[randomIndex] == "strawberry,black grape") {
         order = L"딸기,블랙 사파이어 포도";
-        maxSize = 6;
+        maxSize = 5;
+        startPosition -= strawberryTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 2;
     }
     else if (orders[randomIndex] == "strawberry,mandarin") {
         order = L"딸기,통귤";
         maxSize = 4;
+        startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
     }
     else if (orders[randomIndex] == "shinemusket,pineapple") {
         order = L"샤인머스켓,파인애플";
         maxSize = 6;
+        startPosition -= shineMusketTexture.getSize().x * 3 + pineappleTexture.getSize().x * 3;
     }
     else if (orders[randomIndex] == "shinemusket,mandarin") {
         order = L"샤인머스켓,통귤";
         maxSize = 5;
+        startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+    }
+    else if (orders[randomIndex] == "shinemusket,black grape") {
+        order = L"샤인머스켓,블랙 사파이어 포도";
+        maxSize = 8;
+        startPosition -= shineMusketTexture.getSize().x * 4 + blackGrapeTexture.getSize().x * 4;
     }
     else if (orders[randomIndex] == "pineapple,black grape") {
-        order = L"파인애플,블랙 사파이어";
-        maxSize = 7;
+        order = L"파인애플,블랙 사파이어 포도";
+        maxSize = 6;
+        startPosition -= pineappleTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 3;
     }
     else if (orders[randomIndex] == "pineapple,mandarin") {
         order = L"파인애플,통귤";
         maxSize = 4;
+        startPosition -= pineappleTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
     }
     else if (orders[randomIndex] == "black grape,mandarin") {
         order = L"블랙 사파이어 포도,통귤";
         maxSize = 6;
+        startPosition -= blackGrapeTexture.getSize().x * 3 + mandarinTexture.getSize().x * 3;
     }
 
     bubbleText.setString(order + L" 탕후루 주세요.");
@@ -293,14 +313,14 @@ void Game::run(RenderWindow& window) {
                 stick.setPosition(1200, 1000);  //원래 꼬치 멀리 보내버림
                 isStickGrabbed = true;  //꼬치 잡음
             }
-            //과일을 다 꽂지 않으면 국자를 잡을 수 없음
+            //과일을 끝까지 다 꽂지 않으면 국자를 잡을 수 없음
             else if (fruits.size() == maxSize && ladleSprite.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //국자
                 ladleSprite.setPosition(1200, 1000);  //원래 국자 멀리 보내버림
                 ladleSprite.setRotation(0);  //국자 각도 설정
                 isLadleGrabbed = true;  //국자 잡음
             }
         }
-        int positionX = 230;  //과일 x 위치 설정
+        int positionX = startPosition;  //과일 x 위치 설정
         int positionY = 560;  //과일 y 위치 설정
 
         // 마우스 이동 중일 때
