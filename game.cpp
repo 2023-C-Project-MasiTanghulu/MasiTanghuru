@@ -346,6 +346,7 @@ void Game::run(RenderWindow& window) {
                     fruit.sprite.setPosition(centerPosition);  //과일 잡는 위치 설정
                 }
                 if (isSugarLadle && ladleSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) && !fruit.isCoated) {  //설탕물 국자일때 과일에 닿으면 코팅됨
+                    ladleSprite.setRotation(-20);  //국자 살짝 기울임
                     fruit.sugarCoating();  //설탕 코팅 이미지로 바꿈
                 }
             }
@@ -370,7 +371,6 @@ void Game::run(RenderWindow& window) {
                 else {
                     stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
                 }
-                
                 isStickGrabbed = false;
             }
 
