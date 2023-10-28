@@ -364,14 +364,20 @@ void Game::run(RenderWindow& window) {
         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
             isClicked = false;  //클릭 안함
             if (isStickGrabbed) {
-                stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
+                if (!stick.getGlobalBounds().intersects(cuttingBoardSprite.getGlobalBounds())) {  //꼬치를 도마 위에 안 두면
+                    stick.setPosition(1200, 1000);
+                }
+                else {
+                    stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
+                }
+                
                 isStickGrabbed = false;
             }
 
             for (Fruit& fruit : fruits) {  //과일
                 fruit.grabbed = false;
                 //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
-                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) || !cuttingBoardSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
+                if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
                     fruits.pop_back();  //객체에서 삭제
                 }
                 else{
