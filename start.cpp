@@ -3,7 +3,7 @@
 #include "main.h"
 #include "bad.h"
 #include "happy.h"
-
+#include <SFML/Audio.hpp>
 
 void Start::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), "시작화면");
@@ -26,6 +26,10 @@ void Start::run(RenderWindow& window) {
 
     Sprite button2(Rule_btn);
     button2.setPosition(900, 650);
+
+    Music bgm;
+    bgm.openFromFile("music/중국음악.ogg");
+    bgm.play();  //재생
 
     while (window.isOpen()) {
         Event event;
