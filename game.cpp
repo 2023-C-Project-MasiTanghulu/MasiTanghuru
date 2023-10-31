@@ -94,11 +94,16 @@ void Game::run(RenderWindow& window) {
     ladleTexture.loadFromFile("image/Ladle.png");  //국자 이미지
     Sprite ladleSprite(ladleTexture);  //국자 이미지 할당
     ladleSprite.rotate(90);  //국자 각도 설정
-    ladleSprite.setPosition(600, 250);  //국자 위치 설정
+    ladleSprite.setPosition(710, 250);  //국자 위치 설정
 
     Texture sugarLadleTexture;  //설탕물 국자
     sugarLadleTexture.loadFromFile("image/SugarLadle.png");  //설탕물 국자 이미지
     Sprite sugarLadle(sugarLadleTexture);  //설탕물 국자 이미지 할당
+
+    Texture wastebasketTexture;  //쓰레기통
+    wastebasketTexture.loadFromFile("image/Wastebasket.png");  //쓰레기통 이미지
+    Sprite wastebasket(wastebasketTexture);  //쓰레기통 이미지 할당
+    wastebasket.setPosition(20, 230);
 
     bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
     bool isClicked = false;  //마우스 클릭을 했는가 안했는가
@@ -319,6 +324,10 @@ void Game::run(RenderWindow& window) {
                 ladleSprite.setRotation(0);  //국자 각도 설정
                 isLadleGrabbed = true;  //국자 잡음
             }
+            if (wastebasket.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //쓰레기통 클릭
+                fruits.clear();  //과일 벡터 비움
+                stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
+            }
         }
         int positionX = startPosition;  //과일 x 위치 설정
         int positionY = 560;  //과일 y 위치 설정
@@ -415,7 +424,8 @@ void Game::run(RenderWindow& window) {
         window.draw(mandarinBox);  //귤 박스 draw
         window.draw(pineappleBox);  //파인애플 박스 draw
         window.draw(stickBox);  //꼬치 박스 draw
-        window.draw(stick);  //꼬치 draw test
+        window.draw(stick);  //꼬치 draw
+        window.draw(wastebasket);  //쓰레기통 draw
         for (const Fruit& fruit : fruits) { //과일 draw
             window.draw(fruit.sprite);
         }
