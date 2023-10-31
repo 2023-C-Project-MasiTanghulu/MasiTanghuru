@@ -366,7 +366,7 @@ void Game::run(RenderWindow& window) {
             isLadleGrabbed = false;  //국자 안 잡음
             isSugarLadle = false;  //설탕물 없음
             ladleSprite.setTexture(ladleTexture);  //원래 국자 이미지로 설정
-            ladleSprite.setPosition(600, 250);  //국자 원래 위치로 되돌려놓음
+            ladleSprite.setPosition(710, 250);  //국자 원래 위치로 되돌려놓음
             ladleSprite.setRotation(90);  //국자 원래 각도로 돌려놓음
         }
 
