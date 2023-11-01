@@ -33,11 +33,13 @@ void Game::run(RenderWindow& window) {
 
     // 3초 뒤에 말풍선을 숨김
     thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
-
+    
+    Texture boxildTexture;
+    boxildTexture.loadFromFile("image/boxlid.png");
 
     Texture blackGrapeBoxTexture;  //블랙 사파이어 박스
     blackGrapeBoxTexture.loadFromFile("image/BlackGrape_box.png");  //블랙 사파이어 박스 이미지
-    Sprite blackGrapeBox(blackGrapeBoxTexture);  //블랙 사파이어 박스 이미지 할당
+    Sprite blackGrapeBox(boxildTexture);  //블랙 사파이어 박스 이미지 할당
     blackGrapeBox.setPosition(960, 260);  //블랙 사파이어 박스 위치 설정
 
     Texture blackGrapeTexture;  //블랙 사파이어
@@ -45,7 +47,7 @@ void Game::run(RenderWindow& window) {
 
     Texture strawberryBoxTexture;  //딸기 박스
     strawberryBoxTexture.loadFromFile("image/Strawberry_box.png");  //딸기 박스 이미지
-    Sprite strawberryBox(strawberryBoxTexture);  //딸기 박스 이미지 할당
+    Sprite strawberryBox(boxildTexture);  //딸기 박스 이미지 할당
     strawberryBox.setPosition(1200, 260);  //딸기 박스 위치 설정
 
     Texture strawberryTexture;  //딸기
@@ -53,7 +55,7 @@ void Game::run(RenderWindow& window) {
 
     Texture shineMusketBoxTexture;  //샤인머스켓 박스
     shineMusketBoxTexture.loadFromFile("image/Shinemusket_box.png");  //샤인머스켓 박스 이미지
-    Sprite shineMusketBox(shineMusketBoxTexture);  //샤인머스켓 박스 이미지 할당
+    Sprite shineMusketBox(boxildTexture);  //샤인머스켓 박스 이미지 할당
     shineMusketBox.setPosition(960, 440);  //샤인머스켓 박스 위치 설정
 
     Texture shineMusketTexture;  //샤인머스켓
@@ -61,7 +63,7 @@ void Game::run(RenderWindow& window) {
 
     Texture mandarinBoxTexture;  //귤 박스
     mandarinBoxTexture.loadFromFile("image/Mandarin_box.png");  //귤 박스 이미지
-    Sprite mandarinBox(mandarinBoxTexture);  //귤 박스 이미지 할당
+    Sprite mandarinBox(boxildTexture);  //귤 박스 이미지 할당
     mandarinBox.setPosition(1200, 440);  //귤 박스 위치 설정
 
     Texture mandarinTexture;  //귤
@@ -69,7 +71,7 @@ void Game::run(RenderWindow& window) {
 
     Texture pineappleBoxTexture;  //파인애플 박스
     pineappleBoxTexture.loadFromFile("image/Pineapple_box.png");  //파인애플 박스 이미지
-    Sprite pineappleBox(pineappleBoxTexture);  //파인애플 박스 이미지 할당
+    Sprite pineappleBox(boxildTexture);  //파인애플 박스 이미지 할당
     pineappleBox.setPosition(960, 620);  //파인애플 박스 위치 설정
 
     Texture pineappleTexture;  //파인애플
@@ -113,6 +115,17 @@ void Game::run(RenderWindow& window) {
     int maxSize = 0;  //꽂을 과일 갯수 정하는 변수
     int startPosition = 650;  //과일 꽂기 시작 위치
     vector<Fruit> fruits;  //과일 벡터
+
+
+    int level = 1;
+
+    if (level == 1) {
+        shineMusketBox.setTexture(shineMusketBoxTexture);  //원래 샤인머스켓 박스로 바꿔줌
+        strawberryBox.setTexture(strawberryBoxTexture);  //원래 딸기 박스로 바꿔줌
+    }
+    else if (level == 2) {
+        //레벨별 박스 오픈
+    }
 
     //제한시간 : 초 설정
     Clock clock;
@@ -437,5 +450,10 @@ void Game::run(RenderWindow& window) {
         window.draw(bubbleText);//말풍선 말
         window.display();
 
+    }
+}
+void levelCheck() {
+    if (매출액변수 >= 30000) {
+        //돈쳌
     }
 }
