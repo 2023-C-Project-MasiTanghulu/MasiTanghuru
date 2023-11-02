@@ -452,8 +452,8 @@ void Game::run(RenderWindow& window) {
 
     }
 }
-void levelCheck() {
+/*void levelCheck() {
     if (매출액변수 >= 30000) {
         //돈쳌
     }
-}
+}*/
