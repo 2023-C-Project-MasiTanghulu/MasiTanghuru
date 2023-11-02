@@ -163,13 +163,6 @@ void Game::run(RenderWindow& window) {
 		break;
 	}
 
-
-
-
-	//제한시간 : 초 설정
-	Clock clock;
-	const Time timeLimit = seconds(60); // 60초로 설정
-
 	//폰트 설정
 	Font font;
 	if (!font.loadFromFile("font/NanumGothic.ttf")) {
@@ -184,6 +177,10 @@ void Game::run(RenderWindow& window) {
 	timerText.setFillColor(Color::Black); // 글꼴 색상을 검정색으로 설정
 	timerText.setStyle(Text::Bold); // 글꼴 스타일 설정
 	timerText.setPosition(1250, 35); // 텍스트 위치 설정
+
+	//제한시간 : 초 설정
+	Clock clock;
+	const Time timeLimit = seconds(60); // 60초로 설정
 
 	//판매하기 : 텍스트 설정
 	Text saleText;  // 텍스트 객체 생성
@@ -233,8 +230,6 @@ void Game::run(RenderWindow& window) {
 	};
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
-
-
 
 	// 과일 주문 목록
 	vector<string> orders = {
