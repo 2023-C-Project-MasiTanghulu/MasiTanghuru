@@ -122,7 +122,7 @@ void Game::run(RenderWindow& window) {
 
 
 	//레벨
-	int level = 1; //레벨
+	int level = 2; //레벨
 	int sale = 0; //판매액
 
 	switch (level) {
@@ -163,13 +163,6 @@ void Game::run(RenderWindow& window) {
 		break;
 	}
 
-
-
-
-	//제한시간 : 초 설정
-	Clock clock;
-	const Time timeLimit = seconds(60); // 60초로 설정
-
 	//폰트 설정
 	Font font;
 	if (!font.loadFromFile("font/NanumGothic.ttf")) {
@@ -184,6 +177,26 @@ void Game::run(RenderWindow& window) {
 	timerText.setFillColor(Color::Black); // 글꼴 색상을 검정색으로 설정
 	timerText.setStyle(Text::Bold); // 글꼴 스타일 설정
 	timerText.setPosition(1250, 35); // 텍스트 위치 설정
+
+	//제한시간 : 초 설정
+	Clock clock;
+	const Time timeLimit = seconds(60); // 60초로 설정
+
+	//판매하기 : 텍스트 설정
+	Text saleText;  // 텍스트 객체 생성
+	saleText.setFont(font);  // 폰트 설정
+	saleText.setCharacterSize(50);  // 글자 크기 설정
+	saleText.setFillColor(Color::Black);  // 글자 색상 설정
+	saleText.setStyle(Text::Bold);
+	saleText.setPosition(1230, 105);  // 위치 설정
+
+	//레벨 표시  : 텍스트 설정
+	Text levelText;  // 텍스트 객체 생성
+	levelText.setFont(font);  // 폰트 설정
+	levelText.setCharacterSize(50);  // 글자 크기 설정
+	levelText.setFillColor(Color::Black);  // 글자 색상 설정
+	levelText.setStyle(Text::Bold);
+	levelText.setPosition(1250, 170);  // 위치 설정
 
 	//말풍선 말: 손님 주문
 	Text bubbleText;
@@ -202,8 +215,6 @@ void Game::run(RenderWindow& window) {
 	// 3초 뒤에 말풍선 내용 지움
 	thread(clearBubbleText).detach();
 
-
-
 	/// 판매하기 버튼
 	sf::Texture Sale_btn_texture;
 	Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
@@ -219,8 +230,6 @@ void Game::run(RenderWindow& window) {
 	};
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
-
-
 
 	// 과일 주문 목록
 	vector<string> orders = {
@@ -350,6 +359,9 @@ void Game::run(RenderWindow& window) {
 			if (event.type == Event::Closed)
 				window.close();
 
+			//레벨 화면에 보이게 하기
+			levelText.setString(to_string(level));
+
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
@@ -391,11 +403,11 @@ void Game::run(RenderWindow& window) {
 							}
 						}
 					}
-
-					if (isPerfect) {  //제대로 만들었다면
+					if (isPerfect) { //제대로 만들었다면
 						cout << endl << "성공~" << endl;
 						sale += 3000;
-						printf("%d", sale);
+						string saleString = to_string(sale);
+						saleText.setString(saleString);  // saleText 업데이트
 					}
 					else {  //못 만들었다면
 						cout << endl << "실패!" << endl;
@@ -566,6 +578,8 @@ void Game::run(RenderWindow& window) {
 		}
 		window.draw(ladleSprite);  //국자
 		window.draw(timerText); // 제한 시간 표시
+		window.draw(saleText); //판매액 표시
+		window.draw(levelText); //레벨 표시
 		window.draw(bubbleText);//말풍선 말
 		window.display();
 
