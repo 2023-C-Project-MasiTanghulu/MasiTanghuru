@@ -365,7 +365,7 @@ void Game::run(RenderWindow& window) {
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
-				bool isPerfect = true;  //잘 만들었는지 체크용
+				bool isPerfect = false;  //잘 만들었는지 체크용
 
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
 					//맞게 만들었는지 검사
@@ -385,6 +385,9 @@ void Game::run(RenderWindow& window) {
 								isPerfect = false;  //제대로 못 만듦
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
+							else {
+								isPerfect = true;
+							}
 							//test
 							cout << "꽂은 과일    :" << fruit.name << endl;
 							cout << "꽂아야할 과일:" << mixOrder.at(i) << endl;
@@ -400,6 +403,9 @@ void Game::run(RenderWindow& window) {
 							if (!(fruit.name == orders[randomIndex]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
+							}
+							else {
+								isPerfect = true;
 							}
 						}
 					}
@@ -427,31 +433,31 @@ void Game::run(RenderWindow& window) {
 			isClicked = true;  //클릭함
 
 			//커서가 과일 박스 위에 있다면 그 과일을 잡음
-			if (blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
+			if (level >= 4 && blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
 				Fruit blackGrape("black grape");  //블랙 사파이어 객체 생성
 				blackGrape.sprite.setTexture(blackGrapeTexture);  //블랙 사파이어 이미지 할당
 				blackGrape.sprite.setPosition(1200, 1000);  //블랙 사파이어 위치 설정
 				fruits.push_back(blackGrape);  //벡터에 추가
 			}
-			else if (strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
+			else if (level >= 1 && strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
 				Fruit strawberry("strawberry");  //딸기 객체 생성
 				strawberry.sprite.setTexture(strawberryTexture);  //딸기 이미지 할당
 				strawberry.sprite.setPosition(1200, 1000);  //딸기 위치 설정
 				fruits.push_back(strawberry);  //벡터에 추가
 			}
-			else if (shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
+			else if (level >= 1 && shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
 				Fruit shineMusket("shinemusket");  //샤인머스켓 객체 생성
 				shineMusket.sprite.setTexture(shineMusketTexture);  //샤인머스켓 이미지 할당
 				shineMusket.sprite.setPosition(1200, 1000);  //샤인머스켓 위치 설정
 				fruits.push_back(shineMusket);  //벡터에 추가
 			}
-			else if (mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
+			else if (level >= 3 && mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
 				Fruit mandarin("mandarin");  //귤 객체 생성
 				mandarin.sprite.setTexture(mandarinTexture);  //귤 이미지 할당
 				mandarin.sprite.setPosition(1200, 1000);  //귤 위치 설정
 				fruits.push_back(mandarin);  //벡터에 추가
 			}
-			else if (pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
+			else if (level >= 2 && pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
 				Fruit pineapple("pineapple");  //파인애플 객체 생성
 				pineapple.sprite.setTexture(pineappleTexture);  //파인애플 이미지 할당
 				pineapple.sprite.setPosition(1200, 1000);  //파인애플 위치 설정
