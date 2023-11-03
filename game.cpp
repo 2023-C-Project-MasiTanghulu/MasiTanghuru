@@ -365,7 +365,7 @@ void Game::run(RenderWindow& window) {
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
-				bool isPerfect = true;  //잘 만들었는지 체크용
+				bool isPerfect = false;  //잘 만들었는지 체크용
 
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
 					//맞게 만들었는지 검사
@@ -385,6 +385,9 @@ void Game::run(RenderWindow& window) {
 								isPerfect = false;  //제대로 못 만듦
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
+							else {
+								isPerfect = true;
+							}
 							//test
 							cout << "꽂은 과일    :" << fruit.name << endl;
 							cout << "꽂아야할 과일:" << mixOrder.at(i) << endl;
@@ -400,6 +403,9 @@ void Game::run(RenderWindow& window) {
 							if (!(fruit.name == orders[randomIndex]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
+							}
+							else {
+								isPerfect = true;
 							}
 						}
 					}
