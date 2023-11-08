@@ -49,7 +49,7 @@ void Game::run(RenderWindow& window) {
 
 	Texture strawberryBoxTexture;  //딸기 박스
 	strawberryBoxTexture.loadFromFile("image/Strawberry_box.png");  //딸기 박스 이미지
-	Sprite strawberryBox(strawberryBoxTexture);  //딸기 박스 이미지 할당
+	Sprite strawberryBox(boxildTexture);  //딸기 박스 이미지 할당
 	strawberryBox.setPosition(1200, 260);  //딸기 박스 위치 설정
 
 	Texture strawberryTexture;  //딸기
@@ -57,7 +57,7 @@ void Game::run(RenderWindow& window) {
 
 	Texture shineMusketBoxTexture;  //샤인머스켓 박스
 	shineMusketBoxTexture.loadFromFile("image/Shinemusket_box.png");  //샤인머스켓 박스 이미지
-	Sprite shineMusketBox(shineMusketBoxTexture);  //샤인머스켓 박스 이미지 할당
+	Sprite shineMusketBox(boxildTexture);  //샤인머스켓 박스 이미지 할당
 	shineMusketBox.setPosition(960, 440);  //샤인머스켓 박스 위치 설정
 
 	Texture shineMusketTexture;  //샤인머스켓
@@ -121,47 +121,6 @@ void Game::run(RenderWindow& window) {
 	vector<Fruit> fruits;  //과일 벡터
 
 
-	//레벨
-	int level = 2; //레벨
-	int sale = 0; //판매액
-
-	switch (level) {
-	case 1:
-		if (sale < 20000) {
-			shineMusketBox.setTexture(shineMusketBoxTexture);  //원래 샤인머스켓 박스로 바꿔줌
-			strawberryBox.setTexture(strawberryBoxTexture);  //원래 딸기 박스로 바꿔줌
-		}
-		break;
-
-	case 2:
-		if (sale >= 20000) {
-			level++;
-			cout << "레벨 2 달성!" << endl;
-			pineappleBox.setTexture(pineappleBoxTexture);
-
-		}
-		break;
-
-	case 3:
-		if (sale >= 60000) {
-			level++;
-			cout << "레벨 3 달성!" << endl;
-			mandarinBox.setTexture(mandarinBoxTexture);
-
-		}
-		break;
-
-	case 4:
-		if (sale >= 100000) {
-			level++;
-			cout << "레벨 4 달성!" << endl;
-			blackGrapeBox.setTexture(blackGrapeBoxTexture);
-		}
-		break;
-
-	default:
-		break;
-	}
 
 	//폰트 설정
 	Font font;
@@ -216,37 +175,38 @@ void Game::run(RenderWindow& window) {
 	thread(clearBubbleText).detach();
 
 	/// 판매하기 버튼
-	sf::Texture Sale_btn_texture;
+	Texture Sale_btn_texture;
 	Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
-	sf::Sprite Sale_btn_sprite(Sale_btn_texture);
+	Sprite Sale_btn_sprite(Sale_btn_texture);
 	Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
 
-	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
+	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨boxildTexture겨놓기
 
 	// 3초 뒤에 Sale 버튼을 보이도록 하는 함수
 	auto AfterSale_btn = [&]() {
-		std::this_thread::sleep_for(std::chrono::seconds(3));
+		this_thread::sleep_for(chrono::seconds(3));
 		Sale_btnVisible = true;
 	};
+
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
 
 	// 과일 주문 목록
 	vector<string> orders = {
-		"strawberry",
-		"shinemusket",
-		"pineapple",
-		"black grape",
-		"mandarin",
-		"strawberry,shinemusket",
-		"strawberry,pineapple",
-		"strawberry,black grape",
-		"strawberry,mandarin",
-		"shinemusket,pineapple",
-		"shinemusket,black grape",
-		"pineapple,black grape",
-		"pineapple,mandarin",
-		"black grape,mandarin"
+		"strawberry", //1
+		"shinemusket", //1
+		"pineapple",//2
+		"mandarin",   //3
+		"black grape", //4
+		"strawberry,shinemusket",  //1
+		"strawberry,pineapple", //2
+		"shinemusket,pineapple", //2
+		"strawberry,mandarin",  //3
+		"pineapple,mandarin", //3
+		"strawberry,black grape", //4
+		"shinemusket,black grape", //4
+		"pineapple,black grape", //4
+		"black grape,mandarin" //4
 	};
 
 	wstring order;  //한글 주문용
@@ -352,6 +312,76 @@ void Game::run(RenderWindow& window) {
 
 	bubbleText.setString(order + L" 탕후루 주세요.");
 
+	//레벨업 화면
+	Clock levelupClock;
+	Time levelupCount = seconds(5);
+	bool showingLevelup = false;
+
+	Texture levelupTexture;
+	Sprite levelupSprite;
+
+	// 레벨업 이미지 로딩
+	if (!levelupTexture.loadFromFile("image/Levelup_frame.png")) {
+		// 이미지 로딩 실패 처리
+	}
+
+	//레벨
+	int level = 2; //레벨
+	int sale = 0;//판매액
+
+
+	if (sale >= 20000 && sale < 60000) {
+		level = 2;
+	}
+	else if (sale >= 60000 && sale < 100000) {
+		level = 3;
+	}
+	else if (sale >= 100000) {
+		level = 4;
+	}
+
+	switch (level) {
+	case 1:
+		shineMusketBox.setTexture(shineMusketBoxTexture);  //원래 샤인머스켓 박스로 바꿔줌
+		strawberryBox.setTexture(strawberryBoxTexture);  //원래 딸기 박스로 바꿔줌
+		break;
+
+	case 2:
+		cout << "레벨 2 달성!" << endl;
+		pineappleBox.setTexture(pineappleBoxTexture);
+		shineMusketBox.setTexture(shineMusketBoxTexture);
+		strawberryBox.setTexture(strawberryBoxTexture);
+		showingLevelup = true;
+		levelupClock.restart();
+		break;
+
+	case 3:
+		cout << "레벨 3 달성!" << endl;
+		pineappleBox.setTexture(pineappleBoxTexture);
+		mandarinBox.setTexture(mandarinBoxTexture);
+		shineMusketBox.setTexture(shineMusketBoxTexture);
+		strawberryBox.setTexture(strawberryBoxTexture);
+		showingLevelup = true;
+		levelupClock.restart();
+		break;
+
+	case 4:
+		cout << "레벨 4 달성!" << endl;
+		pineappleBox.setTexture(pineappleBoxTexture);
+		mandarinBox.setTexture(mandarinBoxTexture);
+		blackGrapeBox.setTexture(blackGrapeBoxTexture);
+		shineMusketBox.setTexture(shineMusketBoxTexture);
+		strawberryBox.setTexture(strawberryBoxTexture);
+		showingLevelup = true;
+		levelupClock.restart();
+		break;
+
+	default:
+		break;
+	}
+
+
+
 
 	while (window.isOpen()) {
 		Event event;
@@ -361,7 +391,16 @@ void Game::run(RenderWindow& window) {
 
 			//레벨 화면에 보이게 하기
 			levelText.setString(to_string(level));
+			if (showingLevelup) {
+				if (levelupClock.getElapsedTime() >= levelupCount) {
+					showingLevelup = false;
+					cout << "나옴";
+				}
 
+				// 레벨업 이미지 위치 설정
+				levelupSprite.setTexture(levelupTexture);
+				levelupSprite.setPosition(0, 5);
+			}
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
@@ -379,7 +418,7 @@ void Game::run(RenderWindow& window) {
 						while (getline(iss, order, ',')) {  //',' 을 기준으로 문자열 분리
 							mixOrder.push_back(order);  //주문 분리해서 벡터에 저장
 						}
-						
+
 						for (Fruit fruit : fruits) {
 							if (!(fruit.name == mixOrder.at(i)) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
@@ -587,13 +626,10 @@ void Game::run(RenderWindow& window) {
 		window.draw(saleText); //판매액 표시
 		window.draw(levelText); //레벨 표시
 		window.draw(bubbleText);//말풍선 말
+		if (showingLevelup) {
+			window.draw(levelupSprite);//레벨업 화면
+		}
 		window.display();
 
 	}
 }
-
-/*void levelCheck() {
-	if (매출액변수 >= 30000) {
-		//돈쳌
-	}
-}*/
