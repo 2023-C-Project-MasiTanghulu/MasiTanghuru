@@ -329,7 +329,7 @@ void Game::run(RenderWindow& window) {
 	int level = 2; //레벨
 	int sale = 0;//판매액
 
-
+	//판매액에 따라 레벨
 	if (sale >= 20000 && sale < 60000) {
 		level = 2;
 	}
@@ -399,7 +399,7 @@ void Game::run(RenderWindow& window) {
 
 				// 레벨업 이미지 위치 설정
 				levelupSprite.setTexture(levelupTexture);
-				levelupSprite.setPosition(0, 5);
+				levelupSprite.setPosition(0, 3);
 			}
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
