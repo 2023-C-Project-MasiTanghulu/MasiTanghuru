@@ -1,58 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="bad.cpp" />
-    <ClCompile Include="bad_test.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_rule.cpp" />
-    <ClCompile Include="happy.cpp" />
-    <ClCompile Include="happy_test.cpp" />
-    <ClCompile Include="levelup.cpp" />
-    <ClCompile Include="levelup_test.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="start.cpp" />
+    <ClCompile Include="start.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="bad.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="bad_test.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="game_rule.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="happy.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="happy_test.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="levelup.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="levelup_test.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bad.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="game_rule.h" />
-    <ClInclude Include="happy.h" />
-    <ClInclude Include="levleup.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="fruit.h" />
+    <ClInclude Include="bad.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="fruit.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="happy.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="levleup.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="game_rule.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Users\easy0\OneDrive\문서\CuttingBoard.png" />
-    <Image Include="image\Back_btn.png" />
-    <Image Include="image\Bad_frame.png" />
-    <Image Include="image\Blackgrape.png" />
-    <Image Include="image\Blackgrape_box.png" />
-    <Image Include="image\Boxlid.png" />
-    <Image Include="image\Game_frame.png" />
-    <Image Include="image\Happy_frame.png" />
-    <Image Include="image\Levelup_frame.png" />
-    <Image Include="image\main.png" />
-    <Image Include="image\Main_frame.png" />
-    <Image Include="image\Mandarin.png" />
-    <Image Include="image\Mandarin_box.png" />
-    <Image Include="image\Nextstep_btn.png" />
-    <Image Include="image\Pineapple.png" />
-    <Image Include="image\Pineapple_box.png" />
-    <Image Include="image\Rule_btn.png" />
-    <Image Include="image\Rule_frame.png" />
-    <Image Include="image\Sale_btn.png" />
-    <Image Include="image\Shinemusket.png" />
-    <Image Include="image\Shinemusket_box.png" />
-    <Image Include="image\Startback_btn.png" />
-    <Image Include="image\Start_btn.png" />
-    <Image Include="image\Stick.png" />
-    <Image Include="image\Stick_box.png" />
-    <Image Include="image\Strawberry.png" />
-    <Image Include="image\Strawberry_box.png" />
-    <Image Include="image\SugarPot.png" />
-    <Image Include="..\..\Downloads\Sellbox.png" />
+    <Filter Include="헤더파일">
+      <UniqueIdentifier>{cd1927f3-7b5a-46dd-95cc-f4f5864ff39d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="폰트">
+      <UniqueIdentifier>{d226728b-00e4-4b19-b4b2-e03118f84d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스파일">
+      <UniqueIdentifier>{4a2ea7b1-80a1-4c59-b5a4-bca0ca5feac6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="font\NanumGothic.ttf" />
+    <Font Include="font\NanumGothic.ttf">
+      <Filter>폰트</Filter>
+    </Font>
   </ItemGroup>
 </Project>
