@@ -6,7 +6,7 @@
 #include <SFML/Audio.hpp>
 
 void Start::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "시작화면");
+    window.create(VideoMode(1500, 800), L"시작화면");
     Game game;  //게임 화면 객체 생성
     Game_Rule game_rule;  //게임 방법 화면 객체 생성
 
@@ -28,8 +28,8 @@ void Start::run(RenderWindow& window) {
     button2.setPosition(900, 650);
 
     Music bgm;
-   // bgm.openFromFile("music/중국음악.ogg");
-    //bgm.play();  //재생
+    bgm.openFromFile("music/중국음악.ogg");
+    bgm.play();  //재생
 
     while (window.isOpen()) {
         Event event;

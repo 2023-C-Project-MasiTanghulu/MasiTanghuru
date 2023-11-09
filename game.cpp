@@ -9,7 +9,7 @@
 using namespace std;
 
 void Game::run(RenderWindow& window) {
-	window.create(VideoMode(1500, 800), "탕후루 만들기");
+	window.create(VideoMode(1500, 800), L"탕후루 만들기");
 
 	//탕후루 게임
 	Texture frame;  //게임 화면
@@ -188,7 +188,6 @@ void Game::run(RenderWindow& window) {
 		Sale_btnVisible = true;
 	};
 
-
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
 
 	// 과일 주문 목록
@@ -314,7 +313,7 @@ void Game::run(RenderWindow& window) {
 
 	//레벨업 화면
 	Clock levelupClock;
-	Time levelupCount = seconds(5);
+	Time levelupCount = seconds(1);
 	bool showingLevelup = false;
 
 	Texture levelupTexture;
@@ -326,7 +325,7 @@ void Game::run(RenderWindow& window) {
 	}
 
 	//레벨
-	int level = 2; //레벨
+	int level = 4; //레벨
 	int sale = 0;//판매액
 
 	//판매액에 따라 레벨
@@ -448,15 +447,65 @@ void Game::run(RenderWindow& window) {
 							}
 						}
 					}
+
+					//성공,실패 화면
+					Clock perfectClock;
+					Time perfectCount = seconds(5);
+					bool showingperfect = false;
+
+					Clock failClock;
+					Time failCount = seconds(5);
+					bool showingfail = false;
+
+					//실패이미지
+					Texture failTexture;
+					Sprite failSprite;
+
+					//성공이미지
+					Texture perfectTexture;
+					Sprite perfectSprite;
+
+
+					// 실패 이미지 로딩
+					if (!failTexture.loadFromFile("image/fail.png")) {
+						// 이미지 로딩 실패 처리
+					}
+
+					// 성공 이미지 로딩
+					if (!perfectTexture.loadFromFile("image/perfect.png")) {
+						// 이미지 로딩 실패 처리
+					}
+
 					if (isPerfect) { //제대로 만들었다면
 						cout << endl << "성공~" << endl;
 						sale += 3000;
 						string saleString = to_string(sale);
 						saleText.setString(saleString);  // saleText 업데이트
+						showingperfect = true;
+						perfectClock.restart();
+						
 					}
 					else {  //못 만들었다면
 						cout << endl << "실패!" << endl;
+						showingfail = true;
+						failClock.restart();
 					}
+
+					//성공 화면에 보이게 하기
+					levelText.setString(to_string(level));
+					if (showingLevelup) {
+						if (perfectClock.getElapsedTime() >= perfectCount) {
+							showingperfect = false;
+							cout << "성공화면";
+						}
+
+						// 레벨업 이미지 위치 설정
+						perfectSprite.setTexture(perfectTexture);
+						perfectSprite.setPosition(0, 3);
+					}
+
+					
+
 					//도마 위 초기화
 					fruits.clear();  //과일 벡터 비움
 					stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
@@ -629,6 +678,7 @@ void Game::run(RenderWindow& window) {
 		if (showingLevelup) {
 			window.draw(levelupSprite);//레벨업 화면
 		}
+		
 		window.display();
 
 	}
