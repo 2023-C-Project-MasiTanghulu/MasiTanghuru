@@ -109,25 +109,35 @@ void Game::run(RenderWindow& window) {
 	Sprite wastebasket(wastebasketTexture);  //쓰레기통 이미지 할당
 	wastebasket.setPosition(20, 230);
 
+	//실패이미지
+	Texture failTexture;  //실패
+	failTexture.loadFromFile("image/fail.png");  //실패 이미지
+	Sprite failSprite(failTexture);  //실패 이미지 할당
+	failSprite.setPosition(0, 3);//실패 이미지 위치 설정
+
+	//성공이미지
+	Texture perfectTexture;  //성공
+	perfectTexture.loadFromFile("image/perfect.png");  //실패 이미지
+	Sprite perfectSprite(perfectTexture);  //성공 이미지 할당
+	perfectSprite.setPosition(0, 3);//성공 이미지 위치 설정
+
 	bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
 	bool isClicked = false;  //마우스 클릭을 했는가 안했는가
 	bool isLadleGrabbed = false;  //국자를 집었는가 안집었는가
 	bool isSugarLadle = false;  //설탕물 국자인가 아닌가
 	bool isStickGrabbed = false;  //꼬치를 집었는가 안집었는가
 	bool isMix = false;  //과일 2종류의 탕후루인가
+	bool showingFail = false;
+	bool showingPerfect = false;
 
 	int size = 0;  //꽂을 과일 갯수 정하는 변수
 	int startPosition = 650;  //과일 꽂기 시작 위치
 	vector<Fruit> fruits;  //과일 벡터
 
 
-
 	//폰트 설정
 	Font font;
-	if (!font.loadFromFile("font/NanumGothic.ttf")) {
-		// 폰트를 로드하지 못한 경우 예외처리
-		cout << "폰트를 로드할 수 없습니다." << endl;
-	}
+	font.loadFromFile("font/NanumGothic.ttf");
 
 	// 제한 시간 : 화면에 표시할 텍스트 설정
 	Text timerText;
@@ -180,7 +190,7 @@ void Game::run(RenderWindow& window) {
 	Sprite Sale_btn_sprite(Sale_btn_texture);
 	Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
 
-	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨boxildTexture겨놓기
+	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
 
 	// 3초 뒤에 Sale 버튼을 보이도록 하는 함수
 	auto AfterSale_btn = [&]() {
@@ -313,16 +323,20 @@ void Game::run(RenderWindow& window) {
 
 	//레벨업 화면
 	Clock levelupClock;
-	Time levelupCount = seconds(1);
+	Time levelupCount = seconds(3);
 	bool showingLevelup = false;
 
-	Texture levelupTexture;
-	Sprite levelupSprite;
+	Texture levelupTexture;  //레벨업 이미지
+	levelupTexture.loadFromFile("image/Levelup_frame.png");  // 레벨업 이미지 로딩
+	Sprite levelupSprite(levelupTexture);
+	levelupSprite.setPosition(0, 3);  // 레벨업 이미지 위치 설정
 
-	// 레벨업 이미지 로딩
-	if (!levelupTexture.loadFromFile("image/Levelup_frame.png")) {
-		// 이미지 로딩 실패 처리
-	}
+	//성공,실패 화면
+	Clock perfectClock;
+	Time perfectCount = seconds(2);
+
+	Clock failClock;
+	Time failCount = seconds(2);
 
 	//레벨
 	int level = 4; //레벨
@@ -380,26 +394,36 @@ void Game::run(RenderWindow& window) {
 	}
 
 
-
-
 	while (window.isOpen()) {
 		Event event;
+
+		//레벨 화면에 보이게 하기 & 3초 뒤 사라지게
+		if (showingLevelup) {
+			if (levelupClock.getElapsedTime() >= levelupCount) {
+				showingLevelup = false;
+				cout << "나옴";
+			}
+		}
+		//성공 화면에 보이게 하기 & 2초 뒤 사라지게
+		if (showingPerfect) {
+			if (perfectClock.getElapsedTime() >= perfectCount) {
+				showingPerfect = false;
+				cout << "성공화면";
+			}
+		}
+		//실패 화면에 보이게 하기 & 2초 뒤 사라지게
+		if (showingFail) {
+			if (failClock.getElapsedTime() >= failCount) {
+				showingFail = false;
+				cout << "실패화면";
+			}
+		}
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				window.close();
 
-			//레벨 화면에 보이게 하기
 			levelText.setString(to_string(level));
-			if (showingLevelup) {
-				if (levelupClock.getElapsedTime() >= levelupCount) {
-					showingLevelup = false;
-					cout << "나옴";
-				}
 
-				// 레벨업 이미지 위치 설정
-				levelupSprite.setTexture(levelupTexture);
-				levelupSprite.setPosition(0, 3);
-			}
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
@@ -448,63 +472,27 @@ void Game::run(RenderWindow& window) {
 						}
 					}
 
-					//성공,실패 화면
-					Clock perfectClock;
-					Time perfectCount = seconds(5);
-					bool showingperfect = false;
-
-					Clock failClock;
-					Time failCount = seconds(5);
-					bool showingfail = false;
-
-					//실패이미지
-					Texture failTexture;
-					Sprite failSprite;
-
-					//성공이미지
-					Texture perfectTexture;
-					Sprite perfectSprite;
-
-
-					// 실패 이미지 로딩
-					if (!failTexture.loadFromFile("image/fail.png")) {
-						// 이미지 로딩 실패 처리
-					}
-
-					// 성공 이미지 로딩
-					if (!perfectTexture.loadFromFile("image/perfect.png")) {
-						// 이미지 로딩 실패 처리
-					}
+					
 
 					if (isPerfect) { //제대로 만들었다면
 						cout << endl << "성공~" << endl;
 						sale += 3000;
 						string saleString = to_string(sale);
 						saleText.setString(saleString);  // saleText 업데이트
-						showingperfect = true;
+						showingFail = false;  //실패 안 함
+						showingPerfect = true;  //성공함
 						perfectClock.restart();
 						
 					}
 					else {  //못 만들었다면
 						cout << endl << "실패!" << endl;
-						showingfail = true;
+						showingPerfect = false;  //성공 안 함
+						showingFail = true;  //실패함
 						failClock.restart();
 					}
 
-					//성공 화면에 보이게 하기
 					levelText.setString(to_string(level));
-					if (showingLevelup) {
-						if (perfectClock.getElapsedTime() >= perfectCount) {
-							showingperfect = false;
-							cout << "성공화면";
-						}
 
-						// 레벨업 이미지 위치 설정
-						perfectSprite.setTexture(perfectTexture);
-						perfectSprite.setPosition(0, 3);
-					}
-
-					
 
 					//도마 위 초기화
 					fruits.clear();  //과일 벡터 비움
@@ -678,7 +666,12 @@ void Game::run(RenderWindow& window) {
 		if (showingLevelup) {
 			window.draw(levelupSprite);//레벨업 화면
 		}
-		
+		if (showingPerfect) {
+			window.draw(perfectSprite);  //성공
+		}
+		if (showingFail) {
+			window.draw(failSprite);  //실패
+		}
 		window.display();
 
 	}
