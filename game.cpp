@@ -235,7 +235,6 @@ void Game::run(RenderWindow& window) {
 	// 주문 랜덤 돌리기
 	mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 	uniform_int_distribution<int> dist(0, orders.size() - 1);
-	int randomIndex = dist(rng);
 
 
 	
@@ -243,17 +242,21 @@ void Game::run(RenderWindow& window) {
 	// 주문 wstring으로 변환
 	wstring order = L"";
 	int numFruits = orders.size(); // 현재 레벨의 과일 개수
+	vector<string> selectedFruits;// 선택한 과일들을 저장할 벡터
+	int randomFruitIndex = 0;
+
 	// 레벨에 맞게 주문 생성
 	if (numFruits > 0) {
 		// 랜덤으로 선택할 과일 개수
 		int numSelectedFruits = dist(rng) % 2 + 1;
 
-		// 선택한 과일들을 저장할 벡터
-		vector<string> selectedFruits;
-
+		if (numSelectedFruits % 2 == 0) {  //짝수면 혼합, 아니면 단일
+			isMix = true;
+		}
+		else {
+			isMix = false;
+		}
 		for (int i = 0; i < numSelectedFruits; ++i) {
-			int randomFruitIndex;
-
 			// 이미 선택된 과일이 나오지 않도록 반복해서 선택
 			do {
 				randomFruitIndex = dist(rng);
@@ -261,96 +264,86 @@ void Game::run(RenderWindow& window) {
 
 			selectedFruits.push_back(orders[randomFruitIndex]);
 		}
-
+		
 		// 선택한 과일들을 문자열로 합치기
 		for (int i = 0; i < numSelectedFruits; ++i) {
 			order += convertToFruitName(selectedFruits[i]);
 
 			// 마지막 과일이 아니면 쉼표 추가
 			if (i < numSelectedFruits - 1) {
-				order += L", ";
+				order += L",";
 			}
 		}
 	}
 
 	bubbleText.setString(order + L" 탕후루 주세요.");
 
-	//주문 wstring으로 변환 & 과일 시작 위치 설정 & 과일 개수 지정
-	if (order == "딸기") {
-		size = 4;
-		startPosition -= strawberryTexture.getSize().x * size;
-		isMix = false;
+	//과일 시작 위치 설정 & 과일 개수 지정
+	if (isMix) {
+		if (selectedFruits[0] + selectedFruits[1] == "strawberryshinemusket" || selectedFruits[0] + selectedFruits[1] == "shinemusketstrawberry") {
+			size = 5;
+			startPosition -= shineMusketTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "strawberrypineapple" || selectedFruits[0] + selectedFruits[1] == "pineapplestrawberry") {
+			size = 5;
+			startPosition -= pineappleTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "strawberryblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapestrawberry") {
+			size = 5;
+			startPosition -= strawberryTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 2;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "strawberrymandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinstrawberry") {
+			size = 4;
+			startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketpineapple" || selectedFruits[0] + selectedFruits[1] == "pineappleshinemusket") {
+			size = 6;
+			startPosition -= shineMusketTexture.getSize().x * 3 + pineappleTexture.getSize().x * 3;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketmandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinshinemusket") {
+			size = 5;
+			startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapeshinemusket") {
+			size = 8;
+			startPosition -= shineMusketTexture.getSize().x * 4 + blackGrapeTexture.getSize().x * 4;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "pineappleblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapepineapple") {
+			size = 6;
+			startPosition -= pineappleTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 3;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "pineapplemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinpineapple") {
+			size = 4;
+			startPosition -= pineappleTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+		}
+		else if (selectedFruits[0] + selectedFruits[1] == "black grapemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinblack grape") {
+			size = 6;
+			startPosition -= blackGrapeTexture.getSize().x * 3 + mandarinTexture.getSize().x * 3;
+		}
 	}
-	else if (order == "샤인머스켓") {
-		size = 6;
-		startPosition -= shineMusketTexture.getSize().x * size;
-		isMix = false;
+	else {
+		if (orders[randomFruitIndex] == "strawberry") {
+			size = 4;
+			startPosition -= strawberryTexture.getSize().x * size;
+		}
+		else if (orders[randomFruitIndex] == "shinemusket") {
+			size = 6;
+			startPosition -= shineMusketTexture.getSize().x * size;
+		}
+		else if (orders[randomFruitIndex] == "pineapple") {
+			size = 5;
+			startPosition -= pineappleTexture.getSize().x * size;
+		}
+		else if (orders[randomFruitIndex] == "blackGrape") {
+			size = 8;
+			startPosition -= blackGrapeTexture.getSize().x * size;
+		}
+		else if (orders[randomFruitIndex] == "mandarin") {
+			size = 4;
+			startPosition -= mandarinTexture.getSize().x * size;
+		}
 	}
-	else if (order == "파인애플") {
-		size = 5;
-		startPosition -= pineappleTexture.getSize().x * size;
-		isMix = false;
-	}
-	else if (order == "블랙 사파이어 포도") {
-		size = 8;
-		startPosition -= blackGrapeTexture.getSize().x * size;
-		isMix = false;
-	}
-	else if (order == "통귤") {
-		size = 4;
-		startPosition -= mandarinTexture.getSize().x * size;
-		isMix = false;
-	}
-	else if (order == "딸기,샤인머스켓") {
-		size = 5;
-		startPosition -= shineMusketTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
-		isMix = true;
-	}
-	else if (order == "딸기,파인애플") {
-		size = 5;
-		startPosition -= pineappleTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
-		isMix = true;
-	}
-	else if (order == "딸기,블랙 사파이어 포도") {
-		size = 5;
-		startPosition -= strawberryTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 2;
-		isMix = true;
-	}
-	else if (order == "딸기,통귤") {
-		size = 4;
-		startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
-		isMix = true;
-	}
-	else if (order == "샤인머스켓,파인애플") {
-		size = 6;
-		startPosition -= shineMusketTexture.getSize().x * 3 + pineappleTexture.getSize().x * 3;
-		isMix = true;
-	}
-	else if (order == "샤인머스켓,통귤") {
-		size = 5;
-		startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
-		isMix = true;
-	}
-	else if (order == "샤인머스켓,블랙 사파이어 포도") {
-		size = 8;
-		startPosition -= shineMusketTexture.getSize().x * 4 + blackGrapeTexture.getSize().x * 4;
-		isMix = true;
-	}
-	else if (order == "파인애플,블랙 사파이어 포도") {
-		size = 6;
-		startPosition -= pineappleTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 3;
-		isMix = true;
-	}
-	else if (order == "파인애플,통귤") {
-		size = 4;
-		startPosition -= pineappleTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
-		isMix = true;
-	}
-	else if (order == "블랙 사파이어 포도,통귤") {
-		size = 6;
-		startPosition -= blackGrapeTexture.getSize().x * 3 + mandarinTexture.getSize().x * 3;
-		isMix = true;
-	}
+
 
 	
 
@@ -426,9 +419,6 @@ void Game::run(RenderWindow& window) {
 	}
 
 
-
-
-
 	while (window.isOpen()) {
 		Event event;
 
@@ -468,46 +458,34 @@ void Game::run(RenderWindow& window) {
 
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
 					//맞게 만들었는지 검사
-
 					if (isMix) {  //혼합인가
-						istringstream iss(order);  //주문 분리를 위해
-						string order;  //분리된 문자열을 넣는 용도
-						vector<string> mixOrder;  //분리한 주문을 넣을 벡터
 						int i = 0;
 
-						while (getline(iss, order, ',')) {  //',' 을 기준으로 문자열 분리
-							mixOrder.push_back(order);  //주문 분리해서 벡터에 저장
-						}
-
 						for (Fruit fruit : fruits) {
-							if (!(fruit.name == mixOrder.at(i)) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
+							if (!(fruit.name == selectedFruits[i]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
 								cout << "꽂은 과일    :" << fruit.name << endl;
-								cout << "꽂아야할 과일:" << mixOrder.at(i) << endl;
+								cout << "꽂아야할 과일:" << selectedFruits[i] << endl;
 								cout << "--------------------" << endl;
-								//break;  //더 이상 체크할 필요가 없으니 for문 나감
+								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
 							else {
 								isPerfect = true;
 							}
-							//test
-							cout << "꽂은 과일    :" << fruit.name << endl;
-							cout << "꽂아야할 과일:" << mixOrder.at(i) << endl;
-							cout << "--------------------" << endl;
 
-							//mixOrder에서 0과 1을 쓰기 위한...
+							//mixOrder에서 0과 1을 쓰기 위해
 							if (i == 0) i = 1;
 							else i = 0;
 						}
 					}
 					else {  //혼합이 아니면
 						for (Fruit fruit : fruits) {
-							if (!(fruit.name == order) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
+							if (!(fruit.name == orders[randomFruitIndex]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
 								cout << "꽂은 과일    :" << fruit.name << endl;
-								cout << "꽂아야할 과일:" << mixOrder.at(i) << endl;
+								cout << "꽂아야할 과일:" << orders[randomFruitIndex] << endl;
 								cout << "--------------------" << endl;
-								//break;  //더 이상 체크할 필요가 없으니 for문 나감
+								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
 							else {
 								isPerfect = true;
