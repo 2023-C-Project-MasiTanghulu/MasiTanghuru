@@ -5,7 +5,6 @@
 #include <sstream>
 #include "game.h"
 #include "fruit.h"
-
 using namespace std;
 
 wstring convertToFruitName(const string& englishName) {
@@ -141,10 +140,21 @@ void Game::run(RenderWindow& window) {
 	perfectSprite.setPosition(0, 3);//성공 이미지 위치 설정
 
 	//레벨업 이미지
-	Texture levelupTexture;  
+	Texture levelupTexture;
 	levelupTexture.loadFromFile("image/Levelup_frame.png");  // 레벨업 이미지
 	Sprite levelupSprite(levelupTexture);
 	levelupSprite.setPosition(0, 3);  // 레벨업 이미지 위치 설정
+
+	//배드엔딩 이미지
+	Texture badFrameTexture;
+	badFrameTexture.loadFromFile("image/Bad_frame.png");  // 레벨업 이미지
+	Sprite badFrameSprite(badFrameTexture);
+	badFrameSprite.setPosition(0, 0);
+
+	//해피엔딩 이미지
+	Texture happyFrameTexture;
+	happyFrameTexture.loadFromFile("image/Happy_frame.png");
+	Sprite happyFrameSprite;
 
 	bool isFruitGrabbed = false;  //과일을 집었는가 안집었는가
 	bool isClicked = false;  //마우스 클릭을 했는가 안했는가
@@ -216,6 +226,7 @@ void Game::run(RenderWindow& window) {
 	Sprite Sale_btn_sprite(Sale_btn_texture);
 	Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
 
+
 	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
 
 	// 3초 뒤에 Sale 버튼을 보이도록 하는 함수
@@ -234,6 +245,7 @@ void Game::run(RenderWindow& window) {
 			   {"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
 			   {"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
 	};
+
 	
 	int level = 1;
 	// 현재 레벨에 해당하는 주문 목록 가져오기
@@ -271,7 +283,7 @@ void Game::run(RenderWindow& window) {
 
 			selectedFruits.push_back(orders[randomFruitIndex]);
 		}
-		
+
 		// 선택한 과일들을 문자열로 합치기
 		for (int i = 0; i < numSelectedFruits; ++i) {
 			order += convertToFruitName(selectedFruits[i]);
@@ -357,7 +369,10 @@ void Game::run(RenderWindow& window) {
 	//레벨업 화면
 	Clock levelupClock;
 	Time levelupCount = seconds(3);
+
 	
+
+
 	//성공,실패 화면
 	Clock perfectClock;
 	Time perfectCount = seconds(2);
@@ -368,15 +383,159 @@ void Game::run(RenderWindow& window) {
 	//레벨
 	int sale = 0;//판매액
 
-	
+	// 레벨별 제한 시간 설정
+	const Time level1TimeLimit = seconds(60);
+	const Time level2TimeLimit = seconds(70);
+	const Time level3TimeLimit = seconds(65);
+	const Time level4TimeLimit = seconds(65);
 
+	Time elapsed;
+	Time currentLevelTimeLimit;
+
+
+	// 레벨별 Clock 객체 선언
+	Clock level1Clock;
+	Clock level2Clock;
+	Clock level3Clock;
+	Clock level4Clock;
+
+	auto initializeLevel = [&]() {
+		switch (level) {
+		case 1:
+			currentLevelTimeLimit = level1TimeLimit;
+			level1Clock.restart();
+			shineMusketBox.setTexture(shineMusketBoxTexture);
+			strawberryBox.setTexture(strawberryBoxTexture);
+			break;
+
+		case 2:
+			currentLevelTimeLimit = level2TimeLimit;
+			level2Clock.restart();
+			pineappleBox.setTexture(pineappleBoxTexture);
+			shineMusketBox.setTexture(shineMusketBoxTexture);
+			strawberryBox.setTexture(strawberryBoxTexture);
+			break;
+
+		case 3:
+			currentLevelTimeLimit = level3TimeLimit;
+			level3Clock.restart();
+			pineappleBox.setTexture(pineappleBoxTexture);
+			mandarinBox.setTexture(mandarinBoxTexture);
+			shineMusketBox.setTexture(shineMusketBoxTexture);
+			strawberryBox.setTexture(strawberryBoxTexture);
+			break;
+
+		case 4:
+			currentLevelTimeLimit = level4TimeLimit;
+			level4Clock.restart();
+			pineappleBox.setTexture(pineappleBoxTexture);
+			mandarinBox.setTexture(mandarinBoxTexture);
+			blackGrapeBox.setTexture(blackGrapeBoxTexture);
+			shineMusketBox.setTexture(shineMusketBoxTexture);
+			strawberryBox.setTexture(strawberryBoxTexture);
+			break;
+
+		default:
+			break;
+		}
+	};
+
+	initializeLevel();
 	while (window.isOpen()) {
 		Event event;
+		//시간 체크
+		switch (level) {
+		case 1:
+			elapsed = level1Clock.getElapsedTime();
+			break;
 
+		case 2:
+			elapsed = level2Clock.getElapsedTime();
+			break;
+
+		case 3:
+			elapsed = level3Clock.getElapsedTime();
+			break;
+
+		case 4:
+			elapsed = level4Clock.getElapsedTime();
+			break;
+
+		default:
+			break;
+		}
+
+		// 판매액에 따라 레벨 결정
+		if (sale > 6000 && sale < 8000) {
+			if (level != 2) {
+				level = 2;
+				cout << "레벨 2 달성!" << endl;
+				if (!showingLevelup) {
+					showingLevelup = true;
+					levelupClock.restart();
+					cout << "레벨 2 화면이 나타남" << endl;
+					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
+				}
+			}
+		}
+		else if (sale >= 9000 && sale < 10000) {
+			if (level != 3) {
+				level = 3;
+				cout << "레벨 3 달성!" << endl;
+				if (!showingLevelup) {
+					showingLevelup = true;
+					levelupClock.restart();
+					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
+				}
+			}
+		}
+		else if (sale >= 10000) {
+			if (level != 4) {
+				level = 4;
+				cout << "레벨 4 달성!" << endl;
+				if (!showingLevelup) {
+					showingLevelup = true;
+					levelupClock.restart();
+					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
+				}
+			}
+		}
+	
+		// 레벨 4가 되면 Happy_frame.png 표시
+		if (level == 4) {
+			
+				happyFrameSprite.setTexture(happyFrameTexture);
+				window.clear();
+				window.draw(happyFrameSprite);
+				window.display();
+
+				
+				sf::sleep(sf::seconds(2)); // 이미지를 표시한 후 잠시 대기 (원하는 대기 시간으로 변경 가능)
+				window.close();
+			
+			
+		}
+
+		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {
+			
+			// 시간 종료 처리
+			cout << "레벨 : " << level << " 시간 초과!" << endl;
+
+			badFrameSprite.setTexture(badFrameTexture);
+			window.clear();
+			window.draw(badFrameSprite);
+			window.display();
+			sleep(seconds(20));
+			window.close();
+			
+		}
 		// 레벨업 화면 보이게 하기 & 3초 뒤 사라지기
 		if (showingLevelup) {
 			if (levelupClock.getElapsedTime() >= levelupCount) {
-				showingLevelup = false;  // 이 부분이 추가되어야 합니다.
+				showingLevelup = false;
 				cout << "레벨업 화면이 나옴" << endl;
 			}
 		}
@@ -403,7 +562,7 @@ void Game::run(RenderWindow& window) {
 
 			levelText.setString(to_string(level));
 
-			
+
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
@@ -445,71 +604,8 @@ void Game::run(RenderWindow& window) {
 							}
 						}
 					}
-					// 판매액에 따라 레벨 결정
-					if (sale >= 6000 && sale < 60000) {
-						if (level != 2) {
-							level = 2;
-							cout << "레벨 2 달성!" << endl;
-							if (!showingLevelup) {
-								showingLevelup = true;
-								levelupClock.restart();
-								cout << "레벨 2 화면이 나타남" << endl;
-							}
-						}
-					}
-					else if (sale >= 60000 && sale < 100000) {
-						if (level != 3) {
-							level = 3;
-							cout << "레벨 3 달성!" << endl;
-							if (!showingLevelup) {
-								showingLevelup = true;
-								levelupClock.restart();
-							}
-						}
-					}
-					else if (sale >= 100000) {
-						if (level != 4) {
-							level = 4;
-							cout << "레벨 4 달성!" << endl;
-							if (!showingLevelup) {
-								showingLevelup = true;
-								levelupClock.restart();
-							}
-						}
-					}
 
-					// 레벨에 따라 텍스처 설정
-					switch (level) {
-					case 1:
-						shineMusketBox.setTexture(shineMusketBoxTexture);
-						strawberryBox.setTexture(strawberryBoxTexture);
-						break;
 
-					case 2:
-						pineappleBox.setTexture(pineappleBoxTexture);
-						shineMusketBox.setTexture(shineMusketBoxTexture);
-						strawberryBox.setTexture(strawberryBoxTexture);
-						break;
-
-					case 3:
-						pineappleBox.setTexture(pineappleBoxTexture);
-						mandarinBox.setTexture(mandarinBoxTexture);
-						shineMusketBox.setTexture(shineMusketBoxTexture);
-						strawberryBox.setTexture(strawberryBoxTexture);
-						break;
-
-					case 4:
-						pineappleBox.setTexture(pineappleBoxTexture);
-						mandarinBox.setTexture(mandarinBoxTexture);
-						blackGrapeBox.setTexture(blackGrapeBoxTexture);
-						shineMusketBox.setTexture(shineMusketBoxTexture);
-						strawberryBox.setTexture(strawberryBoxTexture);
-						break;
-
-					default:
-						break;
-					}
-					
 					if (isPerfect) { //제대로 만들었다면
 						cout << endl << "성공~" << endl;
 						sale += 3000;
@@ -527,16 +623,7 @@ void Game::run(RenderWindow& window) {
 						failClock.restart();
 					}
 
-					
-					
-			
-					
-
 					levelText.setString(to_string(level));
-
-
-
-
 					//도마 위 초기화
 					fruits.clear();  //과일 벡터 비움
 					stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
@@ -548,12 +635,9 @@ void Game::run(RenderWindow& window) {
 
 		Vector2i mousePosition = Mouse::getPosition(window);
 
+
+
 		
-
-		
-
-
-
 		//클릭했을 때
 		if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 			isClicked = true;  //클릭함
@@ -680,14 +764,14 @@ void Game::run(RenderWindow& window) {
 			//cout << "시간 초과!" << endl;
 			//window.close();
 		}
-		//제한시간 : 시간 지나는 코드 끝
+		
 
 	   // 시간을 문자열로 변환하여 텍스트에 설정
 		int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
 		timerText.setString(to_string(remainingTime));
 
 
-		
+
 
 
 		window.clear();
@@ -728,4 +812,3 @@ void Game::run(RenderWindow& window) {
 		window.display();
 
 	}
-}
