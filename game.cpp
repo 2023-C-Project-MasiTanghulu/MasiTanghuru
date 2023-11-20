@@ -246,7 +246,7 @@ void Game::run(RenderWindow& window) {
 			   {"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
 	};
 
-	
+
 	int level = 1;
 	// 현재 레벨에 해당하는 주문 목록 가져오기
 	vector<string> orders = levelFruits[level - 1];
@@ -256,8 +256,8 @@ void Game::run(RenderWindow& window) {
 	uniform_int_distribution<int> dist(0, orders.size() - 1);
 
 
-	
-	
+
+
 	// 주문 wstring으로 변환
 	wstring order = L"";
 	int numFruits = orders.size(); // 현재 레벨의 과일 개수
@@ -300,44 +300,44 @@ void Game::run(RenderWindow& window) {
 	//과일 시작 위치 설정 & 과일 개수 지정
 	if (isMix) {
 		if (selectedFruits[0] + selectedFruits[1] == "strawberryshinemusket" || selectedFruits[0] + selectedFruits[1] == "shinemusketstrawberry") {
-			size = 5;
-			startPosition -= shineMusketTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
+			size = 6;
+			startPosition -= shineMusketTexture.getSize().x * size / 2 + strawberryTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberrypineapple" || selectedFruits[0] + selectedFruits[1] == "pineapplestrawberry") {
-			size = 5;
-			startPosition -= pineappleTexture.getSize().x * 2 + strawberryTexture.getSize().x * 3;
+			size = 6;
+			startPosition -= pineappleTexture.getSize().x * size / 2 + strawberryTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberryblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapestrawberry") {
-			size = 5;
-			startPosition -= strawberryTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 2;
+			size = 6;
+			startPosition -= strawberryTexture.getSize().x * size / 2 + blackGrapeTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberrymandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinstrawberry") {
 			size = 4;
-			startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+			startPosition -= strawberryTexture.getSize().x * size / 2 + mandarinTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketpineapple" || selectedFruits[0] + selectedFruits[1] == "pineappleshinemusket") {
 			size = 6;
-			startPosition -= shineMusketTexture.getSize().x * 3 + pineappleTexture.getSize().x * 3;
+			startPosition -= shineMusketTexture.getSize().x * size / 2 + pineappleTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketmandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinshinemusket") {
-			size = 5;
-			startPosition -= strawberryTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+			size = 6;
+			startPosition -= strawberryTexture.getSize().x * size / 2 + mandarinTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapeshinemusket") {
 			size = 8;
-			startPosition -= shineMusketTexture.getSize().x * 4 + blackGrapeTexture.getSize().x * 4;
+			startPosition -= shineMusketTexture.getSize().x * size / 2 + blackGrapeTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "pineappleblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapepineapple") {
 			size = 6;
-			startPosition -= pineappleTexture.getSize().x * 3 + blackGrapeTexture.getSize().x * 3;
+			startPosition -= pineappleTexture.getSize().x * size / 2 + blackGrapeTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "pineapplemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinpineapple") {
 			size = 4;
-			startPosition -= pineappleTexture.getSize().x * 2 + mandarinTexture.getSize().x * 2;
+			startPosition -= pineappleTexture.getSize().x * size / 2 + mandarinTexture.getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "black grapemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinblack grape") {
 			size = 6;
-			startPosition -= blackGrapeTexture.getSize().x * 3 + mandarinTexture.getSize().x * 3;
+			startPosition -= blackGrapeTexture.getSize().x * size / 2 + mandarinTexture.getSize().x * size / 2;
 		}
 	}
 	else {
@@ -364,13 +364,13 @@ void Game::run(RenderWindow& window) {
 	}
 
 
-	
+
 
 	//레벨업 화면
 	Clock levelupClock;
 	Time levelupCount = seconds(3);
 
-	
+
 
 
 	//성공,실패 화면
@@ -461,6 +461,7 @@ void Game::run(RenderWindow& window) {
 			elapsed = level4Clock.getElapsedTime();
 			break;
 
+
 		default:
 			break;
 		}
@@ -491,7 +492,7 @@ void Game::run(RenderWindow& window) {
 				}
 			}
 		}
-		else if (sale >= 10000) {
+		else if (sale >= 10000 && sale < 15000) {
 			if (level != 4) {
 				level = 4;
 				cout << "레벨 4 달성!" << endl;
@@ -503,24 +504,22 @@ void Game::run(RenderWindow& window) {
 				}
 			}
 		}
-	
-		// 레벨 4가 되면 Happy_frame.png 표시
-		if (level == 4) {
-			
+		else if (sale >= 16000) {
+				cout << "해피엔딩 달성" << endl;
 				happyFrameSprite.setTexture(happyFrameTexture);
 				window.clear();
 				window.draw(happyFrameSprite);
 				window.display();
-
-				
-				sf::sleep(sf::seconds(2)); // 이미지를 표시한 후 잠시 대기 (원하는 대기 시간으로 변경 가능)
+				sf::sleep(sf::seconds(5)); // 이미지를 표시한 후 잠시 대기 (원하는 대기 시간으로 변경 가능)
 				window.close();
-			
-			
-		}
+
+			}
+		
+
+		
 
 		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {
-			
+
 			// 시간 종료 처리
 			cout << "레벨 : " << level << " 시간 초과!" << endl;
 
@@ -530,7 +529,7 @@ void Game::run(RenderWindow& window) {
 			window.display();
 			sleep(seconds(20));
 			window.close();
-			
+
 		}
 		// 레벨업 화면 보이게 하기 & 3초 뒤 사라지기
 		if (showingLevelup) {
@@ -637,7 +636,7 @@ void Game::run(RenderWindow& window) {
 
 
 
-		
+
 		//클릭했을 때
 		if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 			isClicked = true;  //클릭함
@@ -764,9 +763,9 @@ void Game::run(RenderWindow& window) {
 			//cout << "시간 초과!" << endl;
 			//window.close();
 		}
-		
 
-	   // 시간을 문자열로 변환하여 텍스트에 설정
+
+		// 시간을 문자열로 변환하여 텍스트에 설정
 		int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
 		timerText.setString(to_string(remainingTime));
 
@@ -812,3 +811,4 @@ void Game::run(RenderWindow& window) {
 		window.display();
 
 	}
+}
