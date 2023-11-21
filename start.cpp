@@ -28,8 +28,8 @@ void Start::run(RenderWindow& window) {
     button2.setPosition(900, 650);
 
     Music bgm;
-   // bgm.openFromFile("music/중국음악.ogg");
-    //bgm.play();  //재생
+   bgm.openFromFile("music/중국음악.ogg");
+    bgm.play();  //재생
 
     while (window.isOpen()) {
         Event event;

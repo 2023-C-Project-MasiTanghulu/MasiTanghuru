@@ -4,7 +4,7 @@
 using namespace sf;
 
 void Game_Rule::run(RenderWindow& window) {
-    window.create(VideoMode(1500, 800), "게임방법");
+    window.create(VideoMode(1500, 800), L"게임방법");
     Start start;  //시작화면 객체 생성
     Texture frame;  // 게임 화면
     if (!frame.loadFromFile("image/Rule_frame.png")) {
