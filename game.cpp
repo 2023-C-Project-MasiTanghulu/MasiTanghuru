@@ -5,6 +5,7 @@
 #include <sstream>
 #include "game.h"
 #include "fruit.h"
+#include <future>
 using namespace std;
 
 wstring convertToFruitName(const string& englishName) {
@@ -118,7 +119,7 @@ void Game::run(RenderWindow& window) {
 	Texture speechBubble;
 	speechBubble.loadFromFile("image/speechBubble.png");  //말풍선 이미지
 	Sprite speechBubbleSprite(speechBubble);  //말풍선 이미지 할당
-	speechBubbleSprite.setPosition(0, 0);  //말풍선 위치 설정
+	speechBubbleSprite.setPosition(30, 30);  //말풍선 위치 설정
 
 	// 3초 후에 말풍선을 숨기는 함수
 	auto clearSpeechBubble = [&speechBubbleSprite]() {
@@ -133,13 +134,13 @@ void Game::run(RenderWindow& window) {
 	Texture failTexture;  //실패
 	failTexture.loadFromFile("image/fail.png");  //실패 이미지
 	Sprite failSprite(failTexture);  //실패 이미지 할당
-	failSprite.setPosition(0, 10);//실패 이미지 위치 설정
+	failSprite.setPosition(50, 200);//실패 이미지 위치 설정
 
 	//성공이미지
 	Texture perfectTexture;  //성공
 	perfectTexture.loadFromFile("image/perfect.png");  //실패 이미지
 	Sprite perfectSprite(perfectTexture);  //성공 이미지 할당
-	perfectSprite.setPosition(0, 3);//성공 이미지 위치 설정
+	perfectSprite.setPosition(50, 200);//성공 이미지 위치 설정
 
 	//레벨업 이미지
 	Texture levelupTexture;
@@ -191,7 +192,7 @@ void Game::run(RenderWindow& window) {
 	Clock clock;
 	const Time timeLimit = seconds(60); // 60초로 설정
 
-	//판매하기 : 텍스트 설정
+	//판매액 : 텍스트 설정
 	Text saleText;  // 텍스트 객체 생성
 	saleText.setFont(font);  // 폰트 설정
 	saleText.setCharacterSize(50);  // 글자 크기 설정
@@ -213,7 +214,7 @@ void Game::run(RenderWindow& window) {
 	bubbleText.setCharacterSize(50);
 	bubbleText.setFillColor(Color::Black);
 	bubbleText.setStyle(Text::Bold);
-	bubbleText.setPosition(50, 50); // 텍스트 위치 설정
+	bubbleText.setPosition(100, 80); // 텍스트 위치 설정
 
 	// 3초 후에 말풍선 내용을 지우는 함수
 	auto clearBubbleText = [&bubbleText]() {
@@ -228,7 +229,7 @@ void Game::run(RenderWindow& window) {
 	Texture Sale_btn_texture;
 	Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
 	Sprite Sale_btn_sprite(Sale_btn_texture);
-	Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
+	Sale_btn_sprite.setPosition(30, 30); // 버튼 위치 설정
 
 
 
@@ -367,17 +368,9 @@ void Game::run(RenderWindow& window) {
 	}
 
 
-
-
-
-
-
 	//레벨업 화면
 	Clock levelupClock;
 	Time levelupCount = seconds(3);
-
-
-
 
 	//성공,실패 화면
 	Clock perfectClock;
@@ -526,7 +519,6 @@ void Game::run(RenderWindow& window) {
 
 
 
-
 		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {
 
 			// 시간 종료 처리
@@ -565,43 +557,102 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
+		//다시 주문하면 나오는 내용
 		if (againSale) {
 			// 성공 또는 실패 이미지를 먼저 그린다.
 			if (showingPerfect) {
 				window.draw(perfectSprite);
 			}
-			else if (showingFail) {
+			else {
 				window.draw(failSprite);
 			}
-			// 말풍선 이미지
-			Texture speechBubble;
-			speechBubble.loadFromFile("image/speechBubble.png");
-			Sprite speechBubbleSprite(speechBubble);
-			speechBubbleSprite.setPosition(50, 50);
 
-			// 2초 뒤에 말풍선을 숨기는 함수
-			auto clearSpeechBubble = [&]() {
-				this_thread::sleep_for(chrono::seconds(3));
-				speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
+			// 말풍선 이미지 생성
+			Sprite speechBubbleSprite(speechBubble);
+			speechBubbleSprite.setPosition(20, 20);
+
+			// 말풍선 텍스트 설정
+			bubbleText.setFont(font);
+			bubbleText.setCharacterSize(50);
+			bubbleText.setFillColor(Color::Black);
+			bubbleText.setStyle(Text::Bold);
+			bubbleText.setPosition(70, 70);
+
+
+			//랜덤 주문 
+			// 과일 주문 목록
+			vector<vector<string>> levelFruits = {
+				{"shinemusket", "strawberry"},                // 레벨 1
+				{"strawberry", "shinemusket", "pineapple"},   // 레벨 2
+				{"strawberry", "shinemusket", "pineapple", "mandarin"},  // 레벨 3
+				{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // 레벨 4
 			};
+
+			// 현재 레벨에 해당하는 주문 목록 가져오기
+			vector<string> orders = levelFruits[level - 1];
+
+			// 주문 랜덤 돌리기
+			mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+			uniform_int_distribution<int> dist(0, orders.size() - 1);
+
+			// 주문 wstring으로 변환
+			wstring order = L"";
+			int numFruits = orders.size(); // 현재 레벨의 과일 개수
+			vector<string> selectedFruits; // 선택한 과일들을 저장할 벡터
+			int randomFruitIndex = 0;
+
+			// 레벨에 맞게 주문 생성
+			if (numFruits > 0) {
+				// 랜덤으로 선택할 과일 개수
+				int numSelectedFruits = dist(rng) % 2 + 1;
+
+				if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
+					isMix = true;
+				}
+				else {
+					isMix = false;
+				}
+				for (int i = 0; i < numSelectedFruits; ++i) {
+					// 이미 선택된 과일이 나오지 않도록 반복해서 선택
+					do {
+						randomFruitIndex = dist(rng);
+					} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
+
+					selectedFruits.push_back(orders[randomFruitIndex]);
+				}
+
+				// 선택한 과일들을 문자열로 합치기
+				for (int i = 0; i < numSelectedFruits; ++i) {
+					string selectedFruit = selectedFruits[i];
+					order += convertToFruitName(selectedFruits[i]);
+
+					// 마지막 과일이 아니면 쉼표 추가
+					if (i < numSelectedFruits - 1) {
+						order += L",";
+					}
+				}
+			}
+
+			bubbleText.setString(order + L" 탕후루 주세요.");
 
 			// 2초 동안 이미지를 보여준 후 말풍선 표시
 			window.display();
 			this_thread::sleep_for(chrono::seconds(2));
 
-			// 말풍선 표시
+			// 말풍선 이미지와 텍스트를 동시에 그린 후 3초 뒤에 말풍선을 숨김
 			window.draw(speechBubbleSprite);
+			window.draw(bubbleText);
 			window.display();
 
-			// 디버깅을 위해 추가한 부분
-			cout << "말풍선 표시 완료" << endl;
+			this_thread::sleep_for(chrono::seconds(3));
+			speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
 
-			// 3초 뒤에 말풍선을 숨김
-			thread clearThread(clearSpeechBubble);  // 새 스레드에서 실행
-			clearThread.join();  // 스레드가 끝날 때까지 대기
+			// 3초 뒤에 말풍선 내용 지움
+			bubbleText.setString(L"");
 
 			againSale = false;
 		}
+		
 
 
 
@@ -688,12 +739,6 @@ void Game::run(RenderWindow& window) {
 						cout << "다시 판매받기" << endl;
 					}
 				}
-				else {
-					againSale = false;
-				}
-
-
-
 
 
 			}
@@ -702,14 +747,9 @@ void Game::run(RenderWindow& window) {
 			Vector2i mousePosition = Mouse::getPosition(window);
 
 
-
-
 			//클릭했을 때
 			if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				isClicked = true;  //클릭함
-
-
-
 
 				//커서가 과일 박스 위에 있다면 그 과일을 잡음
 				if (level >= 4 && blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
