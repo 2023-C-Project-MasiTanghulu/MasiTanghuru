@@ -26,6 +26,8 @@ wstring convertToFruitName(const string& englishName) {
 };
 
 
+
+
 void Game::run(RenderWindow& window) {
 	window.create(VideoMode(1500, 800), L"탕후루 만들기");
 
@@ -38,21 +40,6 @@ void Game::run(RenderWindow& window) {
 	cuttingBoard.loadFromFile("image/CuttingBoard.png");  //도마 이미지
 	Sprite cuttingBoardSprite(cuttingBoard);  //도마 이미지 할당
 	cuttingBoardSprite.setPosition(20, 310);  //도마 위치 설정
-
-	Texture speechBubble;  //말풍선
-	speechBubble.loadFromFile("image/speechBubble.png");  //말풍선 이미지
-	Sprite speechBubbleSprite(speechBubble);  //말풍선 이미지 할당
-	speechBubbleSprite.setPosition(0, 0);  //말풍선 위치 설정
-
-	// 3초 후에 말풍선을 숨기는 함수
-	auto clearSpeechBubble = [&speechBubbleSprite]() {
-		this_thread::sleep_for(chrono::seconds(3));
-		speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
-	};
-
-	// 3초 뒤에 말풍선을 숨김
-	thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
-
 
 	Texture boxildTexture; //박스 뚜껑
 	boxildTexture.loadFromFile("image/boxlid.png");
@@ -127,11 +114,26 @@ void Game::run(RenderWindow& window) {
 	Sprite wastebasket(wastebasketTexture);  //쓰레기통 이미지 할당
 	wastebasket.setPosition(20, 230);
 
+	//말풍선 이미지
+	Texture speechBubble;
+	speechBubble.loadFromFile("image/speechBubble.png");  //말풍선 이미지
+	Sprite speechBubbleSprite(speechBubble);  //말풍선 이미지 할당
+	speechBubbleSprite.setPosition(0, 0);  //말풍선 위치 설정
+
+	// 3초 후에 말풍선을 숨기는 함수
+	auto clearSpeechBubble = [&speechBubbleSprite]() {
+		this_thread::sleep_for(chrono::seconds(3));
+		speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
+	};
+
+	// 3초 뒤에 말풍선을 숨김
+	thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
+
 	//실패이미지
 	Texture failTexture;  //실패
 	failTexture.loadFromFile("image/fail.png");  //실패 이미지
 	Sprite failSprite(failTexture);  //실패 이미지 할당
-	failSprite.setPosition(0, 3);//실패 이미지 위치 설정
+	failSprite.setPosition(0, 10);//실패 이미지 위치 설정
 
 	//성공이미지
 	Texture perfectTexture;  //성공
@@ -165,6 +167,8 @@ void Game::run(RenderWindow& window) {
 	bool showingFail = false; //실패
 	bool showingPerfect = false;//성공
 	bool showingLevelup = false;//레벨업
+	bool againSaleClick = false; //다시 주문 
+	bool againSale = false;
 
 	int size = 0;  //꽂을 과일 갯수 정하는 변수
 	int startPosition = 650;  //과일 꽂기 시작 위치
@@ -220,11 +224,12 @@ void Game::run(RenderWindow& window) {
 	// 3초 뒤에 말풍선 내용 지움
 	thread(clearBubbleText).detach();
 
-	// 판매하기 버튼
+	// 판매하기 버튼 이미지
 	Texture Sale_btn_texture;
 	Sale_btn_texture.loadFromFile("image/Sale_btn.png"); // 버튼 이미지 불러오기
 	Sprite Sale_btn_sprite(Sale_btn_texture);
 	Sale_btn_sprite.setPosition(50, 50); // 버튼 위치 설정
+
 
 
 	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
@@ -254,8 +259,6 @@ void Game::run(RenderWindow& window) {
 	// 주문 랜덤 돌리기
 	mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 	uniform_int_distribution<int> dist(0, orders.size() - 1);
-
-
 
 
 	// 주문 wstring으로 변환
@@ -366,6 +369,9 @@ void Game::run(RenderWindow& window) {
 
 
 
+
+
+
 	//레벨업 화면
 	Clock levelupClock;
 	Time levelupCount = seconds(3);
@@ -385,20 +391,24 @@ void Game::run(RenderWindow& window) {
 
 	// 레벨별 제한 시간 설정
 	const Time level1TimeLimit = seconds(60);
-	const Time level2TimeLimit = seconds(70);
-	const Time level3TimeLimit = seconds(65);
-	const Time level4TimeLimit = seconds(65);
+	const Time level2TimeLimit = seconds(60);
+	const Time level3TimeLimit = seconds(60);
+	const Time level4TimeLimit = seconds(60);
 
+	//실제 지나는 시간
 	Time elapsed;
+
+	//현재 레벨에 맞는 시간 제한
 	Time currentLevelTimeLimit;
 
 
-	// 레벨별 Clock 객체 선언
+	// 레벨별 시간측정 객체 선언
 	Clock level1Clock;
 	Clock level2Clock;
 	Clock level3Clock;
 	Clock level4Clock;
 
+	//initializeLevel : 게임 시간을 초기화 시키는 역할
 	auto initializeLevel = [&]() {
 		switch (level) {
 		case 1:
@@ -441,9 +451,11 @@ void Game::run(RenderWindow& window) {
 	};
 
 	initializeLevel();
+
+
 	while (window.isOpen()) {
 		Event event;
-		//시간 체크
+		//현재 게임 레벨에 따라 해당 레벨의 경과 시간(elapsed)을 얻어오는 코드
 		switch (level) {
 		case 1:
 			elapsed = level1Clock.getElapsedTime();
@@ -467,7 +479,7 @@ void Game::run(RenderWindow& window) {
 		}
 
 		// 판매액에 따라 레벨 결정
-		if (sale > 6000 && sale < 8000) {
+		if (sale >= 6000 && sale < 13000) {
 			if (level != 2) {
 				level = 2;
 				cout << "레벨 2 달성!" << endl;
@@ -476,11 +488,10 @@ void Game::run(RenderWindow& window) {
 					levelupClock.restart();
 					cout << "레벨 2 화면이 나타남" << endl;
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
-					clock.restart();
 				}
 			}
 		}
-		else if (sale >= 9000 && sale < 10000) {
+		else if (sale >= 13000 && sale < 19000) {
 			if (level != 3) {
 				level = 3;
 				cout << "레벨 3 달성!" << endl;
@@ -488,11 +499,10 @@ void Game::run(RenderWindow& window) {
 					showingLevelup = true;
 					levelupClock.restart();
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
-					clock.restart();
 				}
 			}
 		}
-		else if (sale >= 10000 && sale < 15000) {
+		else if (sale >= 19000 && sale < 21000) {
 			if (level != 4) {
 				level = 4;
 				cout << "레벨 4 달성!" << endl;
@@ -500,29 +510,29 @@ void Game::run(RenderWindow& window) {
 					showingLevelup = true;
 					levelupClock.restart();
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
-					clock.restart();
 				}
 			}
 		}
 		else if (sale >= 16000) {
-				cout << "해피엔딩 달성" << endl;
-				happyFrameSprite.setTexture(happyFrameTexture);
-				window.clear();
-				window.draw(happyFrameSprite);
-				window.display();
-				sf::sleep(sf::seconds(5)); // 이미지를 표시한 후 잠시 대기 (원하는 대기 시간으로 변경 가능)
-				window.close();
+			cout << "해피엔딩 달성" << endl;
+			happyFrameSprite.setTexture(happyFrameTexture);
+			window.clear();
+			window.draw(happyFrameSprite);
+			window.display();
+			sleep(seconds(10)); // 이미지를 표시한 후 잠시 대기 
+			window.close();
 
-			}
-		
+		}
 
-		
+
+
 
 		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {
 
 			// 시간 종료 처리
 			cout << "레벨 : " << level << " 시간 초과!" << endl;
 
+			//배드엔딩 
 			badFrameSprite.setTexture(badFrameTexture);
 			window.clear();
 			window.draw(badFrameSprite);
@@ -539,20 +549,61 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
-		//성공 화면에 보이게 하기 & 2초 뒤 사라지게
+		// 성공 화면에 보이게 하기 & 2초 뒤 사라지게
 		if (showingPerfect) {
 			if (perfectClock.getElapsedTime() >= perfectCount) {
 				showingPerfect = false;
 				cout << "성공화면";
 			}
 		}
-		//실패 화면에 보이게 하기 & 2초 뒤 사라지게
+
+		// 실패 화면에 보이게 하기 & 2초 뒤 사라지게
 		if (showingFail) {
 			if (failClock.getElapsedTime() >= failCount) {
 				showingFail = false;
 				cout << "실패화면";
 			}
 		}
+
+		if (againSale) {
+			// 성공 또는 실패 이미지를 먼저 그린다.
+			if (showingPerfect) {
+				window.draw(perfectSprite);
+			}
+			else if (showingFail) {
+				window.draw(failSprite);
+			}
+			// 말풍선 이미지
+			Texture speechBubble;
+			speechBubble.loadFromFile("image/speechBubble.png");
+			Sprite speechBubbleSprite(speechBubble);
+			speechBubbleSprite.setPosition(50, 50);
+
+			// 2초 뒤에 말풍선을 숨기는 함수
+			auto clearSpeechBubble = [&]() {
+				this_thread::sleep_for(chrono::seconds(3));
+				speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
+			};
+
+			// 2초 동안 이미지를 보여준 후 말풍선 표시
+			window.display();
+			this_thread::sleep_for(chrono::seconds(2));
+
+			// 말풍선 표시
+			window.draw(speechBubbleSprite);
+			window.display();
+
+			// 디버깅을 위해 추가한 부분
+			cout << "말풍선 표시 완료" << endl;
+
+			// 3초 뒤에 말풍선을 숨김
+			thread clearThread(clearSpeechBubble);  // 새 스레드에서 실행
+			clearThread.join();  // 스레드가 끝날 때까지 대기
+
+			againSale = false;
+		}
+
+
 
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
@@ -566,6 +617,7 @@ void Game::run(RenderWindow& window) {
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
 				bool isPerfect = false;  //잘 만들었는지 체크용
+				//다시 주문
 
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
 					//맞게 만들었는지 검사
@@ -604,7 +656,6 @@ void Game::run(RenderWindow& window) {
 						}
 					}
 
-
 					if (isPerfect) { //제대로 만들었다면
 						cout << endl << "성공~" << endl;
 						sale += 3000;
@@ -629,186 +680,207 @@ void Game::run(RenderWindow& window) {
 
 
 				}
-			}
-		}
 
-		Vector2i mousePosition = Mouse::getPosition(window);
+				// 판매하기 버튼을 눌렀을 때
+				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
+					againSale = true;
+					if (againSale) {
+						cout << "다시 판매받기" << endl;
+					}
+				}
+				else {
+					againSale = false;
+				}
 
 
 
 
-		//클릭했을 때
-		if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-			isClicked = true;  //클릭함
 
-			//커서가 과일 박스 위에 있다면 그 과일을 잡음
-			if (level >= 4 && blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
-				Fruit blackGrape("black grape");  //블랙 사파이어 객체 생성
-				blackGrape.sprite.setTexture(blackGrapeTexture);  //블랙 사파이어 이미지 할당
-				blackGrape.sprite.setPosition(1200, 1000);  //블랙 사파이어 위치 설정
-				fruits.push_back(blackGrape);  //벡터에 추가
 			}
-			else if (level >= 1 && strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
-				Fruit strawberry("strawberry");  //딸기 객체 생성
-				strawberry.sprite.setTexture(strawberryTexture);  //딸기 이미지 할당
-				strawberry.sprite.setPosition(1200, 1000);  //딸기 위치 설정
-				fruits.push_back(strawberry);  //벡터에 추가
-			}
-			else if (level >= 1 && shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
-				Fruit shineMusket("shinemusket");  //샤인머스켓 객체 생성
-				shineMusket.sprite.setTexture(shineMusketTexture);  //샤인머스켓 이미지 할당
-				shineMusket.sprite.setPosition(1200, 1000);  //샤인머스켓 위치 설정
-				fruits.push_back(shineMusket);  //벡터에 추가
-			}
-			else if (level >= 3 && mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
-				Fruit mandarin("mandarin");  //귤 객체 생성
-				mandarin.sprite.setTexture(mandarinTexture);  //귤 이미지 할당
-				mandarin.sprite.setPosition(1200, 1000);  //귤 위치 설정
-				fruits.push_back(mandarin);  //벡터에 추가
-			}
-			else if (level >= 2 && pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
-				Fruit pineapple("pineapple");  //파인애플 객체 생성
-				pineapple.sprite.setTexture(pineappleTexture);  //파인애플 이미지 할당
-				pineapple.sprite.setPosition(1200, 1000);  //파인애플 위치 설정
-				fruits.push_back(pineapple);  //벡터에 추가
-			}
-			else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition)) && fruits.empty()) {  //fruits 벡터가 비었으면 꼬치 잡음
-				stick.setPosition(1200, 1000);  //원래 꼬치 멀리 보내버림
-				isStickGrabbed = true;  //꼬치 잡음
-			}
-			//과일을 끝까지 다 꽂지 않으면 국자를 잡을 수 없음
-			else if (fruits.size() == size && ladleSprite.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //국자
-				ladleSprite.setPosition(1200, 1000);  //원래 국자 멀리 보내버림
-				ladleSprite.setRotation(0);  //국자 각도 설정
-				isLadleGrabbed = true;  //국자 잡음
-			}
-			if (wastebasket.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //쓰레기통 클릭
-				fruits.clear();  //과일 벡터 비움
-				stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
-			}
-		}
 
-		int positionX = startPosition;  //과일 x 위치 설정
-		int positionY = 560;  //과일 y 위치 설정
 
-		// 마우스 이동 중일 때
-		if (event.type == Event::MouseMoved) {
-			//드래그하면 과일을 마우스 위치로 이동
 			Vector2i mousePosition = Mouse::getPosition(window);
-			if (isStickGrabbed) {
-				Vector2f centerPosition(static_cast<float>(mousePosition.x - stick.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - stick.getLocalBounds().height / 2));
-				stick.setPosition(centerPosition);  //꼬치 잡는 위치 설정
-			}
-			if (isLadleGrabbed) {
-				Vector2f centerPosition(static_cast<float>(mousePosition.x - ladleSprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - ladleSprite.getLocalBounds().height / 2));
-				ladleSprite.setPosition(centerPosition);  //국자 잡는 위치 설정
 
-				if (sugarPot.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //설탕물 냄비에 국자를 갖다 대면
-					ladleSprite.setTexture(sugarLadleTexture);  //설탕물 국자로 바뀜
-					isSugarLadle = true;  //설탕물 있음
+
+
+
+			//클릭했을 때
+			if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+				isClicked = true;  //클릭함
+
+
+
+
+				//커서가 과일 박스 위에 있다면 그 과일을 잡음
+				if (level >= 4 && blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
+					Fruit blackGrape("black grape");  //블랙 사파이어 객체 생성
+					blackGrape.sprite.setTexture(blackGrapeTexture);  //블랙 사파이어 이미지 할당
+					blackGrape.sprite.setPosition(1200, 1000);  //블랙 사파이어 위치 설정
+					fruits.push_back(blackGrape);  //벡터에 추가
+				}
+				else if (level >= 1 && strawberryBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //딸기 잡음
+					Fruit strawberry("strawberry");  //딸기 객체 생성
+					strawberry.sprite.setTexture(strawberryTexture);  //딸기 이미지 할당
+					strawberry.sprite.setPosition(1200, 1000);  //딸기 위치 설정
+					fruits.push_back(strawberry);  //벡터에 추가
+				}
+				else if (level >= 1 && shineMusketBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //샤인머스켓 잡음
+					Fruit shineMusket("shinemusket");  //샤인머스켓 객체 생성
+					shineMusket.sprite.setTexture(shineMusketTexture);  //샤인머스켓 이미지 할당
+					shineMusket.sprite.setPosition(1200, 1000);  //샤인머스켓 위치 설정
+					fruits.push_back(shineMusket);  //벡터에 추가
+				}
+				else if (level >= 3 && mandarinBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //귤 잡음
+					Fruit mandarin("mandarin");  //귤 객체 생성
+					mandarin.sprite.setTexture(mandarinTexture);  //귤 이미지 할당
+					mandarin.sprite.setPosition(1200, 1000);  //귤 위치 설정
+					fruits.push_back(mandarin);  //벡터에 추가
+				}
+				else if (level >= 2 && pineappleBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //파인애플 잡음
+					Fruit pineapple("pineapple");  //파인애플 객체 생성
+					pineapple.sprite.setTexture(pineappleTexture);  //파인애플 이미지 할당
+					pineapple.sprite.setPosition(1200, 1000);  //파인애플 위치 설정
+					fruits.push_back(pineapple);  //벡터에 추가
+				}
+				else if (stickBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition)) && fruits.empty()) {  //fruits 벡터가 비었으면 꼬치 잡음
+					stick.setPosition(1200, 1000);  //원래 꼬치 멀리 보내버림
+					isStickGrabbed = true;  //꼬치 잡음
+				}
+				//과일을 끝까지 다 꽂지 않으면 국자를 잡을 수 없음
+				else if (fruits.size() == size && ladleSprite.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //국자
+					ladleSprite.setPosition(1200, 1000);  //원래 국자 멀리 보내버림
+					ladleSprite.setRotation(0);  //국자 각도 설정
+					isLadleGrabbed = true;  //국자 잡음
+				}
+				if (wastebasket.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //쓰레기통 클릭
+					fruits.clear();  //과일 벡터 비움
+					stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
 				}
 			}
-			for (Fruit& fruit : fruits) {  //과일
-				if (fruit.grabbed) {
-					Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
-					fruit.sprite.setPosition(centerPosition);  //과일 잡는 위치 설정
-				}
-				if (isSugarLadle && ladleSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) && !fruit.isCoated) {  //설탕물 국자일때 과일에 닿으면 코팅됨
-					ladleSprite.setRotation(-20);  //국자 살짝 기울임
-					fruit.sugarCoating();  //설탕 코팅 이미지로 바꿈
-				}
-			}
-		}
 
-		//국자에서 마우스 뗐을 때
-		if (isLadleGrabbed && event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-			isLadleGrabbed = false;  //국자 안 잡음
-			isSugarLadle = false;  //설탕물 없음
-			ladleSprite.setTexture(ladleTexture);  //원래 국자 이미지로 설정
-			ladleSprite.setPosition(710, 250);  //국자 원래 위치로 되돌려놓음
-			ladleSprite.setRotation(90);  //국자 원래 각도로 돌려놓음
-		}
+			int positionX = startPosition;  //과일 x 위치 설정
+			int positionY = 560;  //과일 y 위치 설정
 
-		//마우스 뗐을 때
-		if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-			isClicked = false;  //클릭 안함
-			if (isStickGrabbed) {
-				if (!stick.getGlobalBounds().intersects(cuttingBoardSprite.getGlobalBounds())) {  //꼬치를 도마 위에 안 두면
-					stick.setPosition(1200, 1000);
+			// 마우스 이동 중일 때
+			if (event.type == Event::MouseMoved) {
+				//드래그하면 과일을 마우스 위치로 이동
+				Vector2i mousePosition = Mouse::getPosition(window);
+				if (isStickGrabbed) {
+					Vector2f centerPosition(static_cast<float>(mousePosition.x - stick.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - stick.getLocalBounds().height / 2));
+					stick.setPosition(centerPosition);  //꼬치 잡는 위치 설정
 				}
-				else {
-					stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
-				}
-				isStickGrabbed = false;
-			}
+				if (isLadleGrabbed) {
+					Vector2f centerPosition(static_cast<float>(mousePosition.x - ladleSprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - ladleSprite.getLocalBounds().height / 2));
+					ladleSprite.setPosition(centerPosition);  //국자 잡는 위치 설정
 
-			for (Fruit& fruit : fruits) {  //과일
-				fruit.grabbed = false;
-				//과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
-				if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
-					fruits.pop_back();  //객체에서 삭제
+					if (sugarPot.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //설탕물 냄비에 국자를 갖다 대면
+						ladleSprite.setTexture(sugarLadleTexture);  //설탕물 국자로 바뀜
+						isSugarLadle = true;  //설탕물 있음
+					}
 				}
-				else {
-					fruit.sprite.setPosition(positionX, positionY - fruit.sprite.getGlobalBounds().height / 2);  //과일 위치 자동으로 설정
-					positionX += fruit.sprite.getGlobalBounds().width - 6;  //가로 길이 누적
+				for (Fruit& fruit : fruits) {  //과일
+					if (fruit.grabbed) {
+						Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
+						fruit.sprite.setPosition(centerPosition);  //과일 잡는 위치 설정
+					}
+					if (isSugarLadle && ladleSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) && !fruit.isCoated) {  //설탕물 국자일때 과일에 닿으면 코팅됨
+						ladleSprite.setRotation(-20);  //국자 살짝 기울임
+						fruit.sugarCoating();  //설탕 코팅 이미지로 바꿈
+					}
 				}
 			}
+
+			//국자에서 마우스 뗐을 때
+			if (isLadleGrabbed && event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+				isLadleGrabbed = false;  //국자 안 잡음
+				isSugarLadle = false;  //설탕물 없음
+				ladleSprite.setTexture(ladleTexture);  //원래 국자 이미지로 설정
+				ladleSprite.setPosition(710, 250);  //국자 원래 위치로 되돌려놓음
+				ladleSprite.setRotation(90);  //국자 원래 각도로 돌려놓음
+			}
+
+			//마우스 뗐을 때
+			if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+				isClicked = false;  //클릭 안함
+				if (isStickGrabbed) {
+					if (!stick.getGlobalBounds().intersects(cuttingBoardSprite.getGlobalBounds())) {  //꼬치를 도마 위에 안 두면
+						stick.setPosition(1200, 1000);
+					}
+					else {
+						stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
+					}
+					isStickGrabbed = false;
+				}
+
+				for (Fruit& fruit : fruits) {  //과일
+					fruit.grabbed = false;
+					//과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
+					if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
+						fruits.pop_back();  //객체에서 삭제
+					}
+					else {
+						fruit.sprite.setPosition(positionX, positionY - fruit.sprite.getGlobalBounds().height / 2);  //과일 위치 자동으로 설정
+						positionX += fruit.sprite.getGlobalBounds().width - 6;  //가로 길이 누적
+					}
+				}
+
+
+			}
+
+			//탕후루 게임 끝
+
+			//제한시간 : 시간 지나는 코드
+			Time elapsed = clock.getElapsedTime();
+			if (elapsed >= timeLimit) {
+				//cout << "시간 초과!" << endl;
+				//window.close();
+			}
+
+
+			// 시간을 문자열로 변환하여 텍스트에 설정
+			int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
+			timerText.setString(to_string(remainingTime));
+
+
+			window.clear();
+			//↓ 갈수록 레이어가 위임
+			window.draw(cuttingBoardSprite);  //도마 draw
+			window.draw(sugarPot);  //설탕물 냄비 draw
+			window.draw(frameSprite);  //게임화면 draw
+			window.draw(ladleSprite);  //국자 draw
+			window.draw(speechBubbleSprite);  //말풍선  draw
+			window.draw(blackGrapeBox);  //블랙 사파이어 박스 draw
+			window.draw(strawberryBox);  //딸기 박스 draw
+			window.draw(shineMusketBox);  //샤인머스켓 박스 draw
+			window.draw(mandarinBox);  //귤 박스 draw
+			window.draw(pineappleBox);  //파인애플 박스 draw
+			window.draw(stickBox);  //꼬치 박스 draw
+			window.draw(stick);  //꼬치 draw
+			window.draw(wastebasket);  //쓰레기통 draw
+			for (const Fruit& fruit : fruits) { //과일 draw
+				window.draw(fruit.sprite);
+			}
+			if (Sale_btnVisible) {
+				window.draw(Sale_btn_sprite);
+			}
+			window.draw(ladleSprite);  //국자
+			window.draw(timerText); // 제한 시간 표시
+			window.draw(saleText); //판매액 표시
+			window.draw(levelText); //레벨 표시
+			window.draw(bubbleText);//말풍선 말
+			if (showingLevelup) {
+				window.draw(levelupSprite);//레벨업 화면
+			}
+			if (showingPerfect) {
+				window.draw(perfectSprite);  //성공
+			}
+			if (showingFail) {
+				window.draw(failSprite);  //실패
+			}
+			window.display();
+
 		}
-
-		//탕후루 게임 끝
-
-		//제한시간 : 시간 지나는 코드
-		Time elapsed = clock.getElapsedTime();
-		if (elapsed >= timeLimit) {
-			//cout << "시간 초과!" << endl;
-			//window.close();
-		}
-
-
-		// 시간을 문자열로 변환하여 텍스트에 설정
-		int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
-		timerText.setString(to_string(remainingTime));
-
-
-
-
-
-		window.clear();
-		//↓ 갈수록 레이어가 위임
-		window.draw(cuttingBoardSprite);  //도마 draw
-		window.draw(sugarPot);  //설탕물 냄비 draw
-		window.draw(frameSprite);  //게임화면 draw
-		window.draw(ladleSprite);  //국자 draw
-		window.draw(speechBubbleSprite);  //말풍선 draw
-		window.draw(blackGrapeBox);  //블랙 사파이어 박스 draw
-		window.draw(strawberryBox);  //딸기 박스 draw
-		window.draw(shineMusketBox);  //샤인머스켓 박스 draw
-		window.draw(mandarinBox);  //귤 박스 draw
-		window.draw(pineappleBox);  //파인애플 박스 draw
-		window.draw(stickBox);  //꼬치 박스 draw
-		window.draw(stick);  //꼬치 draw
-		window.draw(wastebasket);  //쓰레기통 draw
-		for (const Fruit& fruit : fruits) { //과일 draw
-			window.draw(fruit.sprite);
-		}
-		if (Sale_btnVisible) {
-			window.draw(Sale_btn_sprite);
-		}
-		window.draw(ladleSprite);  //국자
-		window.draw(timerText); // 제한 시간 표시
-		window.draw(saleText); //판매액 표시
-		window.draw(levelText); //레벨 표시
-		window.draw(bubbleText);//말풍선 말
-		if (showingLevelup) {
-			window.draw(levelupSprite);//레벨업 화면
-		}
-		if (showingPerfect) {
-			window.draw(perfectSprite);  //성공
-		}
-		if (showingFail) {
-			window.draw(failSprite);  //실패
-		}
-		window.display();
 
 	}
 }
+
