@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-//과일 클래스
+//과일 클래스 (이지연)
 class Fruit {
 public:
     Sprite sprite;  // 과일 이미지
