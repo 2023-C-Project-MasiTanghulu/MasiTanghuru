@@ -1,8 +1,6 @@
 ﻿#include "game.h"
 #include"game_rule.h"
 #include "main.h"
-#include "bad.h"
-#include "happy.h"
 #include <SFML/Audio.hpp>
 
 void Start::run(RenderWindow& window) {
@@ -27,10 +25,11 @@ void Start::run(RenderWindow& window) {
     Sprite button2(Rule_btn);
     button2.setPosition(900, 650);
 
-    Music bgm;
-    //bgm.openFromFile("music/중국음악.ogg");
-    //bgm.play();  //재생
+    Music bgm; //이지연
+    bgm.openFromFile("music/중국음악.ogg");
+    bgm.play();  //재생
 
+    //김세연
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {

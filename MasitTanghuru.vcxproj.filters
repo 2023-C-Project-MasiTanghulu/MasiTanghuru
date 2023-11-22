@@ -4,28 +4,10 @@
     <ClCompile Include="start.cpp">
       <Filter>소스파일</Filter>
     </ClCompile>
-    <ClCompile Include="bad.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="bad_test.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>소스파일</Filter>
     </ClCompile>
     <ClCompile Include="game_rule.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="happy.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="happy_test.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="levelup.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="levelup_test.cpp">
       <Filter>소스파일</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -33,16 +15,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bad.h">
-      <Filter>헤더파일</Filter>
-    </ClInclude>
     <ClInclude Include="fruit.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>헤더파일</Filter>
-    </ClInclude>
-    <ClInclude Include="happy.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
     <ClInclude Include="main.h">

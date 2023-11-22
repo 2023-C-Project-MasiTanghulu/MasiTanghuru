@@ -2,7 +2,7 @@
 #include "game_rule.h"
 #include "main.h"
 using namespace sf;
-
+//김세연
 void Game_Rule::run(RenderWindow& window) {
     window.create(VideoMode(1500, 800), L"게임방법");
     Start start;  //시작화면 객체 생성

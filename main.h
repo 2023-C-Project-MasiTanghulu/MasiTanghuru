@@ -1,6 +1,6 @@
 ﻿#ifndef MAIN_H
 #define MAIN_H
-
+//세연
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
