@@ -25,7 +25,7 @@ wstring convertToFruitName(const string& englishName) {
 	}
 };
 
-//주문 
+//주문 생성(김세연, 이지연)
 int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& orders, vector<string>& selectedFruits) {
 
 	selectedFruits.clear(); //벡터 초기화
@@ -40,15 +40,15 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 
 	// 현재 레벨에 해당하는 주문 목록 가져오기
 	orders = levelFruits[level - 1];
-	vector<Texture> ft;
+	vector<Texture> fruitTextureVector;  //주문한 과일의 Texture를 담을 벡터(이지연)
 
 	// 주문 wstring으로 변환
 	wstring order = L"";
-	int numFruits = orders.size(); // 현재 레벨의 과일 개수
+
 	int randomFruitIndex = 0;
-	int size = 0;
-	int startPosition = 650;
-	Texture texture;
+	int size = 0;  //과일 꽂을 개수(이지연)
+	int startPosition = 650;  //시작 지점(이지연)
+	Texture fruitTexture;  //주문 과일의 Texture(이지연)
 
 	// 주문 랜덤 돌리기
 	mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -60,7 +60,7 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 		// 랜덤으로 선택할 과일 개수
 		int numSelectedFruits = dist(rng) % 2 + 1;
 
-		if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
+		if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일(이지연)
 			isMix = true;
 		}
 		else {
@@ -74,8 +74,8 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 			} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
 
 			selectedFruits.push_back(orders[randomFruitIndex]);
-			texture.loadFromFile("image/" + orders[randomFruitIndex] + ".png");
-			ft.push_back(texture);
+			fruitTexture.loadFromFile("image/" + orders[randomFruitIndex] + ".png");  //과일 Texture 설정(이지연)
+			fruitTextureVector.push_back(fruitTexture);  //과일 Texture를 벡터에 넣음(이지연)
 		}
 
 		// 선택한 과일들을 문자열로 합치기
@@ -88,69 +88,71 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 			}
 		}
 	}
-	//과일 시작 위치 설정
-	if (isMix) {
+
+	//과일 꽂기 시작 위치 설정(이지연)
+	if (isMix) {  //믹스인가?
+		//fruitTextureVector에 있는 주문 과일의 Texture 가로 길이를 가져와 사이즈를 곱하여 꼬치 끝부분 위치에서 빼기를 하여 시작 지점 설정
 		if (selectedFruits[0] + selectedFruits[1] == "strawberryshinemusket" || selectedFruits[0] + selectedFruits[1] == "shinemusketstrawberry") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberrypineapple" || selectedFruits[0] + selectedFruits[1] == "pineapplestrawberry") {
 			size = 4;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberryblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapestrawberry") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "strawberrymandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinstrawberry") {
 			size = 4;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketpineapple" || selectedFruits[0] + selectedFruits[1] == "pineappleshinemusket") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketmandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinshinemusket") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "shinemusketblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapeshinemusket") {
 			size = 8;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "pineappleblack grape" || selectedFruits[0] + selectedFruits[1] == "black grapepineapple") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "pineapplemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinpineapple") {
 			size = 4;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 		else if (selectedFruits[0] + selectedFruits[1] == "black grapemandarin" || selectedFruits[0] + selectedFruits[1] == "mandarinblack grape") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size / 2 + ft.at(1).getSize().x * size / 2;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size / 2 + fruitTextureVector.at(1).getSize().x * size / 2;
 		}
 	}
-	else {
+	else {  //단일인가?
 		if (selectedFruits[0] == "strawberry") {
 			size = 4;
-			startPosition -= ft.at(0).getSize().x * size;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size;
 		}
 		else if (selectedFruits[0] == "shinemusket") {
 			size = 6;
-			startPosition -= ft.at(0).getSize().x * size;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size;
 		}
 		else if (selectedFruits[0] == "pineapple") {
 			size = 5;
-			startPosition -= ft.at(0).getSize().x * size;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size;
 		}
 		else if (selectedFruits[0] == "blackGrape") {
 			size = 8;
-			startPosition -= ft.at(0).getSize().x * size;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size;
 		}
 		else if (selectedFruits[0] == "mandarin") {
 			size = 4;
-			startPosition -= ft.at(0).getSize().x * size;
+			startPosition -= fruitTextureVector.at(0).getSize().x * size;
 		}
 	}
 
@@ -164,13 +166,12 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 		});
 	
 	clearTextThread.detach(); // 스레드를 분리하여 비동기적으로 실행
-	return startPosition;
+	return startPosition;  //과일 꽂기 시작 지점 리턴
 }
 
 void Game::run(RenderWindow& window) {
 	window.create(VideoMode(1500, 800), L"탕후루 만들기");
 
-	//탕후루 게임
 	Texture frame;  //게임 화면
 	frame.loadFromFile("image/Game_frame.png");  //게임 화면 이미지
 	Sprite frameSprite(frame);  //게임 화면 이미지 할당
@@ -308,9 +309,8 @@ void Game::run(RenderWindow& window) {
 	bool showingLevelup = false;//레벨업
 	bool againSale = false; //다시 주문
 
-	int size = 0;  //꽂을 과일 갯수 정하는 변수
 	int startPosition = 650;  //과일 꽂기 시작 위치
-	vector<Fruit> fruits;  //과일 벡터
+	vector<Fruit> fruits;  //꼬치에 꽂은 과일 벡터
 
 
 	//폰트 설정
@@ -394,7 +394,7 @@ void Game::run(RenderWindow& window) {
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
 
-	startPosition = againRandomOrder(level, isMix, bubbleText, orders, selectedFruits);  //주문 생성
+	startPosition = againRandomOrder(level, isMix, bubbleText, orders, selectedFruits);  //주문 생성(시작 지점 받아옴)(이지연)
 
 
 
@@ -562,8 +562,8 @@ void Game::run(RenderWindow& window) {
 			window.clear();
 			window.draw(badFrameSprite);
 			window.display();
-			sleep(seconds(20));
-			window.close();
+			sleep(seconds(5));
+			return;
 
 		}
 		// 레벨업 화면 보이게 하기 & 3초 뒤 사라지기
@@ -574,7 +574,7 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
-		
+
 
 		// 성공 화면에 보이게 하기 & 2초 뒤 사라지게
 		if (showingPerfect) {
@@ -616,7 +616,7 @@ void Game::run(RenderWindow& window) {
 
 
 			// 주문 생성 메소드 호출
-			startPosition = againRandomOrder(level, isMix, bubbleText,orders, selectedFruits);
+			startPosition = againRandomOrder(level, isMix, bubbleText, orders, selectedFruits);  //주문 생성(시작 지점 받아옴)(이지연)
 
 			// 2초 동안 이미지를 보여준 후 말풍선 표시
 			window.display();
@@ -649,8 +649,6 @@ void Game::run(RenderWindow& window) {
 		timerText.setString(to_string(remainingTime));
 
 
-
-
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				window.close();
@@ -659,41 +657,32 @@ void Game::run(RenderWindow& window) {
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 				Vector2i mousePosition = Mouse::getPosition(window);
 				bool isPerfect = false;  //잘 만들었는지 체크용
-				//다시 주문
 
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
-					//맞게 만들었는지 검사
+					//탕후루를 주문과 맞게 만들었는지 검사(이지연)
 					if (isMix) {  //혼합인가
 						int i = 0;
 
-						for (Fruit fruit : fruits) {
+						for (Fruit fruit : fruits) {  //벡터에 담긴 과일을 검사함
 							if (!(fruit.name == selectedFruits[i]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
-								cout << "꽂은 과일    :" << fruit.name << endl;
-								cout << "꽂아야할 과일:" << selectedFruits[i] << endl;
-								cout << "--------------------" << endl;
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
 							else {
-								isPerfect = true;
+								isPerfect = true;  //완벽함
 							}
 
-							//mixOrder에서 0과 1을 쓰기 위해
-							if (i == 0) i = 1;
-							else i = 0;
+							i = (i == 0) ? 1 : 0;  //mixOrder에서 0과 1을 쓰기 위해
 						}
 					}
 					else {  //혼합이 아니면
-						for (Fruit fruit : fruits) {
+						for (Fruit fruit : fruits) {  //벡터에 담긴 과일을 검사함
 							if (!(fruit.name == selectedFruits[0]) || !fruit.isCoated) {  //주문과 과일이 다르고 코팅이 안됐다면
 								isPerfect = false;  //제대로 못 만듦
-								cout << "꽂은 과일    :" << fruit.name << endl;
-								cout << "꽂아야할 과일:" << selectedFruits[0] << endl;
-								cout << "--------------------" << endl;
 								break;  //더 이상 체크할 필요가 없으니 for문 나감
 							}
 							else {
-								isPerfect = true;
+								isPerfect = true;  //완벽함
 							}
 						}
 					}
@@ -717,8 +706,8 @@ void Game::run(RenderWindow& window) {
 
 					levelText.setString(to_string(level));
 					//도마 위 초기화
-					fruits.clear();  //과일 벡터 비움
-					stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
+					fruits.clear();  //과일 벡터 비움(이지연)
+					stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림(이지연)
 
 
 				}
@@ -732,13 +721,10 @@ void Game::run(RenderWindow& window) {
 				}
 			}
 
-
 			Vector2i mousePosition = Mouse::getPosition(window);
 
-
-			//클릭했을 때
-			if (!isClicked && event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-				isClicked = true;  //클릭함
+			//클릭했을 때(이지연)
+			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
 
 				//커서가 과일 박스 위에 있다면 그 과일을 잡음
 				if (level >= 4 && blackGrapeBox.getGlobalBounds().contains(static_cast<Vector2f>(mousePosition))) {  //블랙 사파이어 잡음
@@ -790,15 +776,17 @@ void Game::run(RenderWindow& window) {
 			int positionX = startPosition;  //과일 x 위치 설정
 			int positionY = 560;  //과일 y 위치 설정
 
-			// 마우스 이동 중일 때
+			// 마우스 이동 중일 때(이지연)
 			if (event.type == Event::MouseMoved) {
 				//드래그하면 과일을 마우스 위치로 이동
 				Vector2i mousePosition = Mouse::getPosition(window);
-				if (isStickGrabbed) {
+
+				if (isStickGrabbed) {  //꼬치를 잡았다면
 					Vector2f centerPosition(static_cast<float>(mousePosition.x - stick.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - stick.getLocalBounds().height / 2));
 					stick.setPosition(centerPosition);  //꼬치 잡는 위치 설정
 				}
-				if (isLadleGrabbed) {
+
+				if (isLadleGrabbed) {  //국자를 잡았다면
 					Vector2f centerPosition(static_cast<float>(mousePosition.x - ladleSprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - ladleSprite.getLocalBounds().height / 2));
 					ladleSprite.setPosition(centerPosition);  //국자 잡는 위치 설정
 
@@ -808,43 +796,43 @@ void Game::run(RenderWindow& window) {
 					}
 				}
 				for (Fruit& fruit : fruits) {  //과일
-					if (fruit.grabbed) {
+					if (fruit.grabbed) {  //과일을 잡았다면
 						Vector2f centerPosition(static_cast<float>(mousePosition.x - fruit.sprite.getLocalBounds().width / 2), static_cast<float>(mousePosition.y - fruit.sprite.getLocalBounds().height / 2));
 						fruit.sprite.setPosition(centerPosition);  //과일 잡는 위치 설정
 					}
 					if (isSugarLadle && ladleSprite.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds()) && !fruit.isCoated) {  //설탕물 국자일때 과일에 닿으면 코팅됨
 						ladleSprite.setRotation(-20);  //국자 살짝 기울임
-						fruit.sugarCoating();  //설탕 코팅 이미지로 바꿈
+						fruit.sugarCoating();  //과일을 설탕 코팅 이미지로 바꿈
 					}
 				}
 			}
 
-			//국자에서 마우스 뗐을 때
+			//국자에서 마우스 뗐을 때(이지연)
 			if (isLadleGrabbed && event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
 				isLadleGrabbed = false;  //국자 안 잡음
-				isSugarLadle = false;  //설탕물 없음
+				isSugarLadle = false;  //설탕물 국자 아님
 				ladleSprite.setTexture(ladleTexture);  //원래 국자 이미지로 설정
 				ladleSprite.setPosition(710, 250);  //국자 원래 위치로 되돌려놓음
 				ladleSprite.setRotation(90);  //국자 원래 각도로 돌려놓음
 			}
 
-			//마우스 뗐을 때
+			//마우스 뗐을 때(이지연)
 			if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-				isClicked = false;  //클릭 안함
-				if (isStickGrabbed) {
+
+				if (isStickGrabbed) {  //꼬치를 잡았다면
 					if (!stick.getGlobalBounds().intersects(cuttingBoardSprite.getGlobalBounds())) {  //꼬치를 도마 위에 안 두면
-						stick.setPosition(1200, 1000);
+						stick.setPosition(1200, 1000);  //꼬치 멀리 보내버림
 					}
 					else {
 						stick.setPosition(40, 550);  //꼬치 위치 자동으로 설정
 					}
-					isStickGrabbed = false;
+					isStickGrabbed = false;  //꼬치 안 잡음
 				}
 
 				for (Fruit& fruit : fruits) {  //과일
-					fruit.grabbed = false;
-					//과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
-					if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {
+					fruit.grabbed = false;  //과일 안 잡음
+
+					if (!stick.getGlobalBounds().intersects(fruit.sprite.getGlobalBounds())) {  //과일을 꼬치 위에 안 놓거나 도마 위에 재료를 안 놓았다면
 						fruits.pop_back();  //객체에서 삭제
 					}
 					else {
@@ -852,13 +840,11 @@ void Game::run(RenderWindow& window) {
 						positionX += fruit.sprite.getGlobalBounds().width - 6;  //가로 길이 누적
 					}
 				}
-
-
 			}
 
 			//탕후루 게임 끝
 
-			
+
 			window.clear();
 			//↓ 갈수록 레이어가 위임
 			window.draw(cuttingBoardSprite);  //도마 draw
@@ -899,4 +885,4 @@ void Game::run(RenderWindow& window) {
 		}
 
 	}
-
+}
