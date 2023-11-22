@@ -45,9 +45,6 @@
     <ClInclude Include="happy.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
-    <ClInclude Include="levleup.h">
-      <Filter>헤더파일</Filter>
-    </ClInclude>
     <ClInclude Include="main.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
