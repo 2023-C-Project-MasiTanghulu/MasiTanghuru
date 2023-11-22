@@ -5,8 +5,9 @@
 #include <sstream>
 #include "game.h"
 #include "fruit.h"
-#include <future>
 using namespace std;
+
+
 
 wstring convertToFruitName(const string& englishName) {
 	if (englishName == "strawberry") {
@@ -26,7 +27,9 @@ wstring convertToFruitName(const string& englishName) {
 	}
 };
 
-
+void againRandomOrder(int, bool&, Text&, vector<string>& orders, vector<string>& selectedFruits)
+{
+}
 
 
 void Game::run(RenderWindow& window) {
@@ -168,8 +171,7 @@ void Game::run(RenderWindow& window) {
 	bool showingFail = false; //실패
 	bool showingPerfect = false;//성공
 	bool showingLevelup = false;//레벨업
-	bool againSaleClick = false; //다시 주문 
-	bool againSale = false;
+	bool againSale = false; //다시 주문
 
 	int size = 0;  //꽂을 과일 갯수 정하는 변수
 	int startPosition = 650;  //과일 꽂기 시작 위치
@@ -208,6 +210,20 @@ void Game::run(RenderWindow& window) {
 	levelText.setStyle(Text::Bold);
 	levelText.setPosition(1250, 170);  // 위치 설정
 
+	// 과일 주문 목록
+	vector<vector<string>> levelFruits = {
+		{"shinemusket", "strawberry"},                  // Level 1
+		{"strawberry", "shinemusket", "pineapple"},     // Level 2
+		{"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
+		{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
+	};
+
+	int level = 1;
+	// 현재 레벨에 해당하는 주문 목록 가져오기
+	vector<string> orders = levelFruits[level - 1];
+	vector<string> selectedFruits; // 선택한 과일들을 저장할 벡터
+	int randomFruitIndex = 0;
+
 	//말풍선 말: 손님 주문
 	Text bubbleText;
 	bubbleText.setFont(font);
@@ -243,63 +259,83 @@ void Game::run(RenderWindow& window) {
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
 
-
-	// 과일 주문 목록
-	vector<vector<string>> levelFruits = {
-			   { "shinemusket","strawberry"},                  // Level 1
-			   {"strawberry", "shinemusket", "pineapple"},     // Level 2
-			   {"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
-			   {"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
-	};
+	
 
 
-	int level = 1;
-	// 현재 레벨에 해당하는 주문 목록 가져오기
-	vector<string> orders = levelFruits[level - 1];
 
-	// 주문 랜덤 돌리기
-	mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-	uniform_int_distribution<int> dist(0, orders.size() - 1);
+	//다시 주문 
+	void againRandomOrder(int level, bool& isMix, Text & bubbleText, vector<string>& orders, vector<string>& selectedFruits); {
+		cout << "다시 주문 탕후루 주세요." << endl;
+		// 과일 주문 목록
+		vector<vector<string>> levelFruits = {
+			{"shinemusket", "strawberry"},                  // Level 1
+			{"strawberry", "shinemusket", "pineapple"},     // Level 2
+			{"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
+			{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
+		};
+
+		// 현재 레벨에 해당하는 주문 목록 가져오기
+		vector<string> orders = levelFruits[level - 1];
 
 
-	// 주문 wstring으로 변환
-	wstring order = L"";
-	int numFruits = orders.size(); // 현재 레벨의 과일 개수
-	vector<string> selectedFruits;// 선택한 과일들을 저장할 벡터
-	int randomFruitIndex = 0;
+		// 주문 wstring으로 변환
+		wstring order = L"";
+		int numFruits = orders.size(); // 현재 레벨의 과일 개수
 
-	// 레벨에 맞게 주문 생성
-	if (numFruits > 0) {
-		// 랜덤으로 선택할 과일 개수
-		int numSelectedFruits = dist(rng) % 2 + 1;
+		// 주문 랜덤 돌리기
+		mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+		uniform_int_distribution<int> dist(0, orders.size() - 1);
 
-		if (numSelectedFruits % 2 == 0) {  //짝수면 혼합, 아니면 단일
-			isMix = true;
-		}
-		else {
-			isMix = false;
-		}
-		for (int i = 0; i < numSelectedFruits; ++i) {
-			// 이미 선택된 과일이 나오지 않도록 반복해서 선택
-			do {
-				randomFruitIndex = dist(rng);
-			} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
 
-			selectedFruits.push_back(orders[randomFruitIndex]);
-		}
+		// 레벨에 맞게 주문 생성
+		if (numFruits > 0) {
+			// 랜덤으로 선택할 과일 개수
+			int numSelectedFruits = dist(rng) % 2 + 1;
 
-		// 선택한 과일들을 문자열로 합치기
-		for (int i = 0; i < numSelectedFruits; ++i) {
-			order += convertToFruitName(selectedFruits[i]);
+			if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
+				isMix = true;
+			}
+			else {
+				isMix = false;
+			}
 
-			// 마지막 과일이 아니면 쉼표 추가
-			if (i < numSelectedFruits - 1) {
-				order += L",";
+			for (int i = 0; i < numSelectedFruits; ++i) {
+				// 이미 선택된 과일이 나오지 않도록 반복해서 선택
+				do {
+					randomFruitIndex = dist(rng);
+				} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
+
+				selectedFruits.push_back(orders[randomFruitIndex]);
+			}
+
+			// 선택한 과일들을 문자열로 합치기
+			for (int i = 0; i < numSelectedFruits; ++i) {
+				order += convertToFruitName(selectedFruits[i]);
+
+				// 마지막 과일이 아니면 쉼표 추가
+				if (i < numSelectedFruits - 1) {
+					order += L",";
+				}
 			}
 		}
+
+		bubbleText.setString(order + L" 탕후루 주세요.");
+		// 3초 후에 텍스트를 지우기 위해 별도의 스레드 사용
+		std::thread clearTextThread([&bubbleText]() {
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+			bubbleText.setString(L"");
+			cout << "말풍선 내용이 지워졌습니다." << endl;
+			});
+
+		clearTextThread.detach(); // 스레드를 분리하여 비동기적으로 실행
 	}
 
-	bubbleText.setString(order + L" 탕후루 주세요.");
+
+
+	againRandomOrder(level, isMix, bubbleText,  orders, selectedFruits);
+
+
+
 
 	//과일 시작 위치 설정 & 과일 개수 지정
 	if (isMix) {
@@ -401,6 +437,7 @@ void Game::run(RenderWindow& window) {
 	Clock level3Clock;
 	Clock level4Clock;
 
+
 	//initializeLevel : 게임 시간을 초기화 시키는 역할
 	auto initializeLevel = [&]() {
 		switch (level) {
@@ -415,8 +452,8 @@ void Game::run(RenderWindow& window) {
 			currentLevelTimeLimit = level2TimeLimit;
 			level2Clock.restart();
 			pineappleBox.setTexture(pineappleBoxTexture);
-			shineMusketBox.setTexture(shineMusketBoxTexture);
-			strawberryBox.setTexture(strawberryBoxTexture);
+			//shineMusketBox.setTexture(shineMusketBoxTexture);
+			//strawberryBox.setTexture(strawberryBoxTexture);
 			break;
 
 		case 3:
@@ -557,7 +594,8 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
-		//다시 주문하면 나오는 내용
+
+		// 다시 주문하면 나오는 내용
 		if (againSale) {
 			// 성공 또는 실패 이미지를 먼저 그린다.
 			if (showingPerfect) {
@@ -579,61 +617,8 @@ void Game::run(RenderWindow& window) {
 			bubbleText.setPosition(70, 70);
 
 
-			//랜덤 주문 
-			// 과일 주문 목록
-			vector<vector<string>> levelFruits = {
-				{"shinemusket", "strawberry"},                // 레벨 1
-				{"strawberry", "shinemusket", "pineapple"},   // 레벨 2
-				{"strawberry", "shinemusket", "pineapple", "mandarin"},  // 레벨 3
-				{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // 레벨 4
-			};
-
-			// 현재 레벨에 해당하는 주문 목록 가져오기
-			vector<string> orders = levelFruits[level - 1];
-
-			// 주문 랜덤 돌리기
-			mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-			uniform_int_distribution<int> dist(0, orders.size() - 1);
-
-			// 주문 wstring으로 변환
-			wstring order = L"";
-			int numFruits = orders.size(); // 현재 레벨의 과일 개수
-			vector<string> selectedFruits; // 선택한 과일들을 저장할 벡터
-			int randomFruitIndex = 0;
-
-			// 레벨에 맞게 주문 생성
-			if (numFruits > 0) {
-				// 랜덤으로 선택할 과일 개수
-				int numSelectedFruits = dist(rng) % 2 + 1;
-
-				if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
-					isMix = true;
-				}
-				else {
-					isMix = false;
-				}
-				for (int i = 0; i < numSelectedFruits; ++i) {
-					// 이미 선택된 과일이 나오지 않도록 반복해서 선택
-					do {
-						randomFruitIndex = dist(rng);
-					} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
-
-					selectedFruits.push_back(orders[randomFruitIndex]);
-				}
-
-				// 선택한 과일들을 문자열로 합치기
-				for (int i = 0; i < numSelectedFruits; ++i) {
-					string selectedFruit = selectedFruits[i];
-					order += convertToFruitName(selectedFruits[i]);
-
-					// 마지막 과일이 아니면 쉼표 추가
-					if (i < numSelectedFruits - 1) {
-						order += L",";
-					}
-				}
-			}
-
-			bubbleText.setString(order + L" 탕후루 주세요.");
+			// 주문 생성 메소드 호출
+			againRandomOrder(level, isMix, bubbleText,orders, selectedFruits);
 
 			// 2초 동안 이미지를 보여준 후 말풍선 표시
 			window.display();
@@ -652,17 +637,13 @@ void Game::run(RenderWindow& window) {
 
 			againSale = false;
 		}
-		
+
 
 
 
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				window.close();
-
-
-			levelText.setString(to_string(level));
-
 
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
@@ -739,8 +720,6 @@ void Game::run(RenderWindow& window) {
 						cout << "다시 판매받기" << endl;
 					}
 				}
-
-
 			}
 
 
