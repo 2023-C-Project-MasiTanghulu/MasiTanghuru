@@ -6,7 +6,7 @@
 #include "game.h"
 #include "fruit.h"
 
-
+//(이지연)
 wstring convertToFruitName(const string& englishName) {
 	if (englishName == "strawberry") {
 		return L"딸기";
@@ -158,17 +158,18 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 
 	bubbleText.setString(order + L" 탕후루 주세요.");
 	// 3초 후에 텍스트를 지우기 위해 별도의 스레드 사용
-	
+
 	thread clearTextThread([&bubbleText]() {
 		this_thread::sleep_for(chrono::seconds(3));
 		bubbleText.setString(L"");
 		cout << "말풍선 내용이 지워졌습니다." << endl;
 		});
-	
+
 	clearTextThread.detach(); // 스레드를 분리하여 비동기적으로 실행
 	return startPosition;  //과일 꽂기 시작 지점 리턴
 }
 
+//(이지연, 김세연)
 void Game::run(RenderWindow& window) {
 	window.create(VideoMode(1500, 800), L"탕후루 만들기");
 
@@ -260,13 +261,13 @@ void Game::run(RenderWindow& window) {
 	Sprite speechBubbleSprite(speechBubble);  //말풍선 이미지 할당
 	speechBubbleSprite.setPosition(30, 30);  //말풍선 위치 설정
 
-	// 3초 후에 말풍선을 숨기는 함수
+	// 3초 후에 말풍선을 숨기는 함수 김세연
 	auto clearSpeechBubble = [&speechBubbleSprite]() {
 		this_thread::sleep_for(chrono::seconds(3));
 		speechBubbleSprite.setPosition(-1000, -1000); // 화면 밖으로 이동시켜 보이지 않게 함
 	};
 
-	// 3초 뒤에 말풍선을 숨김
+	// 3초 뒤에 말풍선을 숨김 /김세연
 	thread(clearSpeechBubble).detach();  // 새 스레드에서 실행
 
 	//실패이미지
@@ -327,7 +328,7 @@ void Game::run(RenderWindow& window) {
 
 	//제한시간 : 초 설정
 	Clock clock;
-	const Time timeLimit = seconds(60); // 60초로 설정
+	const Time timeLimit = seconds(360); // 60초로 설정
 
 	//판매액 : 텍스트 설정
 	Text saleText;  // 텍스트 객체 생성
@@ -359,7 +360,7 @@ void Game::run(RenderWindow& window) {
 	vector<string> selectedFruits; // 선택한 과일들을 저장할 벡터
 	int randomFruitIndex = 0;
 
-	//말풍선 말: 손님 주문
+	//말풍선 내용: 손님 주문
 	Text bubbleText;
 	bubbleText.setFont(font);
 	bubbleText.setCharacterSize(50);
@@ -367,13 +368,13 @@ void Game::run(RenderWindow& window) {
 	bubbleText.setStyle(Text::Bold);
 	bubbleText.setPosition(100, 80); // 텍스트 위치 설정
 
-	// 3초 후에 말풍선 내용을 지우는 함수
+	// 3초 후에 말풍선 내용을 지우는 함수 /김세연
 	auto clearBubbleText = [&bubbleText]() {
 		this_thread::sleep_for(chrono::seconds(3));
 		bubbleText.setString(L"");
 	};
 
-	// 3초 뒤에 말풍선 내용 지움
+	// 3초 뒤에 말풍선 내용 지움 /김세연
 	thread(clearBubbleText).detach();
 
 	// 판매하기 버튼 이미지
@@ -384,15 +385,15 @@ void Game::run(RenderWindow& window) {
 
 
 
-	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기
+	bool Sale_btnVisible = false; // Sale 버튼을 처음에는 숨겨놓기 /김세연
 
-	// 3초 뒤에 Sale 버튼을 보이도록 하는 함수
+	// 3초 뒤에 Sale 버튼을 보이도록 하는 함수 /김세연
 	auto AfterSale_btn = [&]() {
 		this_thread::sleep_for(chrono::seconds(3));
 		Sale_btnVisible = true;
 	};
 
-	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
+	thread(AfterSale_btn).detach(); // 새 스레드에서 실행 /김세연
 
 	startPosition = againRandomOrder(level, isMix, bubbleText, orders, selectedFruits);  //주문 생성(시작 지점 받아옴)(이지연)
 
@@ -412,13 +413,13 @@ void Game::run(RenderWindow& window) {
 	//레벨
 	int sale = 0;//판매액
 
-	// 레벨별 제한 시간 설정
-	const Time level1TimeLimit = seconds(60);
-	const Time level2TimeLimit = seconds(60);
-	const Time level3TimeLimit = seconds(60);
-	const Time level4TimeLimit = seconds(60);
+	// 레벨별 제한 시간 설정   /김세연
+	const Time level1TimeLimit = seconds(360);
+	const Time level2TimeLimit = seconds(300);
+	const Time level3TimeLimit = seconds(300);
+	const Time level4TimeLimit = seconds(300);
 
-	//실제 지나는 시간
+	//실제 지나는 시간	/김세연
 	Time elapsed;
 
 	//현재 레벨에 맞는 시간 제한
@@ -432,7 +433,7 @@ void Game::run(RenderWindow& window) {
 	Clock level4Clock;
 
 
-	//initializeLevel : 게임 시간을 초기화 시키는 역할
+	//initializeLevel : 게임 시간을 초기화 시키는 역할 /김세연
 	auto initializeLevel = [&]() {
 		switch (level) {
 		case 1:
@@ -472,7 +473,7 @@ void Game::run(RenderWindow& window) {
 
 	while (window.isOpen()) {
 		Event event;
-		//현재 게임 레벨에 따라 해당 레벨의 경과 시간(elapsed)을 얻어오는 코드
+		//시간 체크 /김세연
 		switch (level) {
 		case 1:
 			elapsed = level1Clock.getElapsedTime();
@@ -490,22 +491,11 @@ void Game::run(RenderWindow& window) {
 			elapsed = level4Clock.getElapsedTime();
 			break;
 
-
 		default:
 			break;
 		}
-		//// 레벨 업 함수
-		//auto levelUp = [&]() {
-		//	level++;
-		//	cout << "레벨 " << level << " 달성!" << endl;
-		//	if (!showingLevelup) {
-		//		showingLevelup = true;
-		//		levelupClock.restart();
-		//		initializeLevel();  // 레벨이 변경되었으므로 초기화
-		//	}
-		//};
-		// 판매액에 따라 레벨 결정
-		if (sale >= 6000 && sale < 13000) {
+		// 판매액에 따라 레벨 결정	/김세연
+		if (sale >= 6000 && sale < 9000) {
 			if (level != 2) {
 				level = 2;
 				cout << "레벨 2 달성!" << endl;
@@ -514,10 +504,11 @@ void Game::run(RenderWindow& window) {
 					levelupClock.restart();
 					cout << "레벨 2 화면이 나타남" << endl;
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
 				}
 			}
 		}
-		else if (sale >= 13000 && sale < 19000) {
+		else if (sale >= 9000 && sale < 12000) {
 			if (level != 3) {
 				level = 3;
 				cout << "레벨 3 달성!" << endl;
@@ -525,10 +516,11 @@ void Game::run(RenderWindow& window) {
 					showingLevelup = true;
 					levelupClock.restart();
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
 				}
 			}
 		}
-		else if (sale >= 19000 && sale < 21000) {
+		else if (sale >= 12000 && sale < 18000) {
 			if (level != 4) {
 				level = 4;
 				cout << "레벨 4 달성!" << endl;
@@ -536,27 +528,24 @@ void Game::run(RenderWindow& window) {
 					showingLevelup = true;
 					levelupClock.restart();
 					initializeLevel();  // 레벨이 변경되었으므로 초기화
+					clock.restart();
 				}
 			}
 		}
-		else if (sale >= 16000) {
+		else if (sale >= 20000) {
 			cout << "해피엔딩 달성" << endl;
 			happyFrameSprite.setTexture(happyFrameTexture);
 			window.clear();
 			window.draw(happyFrameSprite);
 			window.display();
-			sleep(seconds(10)); // 이미지를 표시한 후 잠시 대기 
-			window.close();
-
+			sleep(seconds(5)); // 이미지를 표시한 후 잠시 대기 
+			return;
 		}
 
-
-
-		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {
+		if (elapsed.asSeconds() >= currentLevelTimeLimit.asSeconds()) {   //세연
 
 			// 시간 종료 처리
 			cout << "레벨 : " << level << " 시간 초과!" << endl;
-
 			//배드엔딩 
 			badFrameSprite.setTexture(badFrameTexture);
 			window.clear();
@@ -566,17 +555,22 @@ void Game::run(RenderWindow& window) {
 			return;
 
 		}
-		// 레벨업 화면 보이게 하기 & 3초 뒤 사라지기
+
+
+		// 레벨업 화면 보이게 하기 & 3초 뒤 사라지기(세연)
 		if (showingLevelup) {
+			// 레벨업 화면을 표시
+			window.clear();
+			window.draw(levelupSprite);
+			window.display();
+
 			if (levelupClock.getElapsedTime() >= levelupCount) {
 				showingLevelup = false;
 				cout << "레벨업 화면이 나옴" << endl;
 			}
 		}
 
-
-
-		// 성공 화면에 보이게 하기 & 2초 뒤 사라지게
+		//성공 화면에 보이게 하기 & 2초 뒤 사라지게     /세연
 		if (showingPerfect) {
 			if (perfectClock.getElapsedTime() >= perfectCount) {
 				showingPerfect = false;
@@ -584,7 +578,7 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
-		// 실패 화면에 보이게 하기 & 2초 뒤 사라지게
+		// 실패 화면에 보이게 하기 & 2초 뒤 사라지게      /세연
 		if (showingFail) {
 			if (failClock.getElapsedTime() >= failCount) {
 				showingFail = false;
@@ -593,7 +587,7 @@ void Game::run(RenderWindow& window) {
 		}
 
 
-		// 다시 주문하면 나오는 내용
+		// 다시 주문하면 나오는 내용     /세연
 		if (againSale) {
 			// 성공 또는 실패 이미지를 먼저 그린다.
 			if (showingPerfect) {
@@ -636,15 +630,10 @@ void Game::run(RenderWindow& window) {
 			againSale = false;
 		}
 
-		//제한시간 : 시간 지나는 코드
-			//Time elapsed = clock.getElapsedTime();
-			//if (elapsed >= timeLimit) {
-				//cout << "시간 초과!" << endl;
-				//window.close();
-			//}
 
 
-			// 시간을 문자열로 변환하여 텍스트에 설정
+
+		// 시간을 문자열로 변환하여 텍스트에 설정(김세연)
 		int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
 		timerText.setString(to_string(remainingTime));
 
@@ -652,6 +641,8 @@ void Game::run(RenderWindow& window) {
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				window.close();
+
+			levelText.setString(to_string(level));
 
 			//판매버튼 클릭
 			if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
@@ -687,7 +678,9 @@ void Game::run(RenderWindow& window) {
 						}
 					}
 
-					if (isPerfect) { //제대로 만들었다면
+
+
+					if (isPerfect) { //제대로 만들었다면(김세연)
 						cout << endl << "성공~" << endl;
 						sale += 3000;
 						string saleString = to_string(sale);
@@ -712,7 +705,7 @@ void Game::run(RenderWindow& window) {
 
 				}
 
-				// 판매하기 버튼을 눌렀을 때
+				// 판매하기 버튼을 눌렀을 때      /세연
 				if (Sale_btn_sprite.getGlobalBounds().contains(mousePosition.x, mousePosition.y)) {
 					againSale = true;
 					if (againSale) {
@@ -885,4 +878,5 @@ void Game::run(RenderWindow& window) {
 		}
 
 	}
+
 }
