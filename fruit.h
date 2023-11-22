@@ -15,7 +15,7 @@ public:
     string name;  //과일 이름
 
     //생성자
-    Fruit(String fruitName) : name(fruitName) {
+    Fruit(string fruitName) : name(fruitName) {
         grabbed = true;
         coatedTexture.loadFromFile("image/Coating_" + name + ".png");
     }
