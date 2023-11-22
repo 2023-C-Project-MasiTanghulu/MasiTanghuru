@@ -157,8 +157,8 @@ int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& o
 	bubbleText.setString(order + L" 탕후루 주세요.");
 	// 3초 후에 텍스트를 지우기 위해 별도의 스레드 사용
 	
-	std::thread clearTextThread([&bubbleText]() {
-		std::this_thread::sleep_for(std::chrono::seconds(3));
+	thread clearTextThread([&bubbleText]() {
+		this_thread::sleep_for(chrono::seconds(3));
 		bubbleText.setString(L"");
 		cout << "말풍선 내용이 지워졌습니다." << endl;
 		});
@@ -446,27 +446,18 @@ void Game::run(RenderWindow& window) {
 			currentLevelTimeLimit = level2TimeLimit;
 			level2Clock.restart();
 			pineappleBox.setTexture(pineappleBoxTexture);
-			//shineMusketBox.setTexture(shineMusketBoxTexture);
-			//strawberryBox.setTexture(strawberryBoxTexture);
 			break;
 
 		case 3:
 			currentLevelTimeLimit = level3TimeLimit;
 			level3Clock.restart();
-			pineappleBox.setTexture(pineappleBoxTexture);
 			mandarinBox.setTexture(mandarinBoxTexture);
-			shineMusketBox.setTexture(shineMusketBoxTexture);
-			strawberryBox.setTexture(strawberryBoxTexture);
 			break;
 
 		case 4:
 			currentLevelTimeLimit = level4TimeLimit;
 			level4Clock.restart();
-			pineappleBox.setTexture(pineappleBoxTexture);
-			mandarinBox.setTexture(mandarinBoxTexture);
 			blackGrapeBox.setTexture(blackGrapeBoxTexture);
-			shineMusketBox.setTexture(shineMusketBoxTexture);
-			strawberryBox.setTexture(strawberryBoxTexture);
 			break;
 
 		default:
@@ -474,6 +465,8 @@ void Game::run(RenderWindow& window) {
 		}
 	};
 
+
+	//초기 레벨 설정
 	initializeLevel();
 
 
@@ -501,7 +494,16 @@ void Game::run(RenderWindow& window) {
 		default:
 			break;
 		}
-
+		//// 레벨 업 함수
+		//auto levelUp = [&]() {
+		//	level++;
+		//	cout << "레벨 " << level << " 달성!" << endl;
+		//	if (!showingLevelup) {
+		//		showingLevelup = true;
+		//		levelupClock.restart();
+		//		initializeLevel();  // 레벨이 변경되었으므로 초기화
+		//	}
+		//};
 		// 판매액에 따라 레벨 결정
 		if (sale >= 6000 && sale < 13000) {
 			if (level != 2) {
@@ -572,6 +574,8 @@ void Game::run(RenderWindow& window) {
 			}
 		}
 
+		
+
 		// 성공 화면에 보이게 하기 & 2초 뒤 사라지게
 		if (showingPerfect) {
 			if (perfectClock.getElapsedTime() >= perfectCount) {
@@ -631,6 +635,18 @@ void Game::run(RenderWindow& window) {
 
 			againSale = false;
 		}
+
+		//제한시간 : 시간 지나는 코드
+			//Time elapsed = clock.getElapsedTime();
+			//if (elapsed >= timeLimit) {
+				//cout << "시간 초과!" << endl;
+				//window.close();
+			//}
+
+
+			// 시간을 문자열로 변환하여 텍스트에 설정
+		int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
+		timerText.setString(to_string(remainingTime));
 
 
 
@@ -842,19 +858,7 @@ void Game::run(RenderWindow& window) {
 
 			//탕후루 게임 끝
 
-			//제한시간 : 시간 지나는 코드
-			Time elapsed = clock.getElapsedTime();
-			if (elapsed >= timeLimit) {
-				//cout << "시간 초과!" << endl;
-				//window.close();
-			}
-
-
-			// 시간을 문자열로 변환하여 텍스트에 설정
-			int remainingTime = timeLimit.asSeconds() - elapsed.asSeconds();
-			timerText.setString(to_string(remainingTime));
-
-
+			
 			window.clear();
 			//↓ 갈수록 레이어가 위임
 			window.draw(cuttingBoardSprite);  //도마 draw
@@ -895,5 +899,4 @@ void Game::run(RenderWindow& window) {
 		}
 
 	}
-}
 
