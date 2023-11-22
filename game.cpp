@@ -27,10 +27,78 @@ wstring convertToFruitName(const string& englishName) {
 	}
 };
 
-void againRandomOrder(int, bool&, Text&, vector<string>& orders, vector<string>& selectedFruits)
-{
-}
+//다시 주문 
+int againRandomOrder(int level, bool& isMix, Text& bubbleText, vector<string>& orders, vector<string>& selectedFruits) {
+	cout << "다시 주문 탕후루 주세요." << endl;
 
+	selectedFruits.clear(); //벡터 초기화
+
+	// 과일 주문 목록
+	vector<vector<string>> levelFruits = {
+		{"shinemusket", "strawberry"},                  // Level 1
+		{"strawberry", "shinemusket", "pineapple"},     // Level 2
+		{"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
+		{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
+	};
+
+	// 현재 레벨에 해당하는 주문 목록 가져오기
+	orders = levelFruits[level - 1];
+
+
+	// 주문 wstring으로 변환
+	wstring order = L"";
+	int numFruits = orders.size(); // 현재 레벨의 과일 개수
+	int randomFruitIndex = 0;
+
+	// 주문 랜덤 돌리기
+	mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+	uniform_int_distribution<int> dist(0, orders.size() - 1);
+
+
+	// 레벨에 맞게 주문 생성
+	if (numFruits > 0) {
+		// 랜덤으로 선택할 과일 개수
+		int numSelectedFruits = dist(rng) % 2 + 1;
+
+		if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
+			isMix = true;
+		}
+		else {
+			isMix = false;
+		}
+
+		for (int i = 0; i < numSelectedFruits; ++i) {
+			// 이미 선택된 과일이 나오지 않도록 반복해서 선택
+			do {
+				randomFruitIndex = dist(rng);
+			} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
+
+			selectedFruits.push_back(orders[randomFruitIndex]);
+		}
+
+		// 선택한 과일들을 문자열로 합치기
+		for (int i = 0; i < numSelectedFruits; ++i) {
+			order += convertToFruitName(selectedFruits[i]);
+
+			// 마지막 과일이 아니면 쉼표 추가
+			if (i < numSelectedFruits - 1) {
+				order += L",";
+			}
+		}
+	}
+
+	bubbleText.setString(order + L" 탕후루 주세요.");
+	// 3초 후에 텍스트를 지우기 위해 별도의 스레드 사용
+	
+	std::thread clearTextThread([&bubbleText]() {
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+		bubbleText.setString(L"");
+		cout << "말풍선 내용이 지워졌습니다." << endl;
+		});
+	
+	clearTextThread.detach(); // 스레드를 분리하여 비동기적으로 실행
+	return randomFruitIndex;
+}
 
 void Game::run(RenderWindow& window) {
 	window.create(VideoMode(1500, 800), L"탕후루 만들기");
@@ -259,83 +327,7 @@ void Game::run(RenderWindow& window) {
 
 	thread(AfterSale_btn).detach(); // 새 스레드에서 실행
 
-	
-
-
-
-	//다시 주문 
-	void againRandomOrder(int level, bool& isMix, Text & bubbleText, vector<string>& orders, vector<string>& selectedFruits); {
-		cout << "다시 주문 탕후루 주세요." << endl;
-		// 과일 주문 목록
-		vector<vector<string>> levelFruits = {
-			{"shinemusket", "strawberry"},                  // Level 1
-			{"strawberry", "shinemusket", "pineapple"},     // Level 2
-			{"strawberry", "shinemusket", "pineapple", "mandarin"},  // Level 3
-			{"strawberry", "shinemusket", "pineapple", "mandarin", "black grape"}  // Level 4
-		};
-
-		// 현재 레벨에 해당하는 주문 목록 가져오기
-		vector<string> orders = levelFruits[level - 1];
-
-
-		// 주문 wstring으로 변환
-		wstring order = L"";
-		int numFruits = orders.size(); // 현재 레벨의 과일 개수
-
-		// 주문 랜덤 돌리기
-		mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-		uniform_int_distribution<int> dist(0, orders.size() - 1);
-
-
-		// 레벨에 맞게 주문 생성
-		if (numFruits > 0) {
-			// 랜덤으로 선택할 과일 개수
-			int numSelectedFruits = dist(rng) % 2 + 1;
-
-			if (numSelectedFruits % 2 == 0) {  // 짝수면 혼합, 아니면 단일
-				isMix = true;
-			}
-			else {
-				isMix = false;
-			}
-
-			for (int i = 0; i < numSelectedFruits; ++i) {
-				// 이미 선택된 과일이 나오지 않도록 반복해서 선택
-				do {
-					randomFruitIndex = dist(rng);
-				} while (find(selectedFruits.begin(), selectedFruits.end(), orders[randomFruitIndex]) != selectedFruits.end());
-
-				selectedFruits.push_back(orders[randomFruitIndex]);
-			}
-
-			// 선택한 과일들을 문자열로 합치기
-			for (int i = 0; i < numSelectedFruits; ++i) {
-				order += convertToFruitName(selectedFruits[i]);
-
-				// 마지막 과일이 아니면 쉼표 추가
-				if (i < numSelectedFruits - 1) {
-					order += L",";
-				}
-			}
-		}
-
-		bubbleText.setString(order + L" 탕후루 주세요.");
-		// 3초 후에 텍스트를 지우기 위해 별도의 스레드 사용
-		std::thread clearTextThread([&bubbleText]() {
-			std::this_thread::sleep_for(std::chrono::seconds(3));
-			bubbleText.setString(L"");
-			cout << "말풍선 내용이 지워졌습니다." << endl;
-			});
-
-		clearTextThread.detach(); // 스레드를 분리하여 비동기적으로 실행
-	}
-
-
-
-	againRandomOrder(level, isMix, bubbleText,  orders, selectedFruits);
-
-
-
+	randomFruitIndex = againRandomOrder(level, isMix, bubbleText,  orders, selectedFruits);  //주문 생성
 
 	//과일 시작 위치 설정 & 과일 개수 지정
 	if (isMix) {
@@ -618,7 +610,7 @@ void Game::run(RenderWindow& window) {
 
 
 			// 주문 생성 메소드 호출
-			againRandomOrder(level, isMix, bubbleText,orders, selectedFruits);
+			randomFruitIndex = againRandomOrder(level, isMix, bubbleText,orders, selectedFruits);
 
 			// 2초 동안 이미지를 보여준 후 말풍선 표시
 			window.display();
